@@ -1,0 +1,15 @@
+{
+  "name": "desktop-assistant",
+  "productName": "Desktop Assistant",
+  "version": "0.1.0",
+  "description": "",
+  "main": "./main.js",
+  "author": {
+    "name": "Matthieu Hostache",
+    "email": "matthieu.hostache@gmail.com",
+    "url": "https://github.com/matthieuh"
+  },
+  "license": "MIT",
+  "dependencies": {
+  }
+}

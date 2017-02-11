@@ -1,0 +1,34 @@
+.container {
+  width: 100vw;
+  text-align: center;
+  overflow: auto;
+  flex: 1;
+}
+
+.container h2 {
+  font-size: 5rem;
+}
+
+.container a {
+  font-size: 1.4rem;
+}
+
+.leftTimeIndication {
+  z-index: 5;
+  position: fixed;
+  top: 100px;
+  left: 0;
+  height: 6px;
+  width: 6px;
+  background-color: grey;
+}
+
+.rightTimeIndication {
+  z-index: 5;
+  position: fixed;
+  top: 100px;
+  right: 0;
+  height: 6px;
+  width: 6px;
+  background-color: grey;
+}

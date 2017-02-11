@@ -1,0 +1,16 @@
+.timing {
+  position: relative;
+  left: 0;
+  right: 0;
+  height: 4800px; /* 100px x 24 */
+}
+
+.hour {
+  height: 200px;
+  background-color: rgba(0, 0, 255, .5);
+  /*border: 1px solid red;*/
+}
+
+.hour:nth-child(even) {
+  background-color: rgba(0, 255, 0, .5);
+}

@@ -1,0 +1,22 @@
+.actions {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  margin: 10px;
+}
+
+.add {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background-color: rgba(255, 0, 0, .92);
+}
+
+.add > a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
