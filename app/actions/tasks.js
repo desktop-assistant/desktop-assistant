@@ -1,3 +1,4 @@
+// @flow
 import { create, query } from '../store/pouchDBStore';
 
 // Task List
@@ -24,21 +25,21 @@ export function fetchTasks() {
   };
 }
 
-export function fetchTasksSuccess(posts) {
+export function fetchTasksSuccess(posts: Array<Object>) {
   return {
     type: FETCH_TASKS_SUCCESS,
     payload: posts
   };
 }
 
-export function fetchTasksFailure(error) {
+export function fetchTasksFailure(error: Object) {
   return {
     type: FETCH_TASKS_FAILURE,
     payload: error
   };
 }
 
-export function createTask(props) {
+export function createTask(props: Object) {
   const request = create(props, 'tasks');
 
   return {
@@ -47,14 +48,14 @@ export function createTask(props) {
   };
 }
 
-export function createTaskSuccess(newPost) {
+export function createTaskSuccess(newPost: Object) {
   return {
     type: CREATE_TASK_SUCCESS,
     payload: newPost
   };
 }
 
-export function createPostFailure(error) {
+export function createPostFailure(error: Object) {
   return {
     type: CREATE_TASK_FAILURE,
     payload: error

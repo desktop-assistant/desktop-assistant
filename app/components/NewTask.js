@@ -1,3 +1,4 @@
+/* eslint class-methods-use-this: ["error", { "exceptMethods": ["renderError"] }] */
 import React, { Component } from 'react';
 import { reduxForm, Field } from 'redux-form';
 import { Link } from 'react-router';
@@ -23,8 +24,7 @@ function validate() {
 }
 
 // For any field errors upon submission (i.e. not instant check)
-const validateAndCreateTask = (values, dispatch) => {
-  return dispatch(createTask(values))
+const validateAndCreateTask = (values, dispatch) => dispatch(createTask(values))
     // .then(result => {
     //   // Note: Error's "data" is in result.payload.response.data (inside "response")
     //   // success's "data" is in result.payload.data
@@ -35,21 +35,14 @@ const validateAndCreateTask = (values, dispatch) => {
     //   // //let other components know that everything is fine by updating the redux` state
     //   // dispatch(createPostSuccess(result.payload.data));
     // });
-};
+;
 
 class NewTask extends Component {
   props: {
     handleSubmit: () => void,
-    submitting: Boolean,
-    newTask: Object,
-    router: Object
+    submitting: boolean,
+    newTask: object
   };
-
-  // componentWillMount() {
-  //   //Important! If your component is navigating based on some global state(from say componentWillReceiveProps)
-  //   //always reset that global state back to null when you REMOUNT
-  //   this.props.resetMe();
-  // }
 
   renderError(newTask) {
     if (newTask && newTask.error && newTask.error.message) {
@@ -57,14 +50,13 @@ class NewTask extends Component {
         <div className="alert alert-danger">
           { newTask ? newTask.error.message : '' }
         </div>
-        );
-    } else {
-      return <span></span>
+      );
     }
+    return <span />;
   }
 
   render() {
-    const {handleSubmit, submitting, newTask} = this.props
+    const { handleSubmit, submitting, newTask } = this.props;
 
     return (
       <div className={styles.container}>
@@ -77,33 +69,39 @@ class NewTask extends Component {
             name="name"
             type="text"
             component={renderField}
-            label="Task name*" required />
+            label="Task name*" required
+          />
           <div className={styles.inlineField}>
             <Field
               name="beginAtDate"
               type="date"
               component={renderField}
-              label="Begin at*" required />
+              label="Begin at*" required
+            />
             <Field
               name="beginAtTime"
               type="time"
-              component={renderField} required />
+              component={renderField} required
+            />
           </div>
           <div className={styles.inlineField}>
             <Field
               name="endAtDate"
               type="date"
               component={renderField}
-              label="End at*" required />
+              label="End at*" required
+            />
             <Field
               name="endAtTime"
               type="time"
-              component={renderField} required />
+              component={renderField} required
+            />
           </div>
           <button
             type="submit"
             className="button button--primary button--sm"
-            disabled={submitting}>
+            disabled={submitting}
+          >
             Add
           </button>
         </form>

@@ -7,9 +7,9 @@ import styles from './Actions.css';
 export default class Actions extends Component {
   render() {
     return (
-      <div className={ styles.actions }>
-        <div className={ styles.add }>
-          <Link to="/add" className={ styles.addTaskButton }>
+      <div className={styles.actions}>
+        <div className={styles.add}>
+          <Link to="/add" className={styles.addTaskButton}>
             <i className="fa fa-plus" />
           </Link>
         </div>

@@ -1,16 +1,21 @@
+/* eslint-disable flowtype-errors/show-errors */
 // @flow
 import React, { Component } from 'react';
-import { Link } from 'react-router';
-import styles from './Timing.css';
 import moment from 'moment';
+
+import styles from './Timing.css';
 import Tasks from '../containers/TasksContainer';
 
 
 class Timing extends Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = { date: new Date() };
   }
+
+  state: {
+    date: Object
+  };
 
   componentDidMount() {
     this.timerID = setInterval(
@@ -24,17 +29,17 @@ class Timing extends Component {
   }
 
   tick() {
-    var dt = moment();
-    var startOfDay = moment(dt).startOf('day');
+    const dt = moment();
+    const startOfDay = moment(dt).startOf('day');
     // Difference in minutes
-    var secs = dt.diff(startOfDay, 'seconds');
-    var pc = (secs / 86400).toFixed(3);
-    window.scrollTo(0, 4800 * pc - 106);
+    const secs = dt.diff(startOfDay, 'seconds');
+    const pc = (secs / 86400).toFixed(3);
+    window.scrollTo(0, (4800 * pc) - 106);
 
     this.setState({
       date: dt,
-      pc: pc,
-      top: `${ top }`
+      pc,
+      top: `${top}`
     });
   }
 
@@ -42,9 +47,9 @@ class Timing extends Component {
     return (
       <div className={styles.timing}>
         {Array(24).fill(1).map((el, i) =>
-          <div className={styles.hour} title={ i + 'h' }></div>
+          <div className={styles.hour} title={`${i}h`} />
         )}
-        <Tasks></Tasks>
+        <Tasks />
       </div>
     );
   }

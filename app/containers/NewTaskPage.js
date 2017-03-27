@@ -1,16 +1,14 @@
+import { connect } from 'react-redux';
 import NewTask from '../components/NewTask';
 import { resetNewTask } from '../actions/tasks';
-import { connect } from 'react-redux';
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    resetMe: () => {
-      dispatch(resetNewTask());
-    }
+const mapDispatchToProps = (dispatch) => ({
+  resetMe: () => {
+    dispatch(resetNewTask());
   }
-}
+});
 
-function mapStateToProps(state, ownProps) {
+function mapStateToProps() {
   return {
     // newTask: state.tasks.newTask
   };
