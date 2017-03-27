@@ -9,7 +9,7 @@ export default class Actions extends Component {
     return (
       <div className={ styles.actions }>
         <div className={ styles.add }>
-          <Link to="/add">
+          <Link to="/add" className={ styles.addTaskButton }>
             <i className="fa fa-plus" />
           </Link>
         </div>

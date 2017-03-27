@@ -13,7 +13,6 @@ const mapDispatchToProps = (dispatch) => {
   return {
     fetchTasks: () => {
       dispatch(fetchTasks()).then((response) => {
-        console.log('response', response)
         !response.error ? dispatch(fetchTasksSuccess(response.payload.docs)) : dispatch(fetchTasksFailure(response.payload.docs));
       });
     }

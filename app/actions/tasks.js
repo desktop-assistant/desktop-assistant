@@ -13,12 +13,10 @@ export const CREATE_TASK_FAILURE = 'CREATE_TASK_FAILURE';
 export const RESET_NEW_TASK = 'RESET_NEW_TASK';
 
 export function fetchTasks() {
-  console.log('fetchTasks');
   const filter = {
     selector: {}
   };
-  const request = query(filter, 'tasks')
-  console.log('request', request)
+  const request = query(filter, 'tasks');
 
   return {
     type: FETCH_TASKS,
@@ -41,7 +39,7 @@ export function fetchTasksFailure(error) {
 }
 
 export function createTask(props) {
-  const request = create(props, 'tasks')
+  const request = create(props, 'tasks');
 
   return {
     type: CREATE_TASK,

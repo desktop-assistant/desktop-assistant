@@ -6,25 +6,15 @@ const databases = {
 }
 
 export function create(doc, type) {
-  return databases[type].post(doc)
-    // .then(response => {
-    //   // handle response
-    // }).catch(err => {
-    //   console.log('err', err);
-    // });
+  return databases[type].post(doc);
 }
 
 export function query(query, type) {
-  return databases[type].find(query)
-    // .then(response => {
-    //   console.log('response', response)
-    // }).catch(err => {
-    //   console.log('err', err);
-    // });
+  return databases[type].find(query);
 }
 
 export function syncWith(upstream) {
-  const remote = `${ upstream }/stock_db`;
+  const remote = `${ upstream }/tasks_db`;
 
   return PouchDB
     .replicate(remote, 'stock_db', {

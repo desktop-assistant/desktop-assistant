@@ -80,8 +80,7 @@ export default validate(merge(baseConfig, {
      * Babli is an ES6+ aware minifier based on the Babel toolchain (beta)
      */
     new BabiliPlugin({
-      // Disable deadcode until https://github.com/babel/babili/issues/385 fixed
-      babili: ['babel-preset-babili', { deadcode: false }],
+      deadcode: false
     }),
 
     new ExtractTextPlugin('style.css', { allChunks: true }),

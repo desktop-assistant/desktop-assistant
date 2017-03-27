@@ -1,0 +1,34 @@
+.button {
+  padding: 4px 6px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background: transparent;
+  transition: border 200ms ease, color 200ms ease, background 200ms ease;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: center;
+  text-decoration: none;
+}
+
+.button:hover {
+  cursor: pointer;
+}
+
+.button--primary {
+  color: black;
+  background-color: #4ce86e;
+  border-color: #4ce86e;
+  opacity: 1;
+}
+
+.button--primary:hover {
+  opacity: 0.85;
+}
+
+.button--sm {
+  font-size: 14px;
+  line-height: 1.4;
+  padding: 4px 6px;
+  border: 1px solid transparent;
+}

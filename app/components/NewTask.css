@@ -1,0 +1,28 @@
+.container {
+  position: relative;
+  top: 0;
+  bottom: 0;
+  height: 100%;
+  background-color: #f2f2f2;
+  padding: 30px 26px 26px 26px;
+}
+
+.backButton {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+}
+
+.inlineField {
+  display: flex;
+  align-items: flex-end;
+  margin-top: 4px;
+}
+
+.inlineField .form-group {
+  flex: 1;
+}
+
+[type="submit"] {
+  margin-top: 10px;
+}

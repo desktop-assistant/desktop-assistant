@@ -48,7 +48,7 @@ app.on('ready', async () => {
     frame: false,
     width: 300,
     height: 200,
-    transparent: true,
+    // transparent: true,
     alwaysOnTop: true
   });
 
