@@ -1,7 +1,4 @@
 @import "~font-awesome/css/font-awesome.css";
-@import "~react-datetime/css/react-datetime.css";
-@import "~react-dates/lib/css/_datepicker.css";
-@import "~rc-time-picker/assets/index.css";
 @import "./styles/buttons.css";
 
 body {
