@@ -1,5 +1,7 @@
 # Desktop Assistant
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/matthieuh/desktop-assistant.svg)](https://greenkeeper.io/)
+
 [![Build Status][travis-image]][travis-url]
 [![Appveyor Build Status][appveyor-image]][appveyor-url]
 [![Dependency Status][david_img]][david_site]
