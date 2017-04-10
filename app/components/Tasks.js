@@ -39,14 +39,12 @@ export default class Tasks extends Component {
 
   render() {
     const {
-      tasks,
-      // loading,
-      // error
+      tasks
     } = this.props.tasksList;
     return (
       <div className={styles.tasks}>
         {tasks.map((task, i) => {
-          if (task.beginAtDate && task.endAtDate) {
+          if (task.beginAtDate && task.beginAtTime && task.endAtDate && task.endAtTime) {
             return (<div
               className={styles.task}
               style={{

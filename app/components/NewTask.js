@@ -4,6 +4,8 @@ import { reduxForm, Field } from 'redux-form';
 import { Link } from 'react-router';
 import styles from './NewTask.css';
 import renderField from './renderField';
+import DatePicker from './DatePicker';
+import TimePicker from './TimePicker';
 import { createTask } from '../actions/tasks';
 
 // Client side validation
@@ -75,26 +77,26 @@ class NewTask extends Component {
             <Field
               name="beginAtDate"
               type="date"
-              component={renderField}
-              label="Begin at*" required
+              component={DatePicker}
+              label="Task name*" required
             />
             <Field
               name="beginAtTime"
               type="time"
-              component={renderField} required
+              component={TimePicker} required
             />
           </div>
           <div className={styles.inlineField}>
             <Field
               name="endAtDate"
               type="date"
-              component={renderField}
-              label="End at*" required
+              component={DatePicker}
+              label="Task name*" required
             />
             <Field
               name="endAtTime"
               type="time"
-              component={renderField} required
+              component={TimePicker} required
             />
           </div>
           <button
