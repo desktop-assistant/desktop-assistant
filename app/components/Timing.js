@@ -10,11 +10,15 @@ import Tasks from '../containers/TasksContainer';
 class Timing extends Component {
   constructor() {
     super();
-    this.state = { date: new Date() };
+    this.state = {
+      date: new Date(),
+      showCurrentTask: true
+    };
   }
 
   state: {
-    date: Object
+    date: Object,
+    showCurrentTask: boolean
   };
 
   componentDidMount() {
@@ -29,7 +33,7 @@ class Timing extends Component {
         this.tick();
         this.timerID = setInterval(
           () => this.tick(),
-          1000 // each 5 min
+          5 * 60 * 1000 // each 5 min
         );
       }, timeToWait);
     });
@@ -64,16 +68,29 @@ class Timing extends Component {
     this.currentTask = this.getCurrentTask(dt);
   }
 
+  show() {
+    this.setState({ showCurrentTask: true });
+  }
+
+  dismiss() {
+    this.setState({ showCurrentTask: false });
+  }
+
   render() {
     return (
       <div className={styles.timing}>
-        {this.currentTask &&
+        {this.currentTask && !this.state.showCurrentTask &&
+          <div className={styles.showCurrentTask} onClick={this.show.bind(this)}>
+            <i className={styles.showCurrentTaskIcon} aria-hidden="true" />
+          </div>
+        }
+        {this.currentTask && this.state.showCurrentTask &&
           <div className={styles.currentTask}>
             <h1>{this.currentTask.name}</h1>
             <div className={styles.actionButton}>
               <i className="fa fa-bolt" aria-hidden="true" />
             </div>
-            <button>dismiss</button>
+            <button onClick={this.dismiss.bind(this)}>dismiss</button>
           </div>
         }
         {Array(24).fill(1).map((el, i) =>
