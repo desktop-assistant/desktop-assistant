@@ -2,6 +2,7 @@
 // @flow
 import electron from 'electron';
 import React, { Component } from 'react';
+
 import styles from './Tasks.css';
 
 function timeStringToFloat(time) {
@@ -24,6 +25,7 @@ export default class Tasks extends Component {
   }
 
   props: {
+    updateTasks: () => void,
     fetchTasks: () => void,
     tasksList: {
       tasks: Array<Object>
@@ -41,6 +43,7 @@ export default class Tasks extends Component {
     const {
       tasks
     } = this.props.tasksList;
+    this.props.updateTasks(this.props.tasksList.tasks);
     return (
       <div className={styles.tasks}>
         {tasks.map((task, i) => {
@@ -53,10 +56,7 @@ export default class Tasks extends Component {
               }}
             >
               <h3>{ task.name }</h3>
-              <div>{ task.beginAt } - { task.endAt }</div>
-              <div>
-                <a href="#clickToAction" onClick={this.handleLinkClick}><i className="fa fa-external-link" aria-hidden="true" /> Open Hangout</a>
-              </div>
+              <div>{ task.beginAtTime } - { task.endAtTime }</div>
             </div>);
           }
           return '';

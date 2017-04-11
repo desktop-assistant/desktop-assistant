@@ -18,7 +18,7 @@ export function syncWith(upstream) {
   const remote = `${upstream}/tasks_db`;
 
   return PouchDB
-    .replicate(remote, 'stock_db', {
+    .replicate('tasks_db', remote, {
       live: false,
       retry: false
     });

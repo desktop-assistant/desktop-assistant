@@ -5,6 +5,22 @@
   margin: 10px;
 }
 
+.sync {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background-color: hsl(205, 70%, 58%);
+  margin-bottom: 6px;
+}
+
+a.syncButton {
+  font-size: 18px;
+  color: white;
+}
+
 .add {
   display: flex;
   justify-content: center;

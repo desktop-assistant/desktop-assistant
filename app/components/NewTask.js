@@ -1,12 +1,12 @@
 /* eslint class-methods-use-this: ["error", { "exceptMethods": ["renderError"] }] */
 import React, { Component } from 'react';
-import { reduxForm, Field } from 'redux-form';
+import { reduxForm, Field, SubmissionError } from 'redux-form';
 import { Link } from 'react-router';
 import styles from './NewTask.css';
 import renderField from './renderField';
 import DatePicker from './DatePicker';
 import TimePicker from './TimePicker';
-import { createTask } from '../actions/tasks';
+import { createTask, createTaskSuccess, createTaskFailure } from '../actions/tasks';
 
 // Client side validation
 function validate() {
@@ -27,16 +27,17 @@ function validate() {
 
 // For any field errors upon submission (i.e. not instant check)
 const validateAndCreateTask = (values, dispatch) => dispatch(createTask(values))
-    // .then(result => {
-    //   // Note: Error's "data" is in result.payload.response.data (inside "response")
-    //   // success's "data" is in result.payload.data
-    //   // if (result.payload.response && result.payload.response.status !== 200) {
-    //   //   dispatch(createPostFailure(result.payload.response.data));
-    //   //   throw new SubmissionError(result.payload.response.data);
-    //   // }
-    //   // //let other components know that everything is fine by updating the redux` state
-    //   // dispatch(createPostSuccess(result.payload.data));
-    // });
+    .then(result => {
+      console.log('validateAndCreateTask', result);
+      // Note: Error's "data" is in result.payload.response.data (inside "response")
+      // success's "data" is in result.payload.data
+      if (result.payload && !result.payload.ok) {
+        dispatch(createTaskFailure(result.payload));
+        throw new SubmissionError(result.payload);
+      }
+      //let other components know that everything is fine by updating the redux` state
+      dispatch(createTaskSuccess(result.payload));
+    });
 ;
 
 class NewTask extends Component {
