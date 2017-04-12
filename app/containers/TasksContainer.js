@@ -1,20 +1,28 @@
 /* eslint-disable no-unused-expressions */
 import { connect } from 'react-redux';
-import { fetchTasks, fetchTasksSuccess, fetchTasksFailure } from '../actions/tasks';
+import { updateTask, updateTaskSuccess, updateTaskFailure, fetchTasks, fetchTasksSuccess, fetchTasksFailure } from '../actions/tasks';
 import Tasks from '../components/Tasks';
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
     tasksList: state.tasks.tasksList
   };
 };
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = dispatch => ({
   fetchTasks: () => {
     dispatch(fetchTasks()).then((response) => {
       !response.error
-      ? dispatch(fetchTasksSuccess(response.payload.docs))
-      : dispatch(fetchTasksFailure(response.payload.docs));
+        ? dispatch(fetchTasksSuccess(response.payload.docs))
+        : dispatch(fetchTasksFailure(response.payload.docs));
+      return true;
+    }).catch(console.error);
+  },
+  updateTask: props => {
+    dispatch(updateTask(props)).then(response => {
+      !response.error
+        ? dispatch(updateTaskSuccess(response.payload))
+        : dispatch(updateTaskFailure(response.payload));
       return true;
     }).catch(console.error);
   }

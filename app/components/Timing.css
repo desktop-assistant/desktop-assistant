@@ -13,6 +13,17 @@
   border-bottom: 2px solid #5fba7d;
 }
 
+.hour::after {
+  content: '';
+  z-index: 1;
+  position: absolute;
+  bottom: -2px;
+  right: 0;
+  left: 0;
+  height: 2px;
+  border-bottom: 2px dotted #5fba7d;
+}
+
 .hour::before {
   z-index: 1;
   top: -14px;

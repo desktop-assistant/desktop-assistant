@@ -45,7 +45,6 @@ app.on('ready', async () => {
   await installExtensions();
 
   mainWindow = new BrowserWindow({
-    frame: false,
     width: 300,
     height: 200,
     // transparent: true,

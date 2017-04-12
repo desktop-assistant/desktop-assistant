@@ -24,8 +24,8 @@ class Timing extends Component {
   componentDidMount() {
     setTimeout(() => {
       const now = moment();
-      const minUpFive = Math.ceil(moment(now).minutes() / 5) * 5;
-      const dateTillStart = moment(now).minutes(minUpFive).seconds(0).millisecond(0);
+      const minUp = moment(now).minutes(moment(now).minutes() + 1);
+      const dateTillStart = moment(now).minutes(minUp).seconds(0).millisecond(0);
       const timeToWait = moment(dateTillStart).diff(now, 'milliseconds');
 
       this.tick();
@@ -33,7 +33,7 @@ class Timing extends Component {
         this.tick();
         this.timerID = setInterval(
           () => this.tick(),
-          5 * 60 * 1000 // each 5 min
+          60 * 1000 // each min
         );
       }, timeToWait);
     });
@@ -47,7 +47,7 @@ class Timing extends Component {
     return _.find(this.tasksList, task => {
       const beginDate = moment(`${task.beginAtDate}-${task.beginAtTime}`, 'MM-DD-YYYY-h:mm');
       const endDate = moment(`${task.endAtDate}-${task.endAtTime}`, 'MM-DD-YYYY-h:mm');
-      return dt.diff(beginDate) > 0 && dt.diff(endDate) < 0;
+      return dt.diff(beginDate) >= 0 && dt.diff(endDate) < 0;
     });
   }
 
@@ -59,13 +59,13 @@ class Timing extends Component {
     const pc = (secs / 86400).toFixed(3);
     window.scrollTo(0, (4800 * pc) - 106);
 
+    this.currentTask = this.getCurrentTask(dt);
+
     this.setState({
       date: dt,
       pc,
       top: `${top}`
     });
-
-    this.currentTask = this.getCurrentTask(dt);
   }
 
   show() {

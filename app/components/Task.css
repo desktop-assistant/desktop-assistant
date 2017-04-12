@@ -11,7 +11,20 @@
 }
 
 .task:hover {
+  cursor: pointer;
+}
+
+.task.selected {
+  z-index: 1;
+  cursor: move;
+  cursor: grab;
   transition: border 0.4s;
+  background-color: #ffb97c;
+}
+
+.task:active {
+  cursor: move;
+  cursor: grab;
 }
 
 .task h3 {
@@ -22,4 +35,15 @@
 .task a {
   font-size: 14px;
   color: #444444;
+}
+
+.task:hover .deleteTask {
+  display: block;
+}
+
+.deleteTask {
+  display: none;
+  position: absolute;
+  top: 10px;
+  right: 10px;
 }

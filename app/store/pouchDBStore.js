@@ -10,8 +10,16 @@ export function create(doc, type) {
   return databases[type].post(doc);
 }
 
+export function update(params, type) {
+  return databases[type].put(params);
+}
+
 export function query(params, type) {
   return databases[type].find(params);
+}
+
+export function remove(doc, type) {
+  return databases[type].remove(doc);
 }
 
 export function syncWith(upstream) {

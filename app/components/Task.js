@@ -1,9 +1,38 @@
 /* eslint-disable class-methods-use-this */
 // @flow
-import electron from 'electron';
 import React, { Component } from 'react';
+import { DragSource } from 'react-dnd';
+import classNames from 'classnames/bind';
 
 import styles from './Task.css';
+
+const cx = classNames.bind(styles);
+
+const cardSource = {
+  canDrag(props) {
+    return props.selected;
+  },
+  beginDrag(props) {
+    return {
+      text: props.text
+    };
+  },
+  endDrag(props, monitor) {
+    const didDrop = monitor.didDrop();
+
+    if (!didDrop) {
+      const newPosition = monitor.getDifferenceFromInitialOffset();
+      props.moveTask(props.task, newPosition);
+    }
+  }
+};
+
+function collect(connect, monitor) {
+  return {
+    connectDragSource: connect.dragSource(),
+    isDragging: monitor.isDragging()
+  };
+}
 
 function timeStringToFloat(time) {
   const hoursMinutes = time.split(/[.:h]/);
@@ -14,38 +43,63 @@ function timeStringToFloat(time) {
 }
 
 function getTaskHeight(beginTime, endTime) {
+  if (!beginTime || !beginTime.length || !endTime || !endTime.length) {
+    return 0;
+  }
   const duration = timeStringToFloat(endTime) - timeStringToFloat(beginTime);
   return duration * 200;
 }
 
 /* eslint-disable react/prop-types */
-export default class Task extends Component {
+class Task extends Component {
   constructor() {
     super();
-    console.log('props', this.props);
+    this.state = {
+      selected: false,
+      deleted: false
+    };
   }
 
-  handleLinkClick() {
-    const shell = electron.shell;
-    // open links externally by default
-    shell.openExternal('https://call_to_action');
+  state: {
+    deleted: boolean
+  };
+
+  onDeleteClick() {
+    this.props.onDeleteClick(this.props.task);
+    setTimeout(() => {
+      this.props.reFetchTasks();
+    }, 500);
+  }
+
+  handleTaskClick() {
+    this.setState({ selected: !this.state.selected });
   }
 
   render() {
+    const taskClassName = cx({
+      task: true,
+      selected: this.props.selected
+    });
     const {
-      task
+      task, isDragging, connectDragSource
     } = this.props;
-    return (
+    return connectDragSource(
       <div
-        className={styles.task}
+        className={taskClassName}
         style={{
-          top: `${timeStringToFloat(task.beginAtTime) * 200}px`,
+          opacity: isDragging ? 0.5 : 1,
+          top: `${task.beginAtTime ? timeStringToFloat(task.beginAtTime) * 200 : 0}px`,
           height: `${getTaskHeight(task.beginAtTime, task.endAtTime)}px`
         }}
       >
+        <a onClick={this.onDeleteClick.bind(this)} className={styles.deleteTask}>
+          <i className="fa fa-trash" aria-hidden="true"></i>
+        </a>
         <h3>{ task.name }</h3>
         <div>{ task.beginAtTime } - { task.endAtTime }</div>
       </div>
     );
   }
 }
+
+export default DragSource('TASK', cardSource, collect)(Task);
