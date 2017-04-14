@@ -37,3 +37,8 @@ a:hover {
   text-decoration: none;
   cursor: pointer;
 }
+
+.react-draggable {
+  left: 0;
+  right: 0;
+}

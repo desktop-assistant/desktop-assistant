@@ -1,15 +1,28 @@
 /* eslint-disable class-methods-use-this */
 // @flow
 import React, { Component } from 'react';
-import HTML5Backend from 'react-dnd-html5-backend';
-import { DragDropContext } from 'react-dnd';
 import moment from 'moment';
 
 import Task from '../containers/TaskContainer';
 import styles from './Tasks.css';
 
 /* eslint-disable react/prop-types */
-class Tasks extends Component {
+export default class Tasks extends Component {
+  constructor() {
+    super();
+    this.state = {
+      selectedTask: ''
+    };
+  }
+
+  state: {
+    selectedTask: string
+  };
+
+  componentWillMount() {
+    this.props.fetchTasks();
+  }
+
   props: {
     updateTask: () => void,
     updateTasks: () => void,
@@ -20,30 +33,39 @@ class Tasks extends Component {
     }
   }
 
-  constructor() {
-    super();
-    this.state = {
-      selectedTask: ''
-    };
-  }
+  resizeTask(task, dir, delta) {
+    const newTask = task;
+    const diffTime = delta * 0.3;
+    const beginDate = moment(`${task.beginAtDate}-${task.beginAtTime}`, 'MM-DD-YYYY-H:m');
+    const endDate = moment(`${task.endAtDate}-${task.endAtTime}`, 'MM-DD-YYYY-H:m');
 
-  state: {
-    selected: string
-  };
+    if (dir === 'top') {
+      beginDate.subtract(diffTime, 'minutes');
+      newTask.beginAtDate = beginDate.format('MM-DD-YYYY');
+      newTask.beginAtTime = beginDate.format('H:m');
+    }
 
-  componentWillMount() {
+    if (dir === 'bottom') {
+      endDate.add(diffTime, 'minutes');
+      newTask.endAtDate = endDate.format('MM-DD-YYYY');
+      newTask.endAtTime = endDate.format('H:m');
+    }
+
+    this.props.updateTask(newTask);
+    this.setState({ selectedTask: '' });
     this.props.fetchTasks();
   }
 
   moveTask(task, newPosition) {
     const newTask = task;
-    const timeToAdd = newPosition.y * 0.3; // time to add in min
+    const beginMinutes = newPosition * 0.3;
 
     const beginDate = moment(`${task.beginAtDate}-${task.beginAtTime}`, 'MM-DD-YYYY-H:m');
     const endDate = moment(`${task.endAtDate}-${task.endAtTime}`, 'MM-DD-YYYY-H:m');
+    const duration = endDate.diff(beginDate, 'minutes');
 
-    beginDate.add(timeToAdd, 'minutes');
-    endDate.add(timeToAdd, 'minutes');
+    beginDate.hour(0).minutes(beginMinutes);
+    endDate.hour(0).minutes(beginMinutes + duration);
 
     newTask.beginAtDate = beginDate.format('MM-DD-YYYY');
     newTask.beginAtTime = beginDate.format('H:m');
@@ -61,7 +83,6 @@ class Tasks extends Component {
   }
 
   handleTaskClick(taskId) {
-    console.log('taskId', this.state.selectedTask, taskId);
     if (this.state.selectedTask === taskId) {
       this.setState({ selectedTask: '' });
     } else {
@@ -79,14 +100,20 @@ class Tasks extends Component {
         {tasks.map(task => {
           if (task) {
             return (
-              <div onClick={() => this.handleTaskClick(task._id)}>
+              <div onClick={() => this.handleTaskClick(task._id)} key={task._id}>
                 <Task
-                  key={task._id}
                   task={task} reFetchTasks={this.reFetchTasks.bind(this)}
                   moveTask={this.moveTask.bind(this)}
+                  resizeTask={this.resizeTask.bind(this)}
                   selected={this.state.selectedTask === task._id}
                 />
               </div>
+              // <Task
+              //   key={task._id}
+              //   task={task} reFetchTasks={this.reFetchTasks.bind(this)}
+              //   moveTask={this.moveTask.bind(this)}
+              //   selected={this.state.selectedTask === task._id}
+              // />
             );
           }
           return '';
@@ -95,5 +122,3 @@ class Tasks extends Component {
     );
   }
 }
-
- export default DragDropContext(HTML5Backend)(Tasks);

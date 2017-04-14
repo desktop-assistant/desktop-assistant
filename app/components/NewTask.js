@@ -28,7 +28,6 @@ function validate() {
 // For any field errors upon submission (i.e. not instant check)
 const validateAndCreateTask = (values, dispatch) => dispatch(createTask(values))
     .then(result => {
-      console.log('validateAndCreateTask', result);
       // Note: Error's "data" is in result.payload.response.data (inside "response")
       // success's "data" is in result.payload.data
       if (result.payload && !result.payload.ok) {

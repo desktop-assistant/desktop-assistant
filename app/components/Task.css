@@ -1,8 +1,8 @@
 .task {
   box-sizing: border-box;
-  position: absolute;
+  /*position: absolute;
   left: 0;
-  right: 0;
+  right: 0;*/
   padding: 6px;
   overflow: hidden;
   background-color: lightgrey;
