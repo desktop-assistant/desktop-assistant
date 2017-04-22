@@ -9,6 +9,7 @@
   text-overflow: ellipsis;
   text-align: center;
   text-decoration: none;
+  display: inline-block;
 }
 
 .button:hover {
@@ -24,6 +25,10 @@
 
 .button--primary:hover {
   opacity: 0.85;
+}
+
+.button--block {
+  display: block;
 }
 
 .button--sm {

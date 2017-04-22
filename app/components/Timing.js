@@ -1,8 +1,11 @@
 /* eslint-disable flowtype-errors/show-errors */
 // @flow
+import { shell, remote } from 'electron';
 import React, { Component } from 'react';
+import os from 'os';
 import moment from 'moment';
 import _ from 'lodash';
+import { exec } from 'child_process';
 
 import styles from './Timing.css';
 import Tasks from '../containers/TasksContainer';
@@ -10,22 +13,27 @@ import Tasks from '../containers/TasksContainer';
 class Timing extends Component {
   constructor() {
     super();
+
+    const win = remote.getCurrentWindow();
+    win.setSize(300, 200, true);
+
     this.state = {
       date: new Date(),
-      showCurrentTask: true
+      currentTaskVisible: false
     };
   }
 
   state: {
     date: Object,
-    showCurrentTask: boolean
+    currentTaskVisible: boolean
   };
 
   componentDidMount() {
     setTimeout(() => {
       const now = moment();
-      const minUp = moment(now).minutes(moment(now).minutes() + 1);
-      const dateTillStart = moment(now).minutes(minUp).seconds(0).millisecond(0);
+      const minPLuSOne = moment(now).minutes() + 1;
+      const minUp = moment(now).minutes(minPLuSOne);
+      const dateTillStart = minUp.seconds(0).milliseconds(0);
       const timeToWait = moment(dateTillStart).diff(now, 'milliseconds');
 
       this.tick();
@@ -47,6 +55,7 @@ class Timing extends Component {
     return _.find(this.tasksList, task => {
       const beginDate = moment(`${task.beginAtDate}-${task.beginAtTime}`, 'MM-DD-YYYY-h:mm');
       const endDate = moment(`${task.endAtDate}-${task.endAtTime}`, 'MM-DD-YYYY-h:mm');
+
       return dt.diff(beginDate) >= 0 && dt.diff(endDate) < 0;
     });
   }
@@ -61,6 +70,10 @@ class Timing extends Component {
 
     this.currentTask = this.getCurrentTask(dt);
 
+    if (this.currentTask) {
+      this.show();
+    }
+
     this.setState({
       date: dt,
       pc,
@@ -69,25 +82,38 @@ class Timing extends Component {
   }
 
   show() {
-    this.setState({ showCurrentTask: true });
+    this.setState({ currentTaskVisible: true });
   }
 
   dismiss() {
-    this.setState({ showCurrentTask: false });
+    this.setState({ currentTaskVisible: false });
+  }
+
+  fireAction() {
+    switch (this.currentTask.action) {
+      case 'link':
+        shell.openExternal(this.currentTask.actionLink);
+        break;
+      case 'app':
+        exec(`open -n ${this.currentTask.actionApp}`);
+        break;
+      default:
+        console.error('no action specified');
+    }
   }
 
   render() {
     return (
       <div className={styles.timing}>
-        {this.currentTask && !this.state.showCurrentTask &&
+        {this.currentTask && !this.state.currentTaskVisible &&
           <div className={styles.showCurrentTask} onClick={this.show.bind(this)}>
             <i className={styles.showCurrentTaskIcon} aria-hidden="true" />
           </div>
         }
-        {this.currentTask && this.state.showCurrentTask &&
+        {this.currentTask && this.state.currentTaskVisible &&
           <div className={styles.currentTask}>
             <h1>{this.currentTask.name}</h1>
-            <div className={styles.actionButton}>
+            <div className={styles.actionButton} onClick={this.fireAction.bind(this)}>
               <i className="fa fa-bolt" aria-hidden="true" />
             </div>
             <button onClick={this.dismiss.bind(this)}>dismiss</button>

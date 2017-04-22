@@ -52,7 +52,6 @@ export default class Tasks extends Component {
     }
 
     this.props.updateTask(newTask);
-    this.setState({ selectedTask: '' });
     this.props.fetchTasks();
   }
 
@@ -74,7 +73,6 @@ export default class Tasks extends Component {
     newTask.endAtTime = endDate.format('H:m');
 
     this.props.updateTask(newTask);
-    this.setState({ selectedTask: '' });
     this.props.fetchTasks();
   }
 
@@ -98,7 +96,8 @@ export default class Tasks extends Component {
     return (
       <div className={styles.tasks}>
         {tasks.map(task => {
-          if (task) {
+          const beginDate = moment(`${task.beginAtDate}-${task.beginAtTime}`, 'MM-DD-YYYY-h:mm');
+          if (task && beginDate.isSame(moment(), 'day')) {
             return (
               <div onClick={() => this.handleTaskClick(task._id)} key={task._id}>
                 <Task
@@ -108,12 +107,6 @@ export default class Tasks extends Component {
                   selected={this.state.selectedTask === task._id}
                 />
               </div>
-              // <Task
-              //   key={task._id}
-              //   task={task} reFetchTasks={this.reFetchTasks.bind(this)}
-              //   moveTask={this.moveTask.bind(this)}
-              //   selected={this.state.selectedTask === task._id}
-              // />
             );
           }
           return '';

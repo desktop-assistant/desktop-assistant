@@ -1,50 +1,63 @@
 /* eslint class-methods-use-this: ["error", { "exceptMethods": ["renderError"] }] */
+import { remote } from 'electron';
 import React, { Component } from 'react';
-import { reduxForm, Field, SubmissionError } from 'redux-form';
+import { connect } from 'react-redux';
+import { reduxForm, formValueSelector, Field, SubmissionError } from 'redux-form';
 import { Link } from 'react-router';
+import { push } from 'react-router-redux';
+
 import styles from './NewTask.css';
 import renderField from './renderField';
 import DatePicker from './DatePicker';
 import TimePicker from './TimePicker';
+import AppSelector from './AppSelector';
 import { createTask, createTaskSuccess, createTaskFailure } from '../actions/tasks';
 
 // Client side validation
-function validate() {
+const validate = values => {
   const errors = {};
 
-  // if (!values.title || values.title.trim() === '') {
-  //   errors.title = 'Enter a Title';
-  // }
-  // if (!values.categories || values.categories.trim() === '') {
-  //   errors.categories = 'Enter categories';
-  // }
-  // if (!values.content || values.content.trim() === '') {
-  //   errors.content = 'Enter some content';
-  // }
+  if (!values.name || values.name.trim() === '') {
+    errors.name = 'Enter a task name';
+  }
+  if (!values.beginAtDate) {
+    errors.beginAtDate = 'Enter a begin date';
+  }
+  if (!values.endAtDate) {
+    errors.endAtDate = 'Enter a end date';
+  }
 
   return errors;
-}
+};
 
 // For any field errors upon submission (i.e. not instant check)
 const validateAndCreateTask = (values, dispatch) => dispatch(createTask(values))
-    .then(result => {
-      // Note: Error's "data" is in result.payload.response.data (inside "response")
-      // success's "data" is in result.payload.data
-      if (result.payload && !result.payload.ok) {
-        dispatch(createTaskFailure(result.payload));
-        throw new SubmissionError(result.payload);
-      }
-      //let other components know that everything is fine by updating the redux` state
-      dispatch(createTaskSuccess(result.payload));
-    });
+  .then(result => {
+    // Note: Error's "data" is in result.payload.response.data (inside "response")
+    // success's "data" is in result.payload.data
+    if (result.payload && !result.payload.ok) {
+      dispatch(createTaskFailure(result.payload));
+      throw new SubmissionError(result.payload);
+    }
+    // let other components know that everything is fine by updating the redux` state
+    dispatch(createTaskSuccess(result.payload));
+    dispatch(push('/'));
+  });
 ;
 
-class NewTask extends Component {
+let NewTaskForm = class NewTask extends Component {
   props: {
     handleSubmit: () => void,
     submitting: boolean,
     newTask: object
   };
+
+  constructor() {
+    super();
+    const win = remote.getCurrentWindow();
+    win.setSize(300, 450, true);
+    this.state = {};
+  }
 
   renderError(newTask) {
     if (newTask && newTask.error && newTask.error.message) {
@@ -58,7 +71,7 @@ class NewTask extends Component {
   }
 
   render() {
-    const { handleSubmit, submitting, newTask } = this.props;
+    const { handleSubmit, pristine, submitting, newTask, actionValue } = this.props;
 
     return (
       <div className={styles.container}>
@@ -78,7 +91,7 @@ class NewTask extends Component {
               name="beginAtDate"
               type="date"
               component={DatePicker}
-              label="Task name*" required
+              label="Begin*" required
             />
             <Field
               name="beginAtTime"
@@ -91,7 +104,7 @@ class NewTask extends Component {
               name="endAtDate"
               type="date"
               component={DatePicker}
-              label="Task name*" required
+              label="End*" required
             />
             <Field
               name="endAtTime"
@@ -99,10 +112,32 @@ class NewTask extends Component {
               component={TimePicker} required
             />
           </div>
+          <div>
+            <label>Action</label>
+            <div>
+              <Field name="action" component="select">
+                <option>None</option>
+                <option value="link">Website link</option>
+                <option value="app">Desktop App</option>
+              </Field>
+            </div>
+          </div>
+          { actionValue === 'link' && <Field
+            name="actionLink"
+            type="text"
+            component={renderField}
+            label="Link"
+          /> }
+          { actionValue === 'app' && <Field
+            name="actionApp"
+            type="text"
+            component={AppSelector}
+            label="App"
+          /> }
           <button
             type="submit"
-            className="button button--primary button--sm"
-            disabled={submitting}
+            className="button button--primary button--sm button--block"
+            disabled={pristine || submitting}
           >
             Add
           </button>
@@ -110,10 +145,20 @@ class NewTask extends Component {
       </div>
     );
   }
-}
+};
 
-export default reduxForm({
+NewTaskForm = reduxForm({
   form: 'NewTask', // a unique identifier for this form
   validate // <--- validation function given to redux-form
   // asyncValidate
-})(NewTask);
+})(NewTaskForm);
+
+const selector = formValueSelector('NewTask');
+
+export default connect(
+  state => {
+    const actionValue = selector(state, 'action');
+
+    return { actionValue };
+  }
+)(NewTaskForm);

@@ -30,23 +30,29 @@ export default class DatePicker extends Component {
   }
 
   render() {
-    const { input: { value, onChange } } = this.props
+    const { input: { name, label, value, onChange }, meta: { touched, error, invalid, warning } } = this.props
     const modalClassName = cx({
       modal: true,
       visible: this.state.modalVisible
     });
     return (
       <div className={styles.container}>
-        <input
-          {...this.props.input}
-          placeholder="Click to select a date"
-          onClick={this.handleClick.bind(this)} />
-        <div className={modalClassName}>
-          <div className={styles.close} onClick={this.closeModal.bind(this)} />
-          <DayPicker
-            selectedDays={ this.state.selectedDay }
-            onDayClick={day => { this.state.selectedDay = day; this.onDayChange(); onChange(moment(day).format('MM-DD-YYYY')) }}
-          />
+        <label htmlFor={this.props.input.name} className="control-label">{this.props.label}</label>
+        <div>
+          <input
+            {...this.props.input}
+            placeholder="Click to select a date"
+            onClick={this.handleClick.bind(this)} />
+          <div className="help-block">
+            {touched && ((error && <span>{error}</span>) || (warning && <span>{warning}</span>))}
+          </div>
+          <div className={modalClassName}>
+            <div className={styles.close} onClick={this.closeModal.bind(this)} />
+            <DayPicker
+              selectedDays={ this.state.selectedDay }
+              onDayClick={day => { this.state.selectedDay = day; this.onDayChange(); onChange(moment(day).format('MM-DD-YYYY')) }}
+            />
+          </div>
         </div>
       </div>
     );
