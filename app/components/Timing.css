@@ -8,9 +8,8 @@
 .hour {
   box-sizing: border-box;
   position: relative;
-  height: 200px;
-  background-color: hsl(210, 7%, 94%);
-  border-bottom: 2px solid #5fba7d;
+  height: 120px;
+  /*border-bottom: 2px solid #5fba7d;*/
 }
 
 .hour::after {
@@ -21,41 +20,45 @@
   right: 0;
   left: 0;
   height: 2px;
-  border-bottom: 2px dotted #5fba7d;
+  background-image: linear-gradient(to right, #d8d8d8 33%, rgba(255,255,255,0) 0%);
+  background-position: bottom;
+  background-size: 5px 1px;
+  background-repeat: repeat-x;
 }
 
 .hour::before {
   z-index: 1;
-  top: -14px;
-  height: 28px;
-  width: 28px;
-  line-height: 28px;
-  margin-left: -14px;
+  top: -13px;
+  left: 0;
+  height: 26px;
+  width: 40px;
+  line-height: 30px;
   position: absolute;
   content: attr(title);
-  color: hsl(210, 7%, 94%);
-  font-size: 13px;
-  background-color: #5fba7d;
-  border-radius: 50%;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  font-size: 10px;
+  background-color: #d8d8d8;
+  border-top-right-radius: 13px;
+  border-bottom-right-radius: 13px;
+  margin-left: -2px;
 }
 
 .currentTask {
+  z-index: 10;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  z-index: 2;
   position: fixed;
   top: 0;
   left: 0;
   bottom: 0;
   right: 0;
-  background-color: rgba(0,0,0,0.5);
+  background-color: rgba(0,0,0,0.6);
 }
 
 .currentTask h1 {
   margin: 0 0 10px 0;
+  font-size: 20px;
   color: white;
 }
 
@@ -67,13 +70,15 @@
   border-radius: 50%;
 	width: 100px;
 	height: 100px;
-  background-color: yellow;
+  background-image: linear-gradient(to top, #ff0844 0%, #ffb199 100%);
   font-size: 30px;
+  transition: font 0.3s ease;
+  color: white;
 }
 
 .currentTask .actionButton:hover {
   cursor: pointer;
-  font-size: 40px;
+  font-size: 44px;
 }
 
 .showCurrentTask {
@@ -84,7 +89,8 @@
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  background-color: yellow;
+  background-image: linear-gradient(to top, #ff0844 0%, #ffb199 100%);
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.3);
 }
 
 .showCurrentTaskIcon {

@@ -2,6 +2,7 @@
 // @flow
 import React, { Component } from 'react';
 import moment from 'moment';
+import { remote } from 'electron';
 
 import Task from '../containers/TaskContainer';
 import styles from './Tasks.css';
@@ -23,6 +24,14 @@ export default class Tasks extends Component {
     this.props.fetchTasks();
   }
 
+  componentDidMount() {
+    // const win = remote.getCurrentWindow();
+    // win.on('move', () => {
+    //   console.log('move');
+    //   this.setState({ selectedTask: '' });
+    // });
+  }
+
   props: {
     updateTask: () => void,
     updateTasks: () => void,
@@ -35,7 +44,7 @@ export default class Tasks extends Component {
 
   resizeTask(task, dir, delta) {
     const newTask = task;
-    const diffTime = delta * 0.3;
+    const diffTime = delta * 0.5;
     const beginDate = moment(`${task.beginAtDate}-${task.beginAtTime}`, 'MM-DD-YYYY-H:m');
     const endDate = moment(`${task.endAtDate}-${task.endAtTime}`, 'MM-DD-YYYY-H:m');
 
@@ -57,7 +66,7 @@ export default class Tasks extends Component {
 
   moveTask(task, newPosition) {
     const newTask = task;
-    const beginMinutes = newPosition * 0.3;
+    const beginMinutes = newPosition * 0.5;
 
     const beginDate = moment(`${task.beginAtDate}-${task.beginAtTime}`, 'MM-DD-YYYY-H:m');
     const endDate = moment(`${task.endAtDate}-${task.endAtTime}`, 'MM-DD-YYYY-H:m');
@@ -80,11 +89,14 @@ export default class Tasks extends Component {
     this.props.fetchTasks();
   }
 
-  handleTaskClick(taskId) {
+  handleTaskClick(taskId: string) {
+    const win = remote.getCurrentWindow();
     if (this.state.selectedTask === taskId) {
       this.setState({ selectedTask: '' });
+      win.setMovable(true);
     } else {
       this.setState({ selectedTask: taskId });
+      win.setMovable(false);
     }
   }
 

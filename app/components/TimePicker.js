@@ -30,7 +30,7 @@ export default class TimePicker extends Component {
   }
 
   render() {
-    const { input: { value, onChange } } = this.props
+    const { input: { value, onChange }, meta: { touched, error, invalid, warning } } = this.props
     const now  = new Date();
     const modalClassName = cx({
       modal: true,
@@ -40,8 +40,12 @@ export default class TimePicker extends Component {
       <div className={styles.container}>
         <input
           {...this.props.input}
-          placeholder="Click to select a time"
+          className="form-control"
+          placeholder="Select a time"
           onClick={this.handleClick.bind(this)} />
+        <div className="help-block">
+          {touched && ((error && <span>{error}</span>) || (warning && <span>{warning}</span>))}
+        </div>
         <div className={modalClassName}>
           <div className={styles.close} onClick={this.closeModal.bind(this)} />
           <ClockPicker

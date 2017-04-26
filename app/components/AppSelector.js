@@ -25,6 +25,7 @@ export default class AppSelector extends Component {
         <div>
           <input
             {...this.props.input}
+            className="form-control"
             placeholder="Click to select an app"
             onClick={this.handleClick.bind(this)} />
           <div className="help-block">

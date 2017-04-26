@@ -24,7 +24,7 @@ function getTaskHeight(beginTime, endTime) {
     return 0;
   }
   const duration = timeStringToFloat(endTime) - timeStringToFloat(beginTime);
-  return duration * 200;
+  return duration * 120;
 }
 
 /* eslint-disable react/prop-types */
@@ -90,7 +90,7 @@ export default class Task extends Component {
         moveAxis={selected ? 'y': 'none'}
         initial={{
           x: 0,
-          y: task.beginAtTime ? timeStringToFloat(task.beginAtTime) * 200 : 0,
+          y: task.beginAtTime ? timeStringToFloat(task.beginAtTime) * 120 : 0,
           height: getTaskHeight(task.beginAtTime, task.endAtTime)
         }}
         style={{
@@ -100,8 +100,14 @@ export default class Task extends Component {
         <a onClick={this.onDeleteClick.bind(this)} className={styles.deleteTask}>
           <i className="fa fa-trash" aria-hidden="true"></i>
         </a>
-        <h3>{ task.name }</h3>
-        <div>{ task.beginAtTime } - { task.endAtTime }</div>
+        <div className={styles.taskInfos}>
+          <h3>{ task.name }</h3>
+        </div>
+        <div className={styles.taskDuration}>
+          <div className={styles.durationBegin}>{ task.beginAtTime }</div>
+          <div className={styles.line} />
+          <div className={styles.durationEnd}>{ task.endAtTime }</div>
+        </div>
       </Rnd>
     );
   }

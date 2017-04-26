@@ -1,0 +1,65 @@
+.form-control {
+  margin-bottom: 26px;
+}
+
+input {
+  width: 100%;
+  height: 30px;
+  background-color: transparent;
+  border: none;
+  border-bottom: 1px solid white;
+  color: white;
+}
+
+input::-webkit-input-placeholder {
+  color: white;
+}
+
+input:focus, select:focus {
+  outline:none;
+}
+
+.control-label {
+  font-size: 14px;
+}
+
+.custom-select {
+  overflow: hidden;
+  border-bottom: 1px solid white;
+}
+
+.custom-select select {
+  background: transparent;
+  border: none;
+  font-size: 14px;
+  height: 29px;
+  padding: 5px;
+  width: 100%;
+  color: white;
+}
+
+.button--primary {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  border-radius: 2px;
+	background-color: #b8e986;
+  margin-top: 20px;
+  font-size: 20px;
+	color: #417505;
+}
+
+.has-error {
+  position: relative;
+}
+
+.help-block {
+  position: absolute;
+  bottom: 6px;
+  left: -4px;
+  width: 100vw;
+  font-size: 14px;
+  color: #f96868;
+}

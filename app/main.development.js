@@ -48,7 +48,13 @@ app.on('ready', async () => {
     width: 300,
     height: 200,
     // transparent: true,
-    alwaysOnTop: true
+    alwaysOnTop: true,
+    minimizable: false,
+    maximizable: false,
+    resizable: false,
+    fullscreenable: false,
+    frame: false,
+    backgroundColor: '#ececec'
   });
 
   mainWindow.loadURL(`file://${__dirname}/app.html`);

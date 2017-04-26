@@ -2,7 +2,6 @@
 // @flow
 import { shell, remote } from 'electron';
 import React, { Component } from 'react';
-import os from 'os';
 import moment from 'moment';
 import _ from 'lodash';
 import { exec } from 'child_process';
@@ -66,7 +65,7 @@ class Timing extends Component {
     // Difference in minutes
     const secs = dt.diff(startOfDay, 'seconds');
     const pc = (secs / 86400).toFixed(3);
-    window.scrollTo(0, (4800 * pc) - 106);
+    window.scrollTo(0, (2880 * pc) - 106);
 
     this.currentTask = this.getCurrentTask(dt);
 
@@ -120,7 +119,7 @@ class Timing extends Component {
           </div>
         }
         {Array(24).fill(1).map((el, i) =>
-          <div className={styles.hour} title={`${i}h`} />
+          <div className={styles.hour} title={`${i}:00`} />
         )}
         <Tasks updateTasks={tasks => (this.tasksList = tasks)} />
       </div>

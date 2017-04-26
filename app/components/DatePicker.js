@@ -37,21 +37,24 @@ export default class DatePicker extends Component {
     });
     return (
       <div className={styles.container}>
-        <label htmlFor={this.props.input.name} className="control-label">{this.props.label}</label>
-        <div>
-          <input
-            {...this.props.input}
-            placeholder="Click to select a date"
-            onClick={this.handleClick.bind(this)} />
-          <div className="help-block">
-            {touched && ((error && <span>{error}</span>) || (warning && <span>{warning}</span>))}
-          </div>
-          <div className={modalClassName}>
-            <div className={styles.close} onClick={this.closeModal.bind(this)} />
-            <DayPicker
-              selectedDays={ this.state.selectedDay }
-              onDayClick={day => { this.state.selectedDay = day; this.onDayChange(); onChange(moment(day).format('MM-DD-YYYY')) }}
-            />
+        <div className={`${touched && invalid ? 'has-error' : ''}`}>
+          <label htmlFor={this.props.input.name} className="control-label">{this.props.label}</label>
+          <div>
+            <input
+              {...this.props.input}
+              className="form-control"
+              placeholder="Select a date"
+              onClick={this.handleClick.bind(this)} />
+            <div className="help-block">
+              {touched && ((error && <span>{error}</span>) || (warning && <span>{warning}</span>))}
+            </div>
+            <div className={modalClassName}>
+              <div className={styles.close} onClick={this.closeModal.bind(this)} />
+              <DayPicker
+                selectedDays={ this.state.selectedDay }
+                onDayClick={day => { this.state.selectedDay = day; this.onDayChange(); onChange(moment(day).format('MM-DD-YYYY')) }}
+              />
+            </div>
           </div>
         </div>
       </div>

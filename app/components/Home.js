@@ -9,6 +9,7 @@ export default class Home extends Component {
   render() {
     return (
       <div className={styles.container}>
+        <div className={styles.background} />
         <Timing />
         <div className={styles.leftTimeIndication} />
         <div className={styles.rightTimeIndication} />

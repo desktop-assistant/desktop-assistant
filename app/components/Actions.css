@@ -1,5 +1,11 @@
-.actions {
-  z-index: 9;
+.topActions {
+  position: fixed;
+  top: 0;
+  right: 0;
+  margin: 10px;
+}
+
+.bottomActions {
   position: fixed;
   bottom: 0;
   right: 0;
@@ -10,8 +16,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 25px;
-  height: 25px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
   background-color: hsl(205, 70%, 58%);
   margin-bottom: 6px;
@@ -22,14 +28,31 @@ a.syncButton {
   color: white;
 }
 
+.expand {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+	background-color: rgba(0, 0, 0, 0.6);
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.3);
+}
+
+a.expandButton {
+  font-size: 14px;
+  color: white;
+}
+
 .add {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 25px;
-  height: 25px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
-  background-color: rgba(255, 0, 0, .92);
+	background-color: #b8e986;
+	box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
 }
 
 .add > a {
@@ -38,6 +61,7 @@ a.syncButton {
   align-items: center;
 }
 
-.addTaskButton {
-  color: white;
+a.addTaskButton {
+  font-size: 18px;
+  color: #417505;
 }

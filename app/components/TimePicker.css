@@ -1,16 +1,28 @@
+.container {
+  position: relative;
+  margin-top: 16px;
+}
+
+.container input {
+  text-align: center;
+}
+
 .modal {
+  z-index: 2;
   position: fixed;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
-  background-color: lightgrey;
+  background-color: white;
   padding: 30px 26px 26px 26px;
   display: none;
 }
 
 .visible {
-  display: block;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .close {

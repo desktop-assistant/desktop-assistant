@@ -26,6 +26,12 @@ const validate = values => {
   if (!values.endAtDate) {
     errors.endAtDate = 'Enter a end date';
   }
+  if (!values.beginAtTime) {
+    errors.beginAtTime = 'Enter a begin time';
+  }
+  if (!values.endAtTime) {
+    errors.endAtTime = 'Enter a end time';
+  }
 
   return errors;
 };
@@ -43,7 +49,6 @@ const validateAndCreateTask = (values, dispatch) => dispatch(createTask(values))
     dispatch(createTaskSuccess(result.payload));
     dispatch(push('/'));
   });
-;
 
 let NewTaskForm = class NewTask extends Component {
   props: {
@@ -55,7 +60,7 @@ let NewTaskForm = class NewTask extends Component {
   constructor() {
     super();
     const win = remote.getCurrentWindow();
-    win.setSize(300, 450, true);
+    win.setSize(300, 500);
     this.state = {};
   }
 
@@ -77,22 +82,25 @@ let NewTaskForm = class NewTask extends Component {
       <div className={styles.container}>
         {this.renderError(newTask)}
         <Link to="/" className={styles.backButton}>
-          <i className="fa fa-chevron-left" /> Back
+          <i className="fa fa-chevron-left" />
         </Link>
-        <form onSubmit={handleSubmit(validateAndCreateTask)}>
+        <h1>New Task</h1>
+        <form className={styles.form} onSubmit={handleSubmit(validateAndCreateTask)}>
           <Field
             name="name"
             type="text"
             component={renderField}
-            label="Task name*" required
+            label="NAME" required
           />
           <div className={styles.inlineField}>
+            <div className={styles.beginIcon} />
             <Field
               name="beginAtDate"
               type="date"
               component={DatePicker}
-              label="Begin*" required
+              label="BEGIN" required
             />
+            <div className={styles.at}>at</div>
             <Field
               name="beginAtTime"
               type="time"
@@ -100,12 +108,14 @@ let NewTaskForm = class NewTask extends Component {
             />
           </div>
           <div className={styles.inlineField}>
+            <div className={styles.endIcon} />
             <Field
               name="endAtDate"
               type="date"
               component={DatePicker}
-              label="End*" required
+              label="END" required
             />
+            <div className={styles.at}>at</div>
             <Field
               name="endAtTime"
               type="time"
@@ -113,8 +123,8 @@ let NewTaskForm = class NewTask extends Component {
             />
           </div>
           <div>
-            <label>Action</label>
-            <div>
+            <label className="control-label">ACTION</label>
+            <div className="custom-select form-control">
               <Field name="action" component="select">
                 <option>None</option>
                 <option value="link">Website link</option>
@@ -126,13 +136,13 @@ let NewTaskForm = class NewTask extends Component {
             name="actionLink"
             type="text"
             component={renderField}
-            label="Link"
+            label="LINK"
           /> }
           { actionValue === 'app' && <Field
             name="actionApp"
             type="text"
             component={AppSelector}
-            label="App"
+            label="APP"
           /> }
           <button
             type="submit"

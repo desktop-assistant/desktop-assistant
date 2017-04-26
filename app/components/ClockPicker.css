@@ -21,7 +21,7 @@
     r: 15;
 
     opacity: 0.75;
-    fill: #79C7FF;
+    fill: #7b8fe6;
 
     transition: fill 250ms linear, opacity 250ms linear;
 }
@@ -53,7 +53,7 @@
 .timepicker-bubble:hover circle,
 .timepicker-bubble.active circle {
     opacity: 1;
-    fill: #3CAEFF;
+    fill: #411679;
 }
 
 .timepicker-bubble text {
@@ -66,7 +66,7 @@
 }
 
 .timepicker-hand {
-    stroke: #3CAEFF;
+    stroke: #411679;
     stroke-width: 5;
     stroke-linecap: round;
 
@@ -110,5 +110,5 @@
 }
 
 .timepicker-info-digits.active {
-    color: #3CAEFF;
+    color: #411679;
 }
