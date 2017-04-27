@@ -55,10 +55,13 @@ script:
   # - npm run test-e2e
   - npm run package -- --publish onTagOrDraft
 
+before_deploy:
+  - sleep 3
+
 deploy:
   provider: releases
-  api_key: "${GITHUB_OAUTH_TOKEN}"
-  file: "${TRAVIS_BUILD_DIR}/release/mac/Desktop Assistant-${TRAVIS_TAG}.dmg"
-  skip_cleanup: true
+  api_key:
+    secure: V0N8cZmpymXMiVJF6JpMC2yB21fUItM3d25KcgTH4tFxWOvPNdnZ/cQkj07iX0PM9s4TeFS8X+BGCEGqs0MNWXGQqmxmy/KgPkQEWuhe8y2j4017ZLoQyjkToMmbp4s54I4ao7UtqMaW7FoBD7EYCNyorHYbL8AnkTZW1Qhphz2BkNT0L0MsJfv9vSJvEK8QNZ2C7JqUSpt0W2LCn7cLBZvi/RMijq1eujSlkSAg7Omxeb109yxcxTqrvW2kSDGYdnFXGUMmuLa9p7gWgjRc1M1QUyfe3uCDoXn5iSPi4N/bQxq3UB7snq8aeTKSIP5lMv6TJ3PAAW8CB+/RdvE+KASxxQwjia4xgrOp8uSBy4IHDVJzuq4rexO1E68Dzv+5dWeoVrUZ5ZyyazAT5Cee3/Yj37cuMCX15NMWgTrYQvJHGe2KgL0IVPkikdCdWPlSzbMfM0FmIWW8Nl1+TMdkR858GIJ4q2kKuFsBabMhmkFBtAHFgkBq/Po73jtnpXTiRPVfVeqAmQywqHVeTBh8fl5BotHskFY5QS1C+QYWgJZX/Uw0ijTwst90czOPJMtHVEjKZJl5XHhLmvlS2o1Xvc+2qRsBqTrhR+GjF66s7Q3u7v8vsFU2y6Ect5r0SBNtR6IszmgBn+z8k4CUikLd644d6ogRqXLDQgYolNPI3OA=
+  file: release/mac/Desktop Assistant-${TRAVIS_TAG}.dmg
   on:
     tags: true
