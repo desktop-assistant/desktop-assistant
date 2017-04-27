@@ -54,3 +54,11 @@ script:
   - npm run build
   # - npm run test-e2e
   - npm run package -- --publish onTagOrDraft
+
+deploy:
+  provider: releases
+  api_key: "59d3f8339d716a742f3c8cb7410a6853521fb293"
+  file: "release/mac/Desktop Assistant-${TRAVIS_TAG}.dmg"
+  skip_cleanup: true
+  on:
+    tags: true
