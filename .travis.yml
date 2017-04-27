@@ -57,7 +57,7 @@ script:
 
 deploy:
   provider: releases
-  api_key: "59d3f8339d716a742f3c8cb7410a6853521fb293"
+  api_key: "${GITHUB_OAUTH_TOKEN}"
   file: "release/mac/Desktop Assistant-${TRAVIS_TAG}.dmg"
   skip_cleanup: true
   on:
