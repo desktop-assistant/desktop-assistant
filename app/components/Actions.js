@@ -3,8 +3,7 @@ import React, { Component } from 'react';
 import { remote, screen } from 'electron';
 import { Link } from 'react-router';
 import styles from './Actions.css';
-import { syncWith } from '../store/pouchDBStore';
-
+// import { syncWith } from '../store/pouchDBStore';
 
 export default class Actions extends Component {
   constructor() {

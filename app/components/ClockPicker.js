@@ -1,15 +1,24 @@
 // @flow
-import React from 'react';
+import React, { Component } from 'react';
 
-const TimePicker = React.createClass({
-  getDefaultProps() {
-    return {
-      hours: 0,
-      minutes: 0,
+const MODE_HOURS = true;
+const MODE_MINUTES = false;
 
-      militaryTime: true
+export default class TimePicker extends Component {
+  constructor(props: Object) {
+    super(props);
+    const { hours, minutes } = props;
+
+    this.state = {
+      hours,
+      minutes
     };
-  },
+  }
+
+  props: {
+    hours: number,
+    minutes: number
+  }
 
   getInitialState() {
     const { hours, minutes } = this.props;
@@ -18,9 +27,9 @@ const TimePicker = React.createClass({
       hours,
       minutes,
 
-      mode: TimePicker.MODE_HOURS
+      mode: MODE_HOURS
     };
-  },
+  }
 
   render() {
     const { hours, minutes, mode } = this.state;
@@ -28,127 +37,120 @@ const TimePicker = React.createClass({
 
     const onChange = (hours, minutes, fireEvent) => {
       this.setState({ hours, minutes });
-      fireEvent && this.props.onChange && this.props.onChange({ hours, minutes });
+      if (fireEvent && this.props.onChange) {
+        this.props.onChange({ hours, minutes });
+      }
     };
-    const onChangeMode = (mode) => {
+    const onChangeMode = mode => {
       this.setState({ mode });
-      this.props.onChangeMode && this.props.onChangeMode({ hours, minutes });
+      if (this.props.onChangeMode) {
+        this.props.onChangeMode({ hours, minutes });
+      }
     };
 
-    const propsInfo  = { hours, minutes, mode, size, onChangeMode };
+    const propsInfo = { hours, minutes, mode, size, onChangeMode };
     const propsClock = { hours, minutes, mode, size, onChangeMode, militaryTime, radius, onChange };
 
     return (
       <div className="timepicker">
-        <TimePicker.Info  {...propsInfo} />
-        <TimePicker.Clock {...propsClock} />
+        <TimePickerInfo {...propsInfo} />
+        <TimePickerClock {...propsClock} />
       </div>
     );
   }
-});
+}
 
-export default TimePicker
+TimePicker.defaultProps = {
+  hours: 0,
+  minutes: 0,
+  militaryTime: true
+};
 
-TimePicker.MODE_HOURS   = true;
-TimePicker.MODE_MINUTES = false;
-
-TimePicker.Info = React.createClass({
+class TimePickerInfo extends Component {
   render () {
-      const { hours, minutes, mode, size, onChangeMode } = this.props;
+    const { hours, minutes, mode, size, onChangeMode } = this.props;
 
-      const propsHours = {
-          className: (
-              'timepicker-info-digits' +
-              (mode === TimePicker.MODE_HOURS ? ' active' : '')
-          ),
-          onClick () {
-              onChangeMode(TimePicker.MODE_HOURS);
-          }
-      };
-
-      const propsMinutes = {
-          className: (
-              'timepicker-info-digits' +
-              (mode === TimePicker.MODE_MINUTES ? ' active' : '')
-          ),
-          onClick () {
-              onChangeMode(TimePicker.MODE_MINUTES);
-          }
-      };
-
-      return (
-          <p className="timepicker-info" style={{ width: size }}>
-              <span {...propsHours}>
-                  {hours < 10 ? '0' + hours : hours}
-              </span>
-              :
-              <span {...propsMinutes}>
-                  {minutes < 10 ? '0' + minutes : minutes}
-              </span>
-          </p>
-      );
-  }
-});
-
-TimePicker.Clock = React.createClass({
-  getDefaultProps() {
-    return {
-      hours:   0,
-      minutes: 0,
-
-      mode: true,
-
-      militaryTime: true
+    const propsHours = {
+      className: (
+        'timepicker-info-digits' +
+        (mode === MODE_HOURS ? ' active' : '')
+      ),
+      onClick () {
+        onChangeMode(MODE_HOURS);
+      }
     };
-  },
 
-  getInitialState() {
-      const { mode, hours, minutes, militaryTime } = this.props;
-
-      return {
-          hours: hours % (militaryTime ? 24 : 12),
-          minutes,
-
-          even: true,
-          mode: mode,
-
-          positionsHours:   this.calculatePositionsHours(),
-          positionsMinutes: this.calculatePositionsMinutes()
-      };
-  },
-
-  componentWillReceiveProps (props) {
-      if (props.size !== this.props.size || props.radius !== this.props.radius) {
-          this.setState({
-              positionsHours:   this.calculatePositionsHours(),
-              positionsMinutes: this.calculatePositionsMinutes()
-          });
+    const propsMinutes = {
+      className: (
+        'timepicker-info-digits' +
+        (mode === MODE_MINUTES ? ' active' : '')
+      ),
+      onClick () {
+        onChangeMode(MODE_MINUTES);
       }
+    };
 
-      if (props.mode !== this.props.mode) {
-          this.setState({
-              mode: props.mode
-          });
-      }
+    return (
+      <p className="timepicker-info" style={{ width: size }}>
+        <span {...propsHours}>
+          {hours < 10 ? '0' + hours : hours}
+        </span>
+        :
+        <span {...propsMinutes}>
+          {minutes < 10 ? '0' + minutes : minutes}
+        </span>
+      </p>
+    );
+  }
+}
 
-      if (props.hours !== this.props.hours) {
-          this.setState({
-              hours: props.hours % (this.props.militaryTime ? 24 : 12)
-          });
-      }
+class TimePickerClock extends Component {
+  constructor(props) {
+    super(props);
+    const { mode, hours, minutes, militaryTime } = props;
 
-      if (props.minutes !== this.props.minutes) {
-          this.setState({
-              minutes: props.minutes
-          });
-      }
-  },
+    this.state = {
+      hours: hours % (militaryTime ? 24 : 12),
+      minutes,
+      even: true,
+      mode,
+      positionsHours: this.calculatePositionsHours(),
+      positionsMinutes: this.calculatePositionsMinutes()
+    };
+  }
 
-  componentDidMount () {
+  componentWillReceiveProps(props) {
+    if (props.size !== this.props.size || props.radius !== this.props.radius) {
+      this.setState({
+        positionsHours:   this.calculatePositionsHours(),
+        positionsMinutes: this.calculatePositionsMinutes()
+      });
+    }
+
+    if (props.mode !== this.props.mode) {
+      this.setState({
+        mode: props.mode
+      });
+    }
+
+    if (props.hours !== this.props.hours) {
+      this.setState({
+        hours: props.hours % (this.props.militaryTime ? 24 : 12)
+      });
+    }
+
+    if (props.minutes !== this.props.minutes) {
+      this.setState({
+        minutes: props.minutes
+      });
+    }
+  }
+
+  componentDidMount() {
     this.componentDidUpdate({}, {});
-  },
+  }
 
-  componentDidUpdate (props, state) {
+  componentDidUpdate(props, state) {
     const { mode, size } = this.props;
     const { hours, minutes, even, positionsHours, positionsMinutes } = this.state;
 
@@ -197,9 +199,9 @@ TimePicker.Clock = React.createClass({
     hand1.getBoundingClientRect();
     hand2.style.strokeDashoffset   = hand2Length;
     hand2.style.transitionProperty = 'stroke-dashoffset';
-  },
+  }
 
-  render () {
+  render() {
     const { size } = this.props;
     const { mode } = this.state;
 
@@ -212,9 +214,9 @@ TimePicker.Clock = React.createClass({
         <g className={mode ? 'timepicker-invisible' : 'timepicker-visible'}>{this.renderMinutesBubbles()}</g>
       </svg>
     );
-  },
+  }
 
-  renderHoursBubbles () {
+  renderHoursBubbles() {
     const { hours } = this.state;
 
     return this.state.positionsHours.map(([x, y], index) => {
@@ -240,9 +242,9 @@ TimePicker.Clock = React.createClass({
         </text>
       </g>;
     });
-  },
+  }
 
-  renderMinutesBubbles () {
+  renderMinutesBubbles() {
     const { minutes } = this.state;
 
     return this.state.positionsMinutes.map(([x, y], index) => {
@@ -270,9 +272,9 @@ TimePicker.Clock = React.createClass({
         )}
       </g>;
     });
-  },
+  }
 
-  onChange (fireEvent) {
+  onChange(fireEvent) {
     if (this.props.onChange) {
       this.props.onChange(this.state.hours, this.state.minutes, fireEvent);
     }
@@ -280,9 +282,9 @@ TimePicker.Clock = React.createClass({
     if (this.props.onChangeMode) {
       this.props.onChangeMode(this.state.mode);
     }
-  },
+  }
 
-  onClickHour (hours) {
+  onClickHour(hours) {
     return (event, changeMode = true) => {
       if (this.state.hours === hours && !changeMode) {
         return;
@@ -292,9 +294,9 @@ TimePicker.Clock = React.createClass({
         this.onChange();
       });
     };
-  },
+  }
 
-  onClickMinute (minutes) {
+  onClickMinute(minutes) {
     return () => {
       if (this.state.minutes === minutes) {
         return;
@@ -304,58 +306,65 @@ TimePicker.Clock = React.createClass({
         this.onChange(true);
       });
     };
-  },
+  }
 
-  onMouseMoveHour (hours) {
+  onMouseMoveHour(hours) {
     const onClickHour = this.onClickHour(hours);
 
     return (event) => {
-        let isMouseUp = event.type === 'mouseup';
-        if (isMouseUp || event.buttons === 1) {
-            onClickHour(event, isMouseUp);
-        }
+      const isMouseUp = event.type === 'mouseup';
+      if (isMouseUp || event.buttons === 1) {
+        onClickHour(event, isMouseUp);
+      }
     };
-  },
+  }
 
-  onMouseMoveMinute (minutes) {
+  onMouseMoveMinute(minutes) {
     const onClickMinute = this.onClickMinute(minutes);
 
     return (event) => {
-        if (event.buttons === 1) {
-            onClickMinute();
-        }
+      if (event.buttons === 1) {
+        onClickMinute();
+      }
     };
-  },
+  }
 
-  calculatePositionsHours () {
+  calculatePositionsHours() {
     const { size, radius, militaryTime } = this.props;
 
-    let index     = 1;
-    let positions = [];
+    let index = 1;
+    const positions = [];
 
     for (; index <= (militaryTime ? 24 : 12); ++index) {
-        positions.push([
-            size / 2 + radius * (militaryTime ? index > 12 ? 1 : 0.65 : 1) * Math.cos((index % 12 / 6 - 0.5) * Math.PI),
-            size / 2 + radius * (militaryTime ? index > 12 ? 1 : 0.65 : 1) * Math.sin((index % 12 / 6 - 0.5) * Math.PI)
-        ]);
-    }
-
-    return positions;
-  },
-
-  calculatePositionsMinutes () {
-    const { size, radius } = this.props;
-
-    let index     = 0;
-    let positions = [];
-
-    for (; index < 60; ++index) {
-        positions.push([
-            size / 2 + radius * Math.cos((index / 30 - 0.5) * Math.PI),
-            size / 2 + radius * Math.sin((index / 30 - 0.5) * Math.PI)
-        ]);
+      positions.push([
+        (size / 2) + (radius * (militaryTime ? index > 12 ? 1 : 0.65 : 1) * Math.cos((index % 12 / 6 - 0.5) * Math.PI)),
+        (size / 2) + (radius * (militaryTime ? index > 12 ? 1 : 0.65 : 1) * Math.sin((index % 12 / 6 - 0.5) * Math.PI))
+      ]);
     }
 
     return positions;
   }
-});
+
+  calculatePositionsMinutes() {
+    const { size, radius } = this.props;
+
+    let index = 0;
+    const positions = [];
+
+    for (; index < 60; ++index) {
+      positions.push([
+        (size / 2) + (radius * Math.cos(((index / 30) - 0.5) * Math.PI)),
+        (size / 2) + (radius * Math.sin(((index / 30) - 0.5) * Math.PI))
+      ]);
+    }
+
+    return positions;
+  }
+}
+
+TimePickerClock.defaultProps = {
+  hours: 0,
+  minutes: 0,
+  mode: true,
+  militaryTime: true
+};
