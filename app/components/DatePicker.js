@@ -1,3 +1,4 @@
+// @flow
 import React, { Component } from 'react';
 import moment from 'moment';
 import DayPicker from 'react-day-picker';
@@ -8,13 +9,19 @@ import styles from './DatePicker.css';
 const cx = classNames.bind(styles);
 
 export default class DatePicker extends Component {
+  static propTypes = {
+    input: React.PropTypes.string.isRequired,
+    label: React.PropTypes.string.isRequired
+  }
+
   constructor() {
-    super()
-    this.state = { modalVisible: false }
+    super();
+    this.state = { modalVisible: false, selectedDay: new Date() };
   }
 
   state: {
-    modalVisible: boolean
+    modalVisible: boolean,
+    selectedDay: Date
   };
 
   onDayChange() {
@@ -30,7 +37,7 @@ export default class DatePicker extends Component {
   }
 
   render() {
-    const { input: { name, label, value, onChange }, meta: { touched, error, invalid, warning } } = this.props
+    const { input: { label, onChange }, meta: { touched, error, invalid, warning } } = this.props;
     const modalClassName = cx({
       modal: true,
       visible: this.state.modalVisible
@@ -44,15 +51,16 @@ export default class DatePicker extends Component {
               {...this.props.input}
               className="form-control"
               placeholder="Select a date"
-              onClick={this.handleClick.bind(this)} />
+              onClick={this.handleClick.bind(this)}
+            />
             <div className="help-block">
               {touched && ((error && <span>{error}</span>) || (warning && <span>{warning}</span>))}
             </div>
             <div className={modalClassName}>
-              <div className={styles.close} onClick={this.closeModal.bind(this)} />
+              <button className={styles.close} onClick={this.closeModal.bind(this)} />
               <DayPicker
-                selectedDays={ this.state.selectedDay }
-                onDayClick={day => { this.state.selectedDay = day; this.onDayChange(); onChange(moment(day).format('MM-DD-YYYY')) }}
+                selectedDays={this.state.selectedDay}
+                onDayClick={day => { this.state.selectedDay = day; this.onDayChange(); onChange(moment(day).format('MM-DD-YYYY')); }}
               />
             </div>
           </div>

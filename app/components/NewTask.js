@@ -1,4 +1,4 @@
-/* eslint class-methods-use-this: ["error", { "exceptMethods": ["renderError"] }] */
+// @flow
 import { remote } from 'electron';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
@@ -48,13 +48,16 @@ const validateAndCreateTask = (values, dispatch) => dispatch(createTask(values))
     // let other components know that everything is fine by updating the redux` state
     dispatch(createTaskSuccess(result.payload));
     dispatch(push('/'));
+    return true;
   });
 
 let NewTaskForm = class NewTask extends Component {
   props: {
     handleSubmit: () => void,
+    pristine: boolean,
     submitting: boolean,
-    newTask: object
+    newTask: object,
+    actionValue: string
   };
 
   constructor() {
@@ -123,7 +126,7 @@ let NewTaskForm = class NewTask extends Component {
             />
           </div>
           <div>
-            <label className="control-label">ACTION</label>
+            <label className="control-label" htmlFor="action">ACTION</label>
             <div className="custom-select form-control">
               <Field name="action" component="select">
                 <option>None</option>

@@ -1,4 +1,3 @@
-/* eslint-disable class-methods-use-this */
 // @flow
 import React, { Component } from 'react';
 import moment from 'moment';
@@ -7,7 +6,6 @@ import { remote } from 'electron';
 import Task from '../containers/TaskContainer';
 import styles from './Tasks.css';
 
-/* eslint-disable react/prop-types */
 export default class Tasks extends Component {
   constructor() {
     super();
@@ -24,25 +22,16 @@ export default class Tasks extends Component {
     this.props.fetchTasks();
   }
 
-  componentDidMount() {
-    // const win = remote.getCurrentWindow();
-    // win.on('move', () => {
-    //   console.log('move');
-    //   this.setState({ selectedTask: '' });
-    // });
-  }
-
   props: {
     updateTask: () => void,
     updateTasks: () => void,
     fetchTasks: () => void,
     tasksList: {
       tasks: Array<Object>
-      // loading: boolean
     }
   }
 
-  resizeTask(task, dir, delta) {
+  resizeTask(task: Object, dir: string, delta: number) {
     const newTask = task;
     const diffTime = delta * 0.5;
     const beginDate = moment(`${task.beginAtDate}-${task.beginAtTime}`, 'MM-DD-YYYY-H:m');
@@ -64,7 +53,7 @@ export default class Tasks extends Component {
     this.props.fetchTasks();
   }
 
-  moveTask(task, newPosition) {
+  moveTask(task: Object, newPosition: number) {
     const newTask = task;
     const beginMinutes = newPosition * 0.5;
 
@@ -111,14 +100,14 @@ export default class Tasks extends Component {
           const beginDate = moment(`${task.beginAtDate}-${task.beginAtTime}`, 'MM-DD-YYYY-h:mm');
           if (task && beginDate.isSame(moment(), 'day')) {
             return (
-              <div onClick={() => this.handleTaskClick(task._id)} key={task._id}>
+              <button onClick={() => this.handleTaskClick(task._id)} key={task._id}>
                 <Task
                   task={task} reFetchTasks={this.reFetchTasks.bind(this)}
                   moveTask={this.moveTask.bind(this)}
                   resizeTask={this.resizeTask.bind(this)}
                   selected={this.state.selectedTask === task._id}
                 />
-              </div>
+              </button>
             );
           }
           return '';

@@ -21,9 +21,9 @@ export default class Actions extends Component {
   previousPosition = []
   previousSize = []
 
-  syncDB() {
-    syncWith('http://localhost:5984/');
-  }
+  // syncDB() {
+  //   syncWith('http://localhost:5984/');
+  // }
 
   expandWindow() {
     const mainScreen = screen.getPrimaryDisplay();
@@ -52,9 +52,9 @@ export default class Actions extends Component {
         </div> */}
         <div className={styles.topActions}>
           <div className={styles.expand}>
-            <a onClick={this.expandWindow.bind(this)} className={styles.expandButton}>
+            <button onClick={this.expandWindow.bind(this)} className={styles.expandButton}>
               <i className={`fa ${this.state.expanded ? 'fa-angle-double-up' : 'fa-angle-double-down'}`} />
-            </a>
+            </button>
           </div>
         </div>
         <div className={styles.bottomActions}>

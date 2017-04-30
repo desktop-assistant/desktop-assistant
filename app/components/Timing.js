@@ -1,8 +1,8 @@
-/* eslint-disable flowtype-errors/show-errors */
 // @flow
 import { shell, remote } from 'electron';
 import React, { Component } from 'react';
 import moment from 'moment';
+import type typeMoment from 'moment';
 import _ from 'lodash';
 import { exec } from 'child_process';
 
@@ -23,7 +23,7 @@ class Timing extends Component {
   }
 
   state: {
-    date: Object,
+    date: Date,
     currentTaskVisible: boolean
   };
 
@@ -50,7 +50,7 @@ class Timing extends Component {
     clearInterval(this.timerID);
   }
 
-  getCurrentTask(dt) {
+  getCurrentTask(dt: typeMoment) {
     return _.find(this.tasksList, task => {
       const beginDate = moment(`${task.beginAtDate}-${task.beginAtTime}`, 'MM-DD-YYYY-h:mm');
       const endDate = moment(`${task.endAtDate}-${task.endAtTime}`, 'MM-DD-YYYY-h:mm');
@@ -59,25 +59,23 @@ class Timing extends Component {
     });
   }
 
+  currentTask = {}
+  tasksList = []
+  timerID = 0
+
   tick() {
     const dt = moment();
     const startOfDay = moment(dt).startOf('day');
     // Difference in minutes
     const secs = dt.diff(startOfDay, 'seconds');
     const pc = (secs / 86400).toFixed(3);
-    window.scrollTo(0, (2880 * pc) - 106);
+    window.scrollTo(0, (2880 * +pc) - 106);
 
     this.currentTask = this.getCurrentTask(dt);
 
     if (this.currentTask) {
       this.show();
     }
-
-    this.setState({
-      date: dt,
-      pc,
-      top: `${top}`
-    });
   }
 
   show() {
@@ -105,16 +103,16 @@ class Timing extends Component {
     return (
       <div className={styles.timing}>
         {this.currentTask && !this.state.currentTaskVisible &&
-          <div className={styles.showCurrentTask} onClick={this.show.bind(this)}>
+          <button className={styles.showCurrentTask} onClick={this.show.bind(this)}>
             <i className={styles.showCurrentTaskIcon} aria-hidden="true" />
-          </div>
+          </button>
         }
         {this.currentTask && this.state.currentTaskVisible &&
           <div className={styles.currentTask}>
             <h1>{this.currentTask.name}</h1>
-            <div className={styles.actionButton} onClick={this.fireAction.bind(this)}>
+            <button className={styles.actionButton} onClick={this.fireAction.bind(this)}>
               <i className="fa fa-bolt" aria-hidden="true" />
-            </div>
+            </button>
             <button onClick={this.dismiss.bind(this)}>dismiss</button>
           </div>
         }

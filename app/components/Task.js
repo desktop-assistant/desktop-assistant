@@ -1,10 +1,6 @@
-/* eslint-disable class-methods-use-this */
 // @flow
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
 import Rnd from 'react-rnd';
-// import { DragSource } from 'react-dnd';
-// import Resizable from 'react-resizable-box';
 import classNames from 'classnames/bind';
 
 import styles from './Task.css';
@@ -27,7 +23,6 @@ function getTaskHeight(beginTime, endTime) {
   return duration * 120;
 }
 
-/* eslint-disable react/prop-types */
 export default class Task extends Component {
   constructor() {
     super();
@@ -56,18 +51,29 @@ export default class Task extends Component {
     this.rnd.updateZIndex(2);
   }
 
-  onDragStop(event, ui) {
+  onDragStop(e: Event, ui: Object) {
     this.setState({ dragging: false });
     this.rnd.updateZIndex(1);
     this.props.moveTask(this.props.task, ui.position.top);
   }
 
-  onResizeStop(dir, size, rect, delta) {
+  onResizeStop(dir: string, size: number, rect: number, delta: Object) {
     this.props.resizeTask(this.props.task, dir, delta.height);
   }
 
   handleTaskClick() {
     this.setState({ selected: !this.state.selected });
+  }
+
+  rnd = {}
+
+  props: {
+    moveTask: () => void,
+    resizeTask: () => void,
+    reFetchTasks: () => void,
+    onDeleteClick: () => void,
+    selected: boolean,
+    task: Object
   }
 
   render() {
@@ -87,7 +93,7 @@ export default class Task extends Component {
         onDragStart={this.onDragStart.bind(this)}
         onDragStop={this.onDragStop.bind(this)}
         onResizeStop={this.onResizeStop.bind(this)}
-        moveAxis={selected ? 'y': 'none'}
+        moveAxis={selected ? 'y' : 'none'}
         initial={{
           x: 0,
           y: task.beginAtTime ? timeStringToFloat(task.beginAtTime) * 120 : 0,
@@ -97,9 +103,9 @@ export default class Task extends Component {
           opacity: this.state.dragging ? 0.5 : 1
         }}
       >
-        <a onClick={this.onDeleteClick.bind(this)} className={styles.deleteTask}>
-          <i className="fa fa-trash" aria-hidden="true"></i>
-        </a>
+        <button onClick={this.onDeleteClick.bind(this)} className={styles.deleteTask}>
+          <i className="fa fa-trash" aria-hidden="true" />
+        </button>
         <div className={styles.taskInfos}>
           <h3>{ task.name }</h3>
         </div>
