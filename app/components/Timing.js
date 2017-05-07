@@ -18,13 +18,13 @@ class Timing extends Component {
 
     this.state = {
       date: new Date(),
-      currentTaskVisible: false
+      currentTask: {}
     };
   }
 
   state: {
     date: Date,
-    currentTaskVisible: boolean
+    currentTask: Object
   };
 
   componentDidMount() {
@@ -59,40 +59,53 @@ class Timing extends Component {
     });
   }
 
-  currentTask = {}
   tasksList = []
   timerID = 0
 
   tick() {
     const dt = moment();
+    console.log('dt', dt);
     const startOfDay = moment(dt).startOf('day');
     // Difference in minutes
     const secs = dt.diff(startOfDay, 'seconds');
     const pc = (secs / 86400).toFixed(3);
-    window.scrollTo(0, (2880 * +pc) - 106);
+    const scrollTo = (2880 * +pc) - 106;
+    window.scrollTo(0, scrollTo);
 
-    this.currentTask = this.getCurrentTask(dt);
+    const currentTask = this.getCurrentTask(dt);
 
-    if (this.currentTask) {
-      this.show();
+    if (currentTask) {
+      const isVisible = !this.state.currentTask ||
+        (this.state.currentTask && this.state.currentTask._id !== currentTask._id);
+      this.setState({ currentTask });
+
+      if (isVisible) {
+        this.show();
+      }
+    } else {
+      this.setState({ currentTask });
     }
   }
 
   show() {
-    this.setState({ currentTaskVisible: true });
+    const currentTask = this.state.currentTask;
+    currentTask.visible = true;
+    this.setState({ currentTask });
   }
 
   dismiss() {
-    this.setState({ currentTaskVisible: false });
+    const currentTask = this.state.currentTask;
+    currentTask.visible = false;
+    this.setState({ currentTask });
   }
 
   fireAction() {
-    switch (this.currentTask.action) {
+    switch (this.state.currentTask.action) {
       case 'link':
-        shell.openExternal(this.currentTask.actionLink);
+        shell.openExternal(this.state.currentTask.actionLink);
         break;
       case 'app':
-        exec(`open -n ${this.currentTask.actionApp}`);
+        exec(`open -n ${this.state.currentTask.actionApp}`);
         break;
       default:
         console.error('no action specified');
@@ -102,14 +115,14 @@ class Timing extends Component {
   render() {
     return (
       <div className={styles.timing}>
-        {this.currentTask && !this.state.currentTaskVisible &&
+        {this.state.currentTask &&
           <button className={styles.showCurrentTask} onClick={this.show.bind(this)}>
             <i className={styles.showCurrentTaskIcon} aria-hidden="true" />
           </button>
         }
-        {this.currentTask && this.state.currentTaskVisible &&
+        {this.state.currentTask && this.state.currentTask.visible &&
           <div className={styles.currentTask}>
-            <h1>{this.currentTask.name}</h1>
+            <h1>{this.state.currentTask.name}</h1>
             <button className={styles.actionButton} onClick={this.fireAction.bind(this)}>
               <i className="fa fa-bolt" aria-hidden="true" />
             </button>

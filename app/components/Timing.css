@@ -9,14 +9,17 @@
   box-sizing: border-box;
   position: relative;
   height: 120px;
-  /*border-bottom: 2px solid #5fba7d;*/
+}
+
+.hour:nth-child(odd) {
+  background-color: green;
 }
 
 .hour::after {
   content: '';
   z-index: 1;
   position: absolute;
-  bottom: -2px;
+  bottom: -1px;
   right: 0;
   left: 0;
   height: 2px;
