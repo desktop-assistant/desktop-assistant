@@ -7,23 +7,32 @@ import styles from './Task.css';
 
 const cx = classNames.bind(styles);
 
-function timeStringToFloat(time) {
-  const hoursMinutes = time.split(/[.:h]/);
-  const hours = parseInt(hoursMinutes[0], 10);
-  const minutes = parseInt(hoursMinutes[1], 10);
-  const floatValue = hours + (minutes / 60);
-  return floatValue;
-}
+type SizeType = {
+  width?: number,
+  height?: number
+};
 
-function getTaskHeight(beginTime, endTime) {
-  if (!beginTime || !beginTime.length || !endTime || !endTime.length) {
-    return 0;
-  }
-  const duration = timeStringToFloat(endTime) - timeStringToFloat(beginTime);
-  return duration * 120;
-}
+type DeltaType = {
+  position: SizeType
+};
 
 export default class Task extends Component {
+  static timeStringToFloat(time) {
+    const hoursMinutes = time.split(/[.:h]/);
+    const hours = parseInt(hoursMinutes[0], 10);
+    const minutes = parseInt(hoursMinutes[1], 10);
+    const floatValue = hours + (minutes / 60);
+    return floatValue;
+  }
+
+  static getTaskHeight(beginTime, endTime) {
+    if (!beginTime || !beginTime.length || !endTime || !endTime.length) {
+      return 0;
+    }
+    const duration = Task.timeStringToFloat(endTime) - Task.timeStringToFloat(beginTime);
+    return duration * 120;
+  }
+
   constructor() {
     super();
     this.state = {
@@ -35,7 +44,6 @@ export default class Task extends Component {
 
   state: {
     dragging: boolean,
-    deleted: boolean,
     rnd: Object
   };
 
@@ -51,13 +59,13 @@ export default class Task extends Component {
     this.rnd.updateZIndex(2);
   }
 
-  onDragStop(e: Event, ui: Object) {
+  onDragStop(e: Event, ui: DeltaType) {
     this.setState({ dragging: false });
     this.rnd.updateZIndex(1);
     this.props.moveTask(this.props.task, ui.position.top);
   }
 
-  onResizeStop(dir: string, size: number, rect: number, delta: Object) {
+  onResizeStop(dir: string, size: SizeType, rect: SizeType, delta: SizeType) {
     this.props.resizeTask(this.props.task, dir, delta.height);
   }
 
@@ -96,8 +104,8 @@ export default class Task extends Component {
         moveAxis={selected ? 'y' : 'none'}
         initial={{
           x: 0,
-          y: task.beginAtTime ? timeStringToFloat(task.beginAtTime) * 120 : 0,
-          height: getTaskHeight(task.beginAtTime, task.endAtTime)
+          y: task.beginAtTime ? Task.timeStringToFloat(task.beginAtTime) * 120 : 0,
+          height: Task.getTaskHeight(task.beginAtTime, task.endAtTime)
         }}
         style={{
           opacity: this.state.dragging ? 0.5 : 1
