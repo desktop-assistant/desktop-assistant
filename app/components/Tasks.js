@@ -89,6 +89,16 @@ export default class Tasks extends Component {
     }
   }
 
+  getTaskWithFreq(task) {
+    const newTask = task;
+    if (task.freq === 'daily') {
+      const now = moment();
+      newTask.beginAtDate = now.format('MM-DD-YYYY');
+    }
+
+    return newTask;
+  }
+
   render() {
     const {
       tasks
@@ -98,16 +108,19 @@ export default class Tasks extends Component {
       <div className={styles.tasks}>
         {tasks.map(task => {
           const beginDate = moment(`${task.beginAtDate}-${task.beginAtTime}`, 'MM-DD-YYYY-h:mm');
-          if (task && beginDate.isSame(moment(), 'day')) {
+          if (task.freq) {
+            task = this.getTaskWithFreq(task)
+          }
+           if (task && beginDate.isSame(moment(), 'day')) {
             return (
-              <button onClick={() => this.handleTaskClick(task._id)} key={task._id}>
+              <div onClick={() => this.handleTaskClick(task._id)} key={task._id}>
                 <Task
                   task={task} reFetchTasks={this.reFetchTasks.bind(this)}
                   moveTask={this.moveTask.bind(this)}
                   resizeTask={this.resizeTask.bind(this)}
                   selected={this.state.selectedTask === task._id}
                 />
-              </button>
+              </div>
             );
           }
           return '';

@@ -64,12 +64,14 @@ class Timing extends Component {
 
   tick() {
     const dt = moment();
+    dt.hours(14);
+    dt.minutes(0);
     console.log('dt', dt);
     const startOfDay = moment(dt).startOf('day');
     // Difference in minutes
     const secs = dt.diff(startOfDay, 'seconds');
     const pc = (secs / 86400).toFixed(3);
-    const scrollTo = (2880 * +pc) - 106;
+    const scrollTo = (2880 * +pc) - 100;
     window.scrollTo(0, scrollTo);
 
     const currentTask = this.getCurrentTask(dt);

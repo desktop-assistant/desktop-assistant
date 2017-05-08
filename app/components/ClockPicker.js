@@ -67,25 +67,23 @@ TimePicker.defaultProps = {
 };
 
 class TimePickerInfo extends Component {
-  render () {
+  render() {
     const { hours, minutes, mode, size, onChangeMode } = this.props;
 
     const propsHours = {
       className: (
-        'timepicker-info-digits' +
-        (mode === MODE_HOURS ? ' active' : '')
+        `timepicker-info-digits${(mode === MODE_HOURS ? ' active' : '')}`
       ),
-      onClick () {
+      onClick() {
         onChangeMode(MODE_HOURS);
       }
     };
 
     const propsMinutes = {
       className: (
-        'timepicker-info-digits' +
-        (mode === MODE_MINUTES ? ' active' : '')
+        `timepicker-info-digits${(mode === MODE_MINUTES ? ' active' : '')}`
       ),
-      onClick () {
+      onClick() {
         onChangeMode(MODE_MINUTES);
       }
     };
@@ -93,11 +91,11 @@ class TimePickerInfo extends Component {
     return (
       <p className="timepicker-info" style={{ width: size }}>
         <span {...propsHours}>
-          {hours < 10 ? '0' + hours : hours}
+          {hours < 10 ? `0${hours}` : hours}
         </span>
         :
         <span {...propsMinutes}>
-          {minutes < 10 ? '0' + minutes : minutes}
+          {minutes < 10 ? `0${minutes}` : minutes}
         </span>
       </p>
     );
@@ -186,18 +184,18 @@ class TimePickerClock extends Component {
       hand2.getAttribute('y1') - hand2.getAttribute('y2')
     );
 
-    hand1.style.strokeDasharray    = hand1Length;
-    hand1.style.strokeDashoffset   = hand1Length;
+    hand1.style.strokeDasharray = hand1Length;
+    hand1.style.strokeDashoffset = hand1Length;
     hand1.style.transitionProperty = 'none';
     hand1.getBoundingClientRect();
-    hand1.style.strokeDashoffset   = '0';
+    hand1.style.strokeDashoffset = '0';
     hand1.style.transitionProperty = 'stroke-dashoffset';
 
-    hand2.style.strokeDasharray    = hand2Length;
-    hand2.style.strokeDashoffset   = '0';
+    hand2.style.strokeDasharray = hand2Length;
+    hand2.style.strokeDashoffset = '0';
     hand2.style.transitionProperty = 'none';
     hand1.getBoundingClientRect();
-    hand2.style.strokeDashoffset   = hand2Length;
+    hand2.style.strokeDashoffset = hand2Length;
     hand2.style.transitionProperty = 'stroke-dashoffset';
   }
 

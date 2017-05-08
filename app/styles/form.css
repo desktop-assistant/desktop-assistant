@@ -25,6 +25,8 @@ input:focus, select:focus {
 
 .custom-select {
   overflow: hidden;
+  height: 30px;
+  padding: 1px;
   border-bottom: 1px solid white;
 }
 

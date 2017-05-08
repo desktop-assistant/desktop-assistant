@@ -11,10 +11,6 @@
   height: 120px;
 }
 
-.hour:nth-child(odd) {
-  background-color: green;
-}
-
 .hour::after {
   content: '';
   z-index: 1;
