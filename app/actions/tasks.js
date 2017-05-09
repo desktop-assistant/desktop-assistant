@@ -42,10 +42,10 @@ export function fetchTasks() {
   };
 }
 
-export function fetchTasksSuccess(posts) {
+export function fetchTasksSuccess(tasks) {
   return {
     type: FETCH_TASKS_SUCCESS,
-    payload: posts
+    payload: tasks
   };
 }
 

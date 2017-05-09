@@ -34,7 +34,6 @@
   "build": {
     "productName": "Desktop Assistant",
     "appId": "org.matthieuh.DesktopAssistant",
-    "category": "public.app-category.tools",
     "dmg": {
       "contents": [
         {
@@ -54,8 +53,8 @@
       "dist/",
       "node_modules/",
       "app.html",
-      "main.js",
-      "main.js.map",
+      "main.prod.js",
+      "main.prod.js.map",
       "package.json"
     ],
     "win": {
@@ -192,6 +191,7 @@
     "fixmyjs": "^1.0.3",
     "font-awesome": "^4.7.0",
     "global": "^4.3.1",
+    "history": "^4.6.1",
     "lodash": "^4.17.4",
     "moment": "^2.18.1",
     "pouchdb-find": "^0.10.5",

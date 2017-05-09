@@ -1,19 +1,16 @@
-import { createStore, applyMiddleware, compose } from 'redux';
-import { hashHistory } from 'react-router';
-import { routerMiddleware } from 'react-router-redux';
+// @flow
+import { createStore, applyMiddleware } from 'redux';
 import promise from 'redux-promise';
+import { createBrowserHistory } from 'history';
+import { routerMiddleware } from 'react-router-redux';
 import rootReducer from '../reducers';
 
-const router = routerMiddleware(hashHistory);
-/* eslint-disable no-underscore-dangle */
-const composeEnhancers = compose;
-/* eslint-enable no-underscore-dangle */
-const enhancer = composeEnhancers(
-  applyMiddleware(promise, router)
-);
+const history = createBrowserHistory();
+const router = routerMiddleware(history);
+const enhancer = applyMiddleware(promise, router);
 
-export default function configureStore(initialState) {
-  const store = createStore(rootReducer, initialState, enhancer);
-
-  return store;
+function configureStore(initialState) {
+  return createStore(rootReducer, initialState, enhancer);
 }
+
+export default { configureStore, history };

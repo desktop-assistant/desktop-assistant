@@ -3,11 +3,14 @@
   "productName": "Desktop Assistant",
   "version": "0.2.2",
   "description": "Desktop Assistant is a native app to smooth your daily routine tasks",
-  "main": "./main.js",
+  "main": "./main.prod.js",
   "author": {
     "name": "Matthieu Hostache",
     "email": "matthieu.hostache@gmail.com",
     "url": "https://github.com/matthieuh"
+  },
+  "scripts": {
+    "postinstall": "npm rebuild --runtime=electron --target=1.6.6 --disturl=https://atom.io/download/atom-shell --build-from-source"
   },
   "license": "MIT",
   "dependencies": {
