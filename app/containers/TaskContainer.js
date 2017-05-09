@@ -1,13 +1,11 @@
 /* eslint-disable no-unused-expressions */
 import { connect } from 'react-redux';
-import { resetDeletedTask, deleteTask, deleteTaskSuccess, deleteTaskFailure } from '../actions/tasks';
+import { deleteTask, deleteTaskSuccess, deleteTaskFailure } from '../actions/tasks';
 import Task from '../components/Task';
 
-const mapStateToProps = (state) => {
-  return {
-    deleteTask: state.tasks.deletedTask
-  };
-};
+const mapStateToProps = state => ({
+  deleteTask: state.tasks.deletedTask
+});
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   onDeleteClick: () => {

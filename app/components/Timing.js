@@ -18,6 +18,11 @@ type TaskType = {
 };
 
 class Timing extends Component {
+  state: {
+    date: Date,
+    currentTask: TaskType
+  };
+
   constructor() {
     super();
 
@@ -29,11 +34,6 @@ class Timing extends Component {
       currentTask: {}
     };
   }
-
-  state: {
-    date: Date,
-    currentTask: TaskType
-  };
 
   componentDidMount() {
     setTimeout(() => {
@@ -60,8 +60,8 @@ class Timing extends Component {
 
   getCurrentTask(dt: typeMoment) {
     return _.find(this.tasksList, task => {
-      const beginDate = moment(`${task.beginAtDate}-${task.beginAtTime}`, 'MM-DD-YYYY-h:mm');
-      const endDate = moment(`${task.endAtDate}-${task.endAtTime}`, 'MM-DD-YYYY-h:mm');
+      const beginDate = moment(`${task.beginAtDate}-${task.beginAtTime}`, 'MM-DD-YYYY-HH:mm');
+      const endDate = moment(`${task.endAtDate}-${task.endAtTime}`, 'MM-DD-YYYY-HH:mm');
 
       return dt.diff(beginDate) >= 0 && dt.diff(endDate) < 0;
     });
@@ -72,8 +72,6 @@ class Timing extends Component {
 
   tick() {
     const dt = moment();
-    dt.hours(14);
-    dt.minutes(0);
     const startOfDay = moment(dt).startOf('day');
     // Difference in minutes
     const secs = dt.diff(startOfDay, 'seconds');

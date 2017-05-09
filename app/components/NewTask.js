@@ -3,7 +3,7 @@ import { remote } from 'electron';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { reduxForm, formValueSelector, Field, SubmissionError } from 'redux-form';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import { push } from 'react-router-redux';
 
 import styles from './NewTask.css';

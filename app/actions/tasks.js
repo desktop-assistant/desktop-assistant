@@ -42,21 +42,21 @@ export function fetchTasks() {
   };
 }
 
-export function fetchTasksSuccess(posts: Array<Object>) {
+export function fetchTasksSuccess(posts) {
   return {
     type: FETCH_TASKS_SUCCESS,
     payload: posts
   };
 }
 
-export function fetchTasksFailure(error: Object) {
+export function fetchTasksFailure(error) {
   return {
     type: FETCH_TASKS_FAILURE,
     payload: error
   };
 }
 
-export function createTask(props: Object) {
+export function createTask(props) {
   const request = create(props, 'tasks');
 
   return {
@@ -65,7 +65,7 @@ export function createTask(props: Object) {
   };
 }
 
-export function createTaskSuccess(newTask: Object) {
+export function createTaskSuccess(newTask) {
   return {
     type: CREATE_TASK_SUCCESS,
     payload: newTask
@@ -101,7 +101,7 @@ export function updateTaskSuccess(updatedTask) {
   };
 }
 
-export function updateTaskFailure(response) {
+export function updateTaskFailure(response: Object) {
   return {
     type: UPDATE_TASK_FAILURE,
     payload: response
@@ -147,7 +147,7 @@ export function deleteTaskSuccess(deletedTask) {
   };
 }
 
-export function deleteTaskFailure(response) {
+export function deleteTaskFailure(response: Object) {
   return {
     type: DELETE_TASK_FAILURE,
     payload: response

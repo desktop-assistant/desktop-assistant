@@ -120,7 +120,7 @@ class TimePickerClock extends Component {
   componentWillReceiveProps(props) {
     if (props.size !== this.props.size || props.radius !== this.props.radius) {
       this.setState({
-        positionsHours:   this.calculatePositionsHours(),
+        positionsHours: this.calculatePositionsHours(),
         positionsMinutes: this.calculatePositionsMinutes()
       });
     }
@@ -223,22 +223,22 @@ class TimePickerClock extends Component {
       const props = {
         key: index,
         className: (
-          'timepicker-bubble' +
-          (hours === index ? ' active' : '')
+          `timepicker-bubble${
+          hours === index ? ' active' : ''}`
         ),
 
-        onClick:     this.onClickHour(index),
-        onMouseUp:   this.onMouseMoveHour(index),
+        onClick: this.onClickHour(index),
+        onMouseUp: this.onMouseMoveHour(index),
         onMouseMove: this.onMouseMoveHour(index)
       };
 
-      return  <g {...props}>
+      return (<g {...props}>
         <circle cx={x} cy={y} />
 
         <text x={x} y={y}>
           {index}
         </text>
-      </g>;
+      </g>);
     });
   }
 
@@ -249,16 +249,16 @@ class TimePickerClock extends Component {
       const props = {
         key: index,
         className: (
-          'timepicker-bubble' +
-          (index % 5 !== 0   ? ' small' : '') +
-          (minutes === index ? ' active' : '')
+          `timepicker-bubble${
+          index % 5 !== 0 ? ' small' : ''
+          }${minutes === index ? ' active' : ''}`
         ),
 
-        onClick:     this.onClickMinute(index),
+        onClick: this.onClickMinute(index),
         onMouseMove: this.onMouseMoveMinute(index)
       };
 
-      return  <g {...props}>
+      return (<g {...props}>
         <circle cx={x} cy={y} />
 
         {index % 5 === 0 ? (
@@ -268,7 +268,7 @@ class TimePickerClock extends Component {
         ) : (
           <circle cx={x} cy={y} />
         )}
-      </g>;
+      </g>);
     });
   }
 

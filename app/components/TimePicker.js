@@ -35,7 +35,7 @@ export default class TimePicker extends Component {
   }
 
   render() {
-    const { input, meta: { touched, error, warning } } = this.props
+    const { input, meta: { touched, error, warning } } = this.props;
     const now = new Date();
     const modalClassName = cx({
       modal: true,

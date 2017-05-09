@@ -1,21 +1,21 @@
 // @flow
 import React, { Component } from 'react';
 import { remote, screen } from 'electron';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import styles from './Actions.css';
 // import { syncWith } from '../store/pouchDBStore';
 
 export default class Actions extends Component {
+  state: {
+    expanded: boolean
+  };
+
   constructor() {
     super();
     this.state = {
       expanded: false
     };
   }
-
-  state: {
-    expanded: boolean
-  };
 
   previousPosition = []
   previousSize = []
@@ -43,12 +43,7 @@ export default class Actions extends Component {
 
   render() {
     return (
-      <div>
-        {/* <div className={styles.sync}>
-          <a onClick={this.syncDB} className={styles.syncButton}>
-            <i className="fa fa-refresh" />
-          </a>
-        </div> */}
+      <div>CouCou
         <div className={styles.topActions}>
           <div className={styles.expand}>
             <button onClick={this.expandWindow.bind(this)} className={styles.expandButton}>

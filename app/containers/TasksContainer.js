@@ -3,11 +3,9 @@ import { connect } from 'react-redux';
 import { updateTask, updateTaskSuccess, updateTaskFailure, fetchTasks, fetchTasksSuccess, fetchTasksFailure } from '../actions/tasks';
 import Tasks from '../components/Tasks';
 
-const mapStateToProps = state => {
-  return {
-    tasksList: state.tasks.tasksList
-  };
-};
+const mapStateToProps = state => ({
+  tasksList: state.tasks.tasksList
+});
 
 const mapDispatchToProps = dispatch => ({
   fetchTasks: () => {
