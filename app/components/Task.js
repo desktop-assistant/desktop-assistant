@@ -9,11 +9,20 @@ const cx = classNames.bind(styles);
 
 type SizeType = {
   width?: number,
-  height?: number
+  height?: number,
+  top?: number
 };
 
 type DeltaType = {
   position: SizeType
+};
+
+type TaskType = {
+  _id: string,
+  beginAtDate: string,
+  beginAtTime: string,
+  endAtDate: string,
+  endAtTime: string
 };
 
 export default class Task extends Component {
@@ -81,7 +90,7 @@ export default class Task extends Component {
     reFetchTasks: () => void,
     onDeleteClick: () => void,
     selected: boolean,
-    task: Object
+    task: TaskType
   }
 
   render() {

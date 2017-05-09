@@ -11,6 +11,8 @@ import renderField from './renderField';
 import DatePicker from './DatePicker';
 import TimePicker from './TimePicker';
 import AppSelector from './AppSelector';
+import DayPicker from './DayPicker';
+
 import { createTask, createTaskSuccess, createTaskFailure } from '../actions/tasks';
 
 // Client side validation
@@ -51,23 +53,19 @@ const validateAndCreateTask = (values, dispatch) => dispatch(createTask(values))
     return true;
   });
 
+type TaskType = {};
+
 let NewTaskForm = class NewTask extends Component {
   props: {
     handleSubmit: () => void,
     pristine: boolean,
     submitting: boolean,
-    newTask: object,
-    actionValue: string
+    newTask: TaskType,
+    actionValue: string,
+    freqValue: string
   };
 
-  constructor() {
-    super();
-    const win = remote.getCurrentWindow();
-    win.setSize(300, 500);
-    this.state = {};
-  }
-
-  renderError(newTask) {
+  static renderError(newTask?: TaskType) {
     if (newTask && newTask.error && newTask.error.message) {
       return (
         <div className="alert alert-danger">
@@ -78,12 +76,25 @@ let NewTaskForm = class NewTask extends Component {
     return <span />;
   }
 
+  constructor() {
+    super();
+    const win = remote.getCurrentWindow();
+    win.setSize(350, 700);
+    this.state = {
+      repeat: false
+    };
+  }
+
+  state: {
+    repeat: boolean
+  };
+
   render() {
-    const { handleSubmit, pristine, submitting, newTask, actionValue } = this.props;
+    const { handleSubmit, pristine, submitting, newTask, actionValue, freqValue } = this.props;
 
     return (
       <div className={styles.container}>
-        {this.renderError(newTask)}
+        {NewTask.renderError(newTask)}
         <Link to="/" className={styles.backButton}>
           <i className="fa fa-chevron-left" />
         </Link>
@@ -147,6 +158,33 @@ let NewTaskForm = class NewTask extends Component {
             component={AppSelector}
             label="APP"
           /> }
+          {this.state.repeat ?
+            <div className={styles.noRepeat}>
+              <a onClick={() => (this.setState({ repeat: !this.state.repeat }))}>Stop repeat ?</a>
+            </div>
+            :
+            <div className={styles.repeat}>
+              <a onClick={() => (this.setState({ repeat: !this.state.repeat }))}>Repeat ?</a>
+            </div>
+          }
+          { this.state.repeat &&
+            <div>
+              <label className="control-label" htmlFor="action">FREQUENCY</label>
+              <div className="custom-select form-control">
+                <Field name="freq" component="select">
+                  <option>None</option>
+                  <option value="daily">Daily</option>
+                </Field>
+              </div>
+            </div>
+          }
+          { this.state.repeat && freqValue === 'daily' && <div>
+            <Field
+              name="repeatOn"
+              component={DayPicker}
+              label="REPEAT ON"
+            />
+          </div> }
           <button
             type="submit"
             className="button button--primary button--sm button--block"
@@ -171,7 +209,8 @@ const selector = formValueSelector('NewTask');
 export default connect(
   state => {
     const actionValue = selector(state, 'action');
+    const freqValue = selector(state, 'freq');
 
-    return { actionValue };
+    return { actionValue, freqValue };
   }
 )(NewTaskForm);

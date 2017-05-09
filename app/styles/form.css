@@ -65,3 +65,35 @@ input:focus, select:focus {
   font-size: 14px;
   color: #f96868;
 }
+
+.Select-control {
+  background: inherit;
+  margin-bottom: 26px;
+  border: inherit;
+  border-radius: inherit;
+  border-bottom: 1px solid white;
+}
+
+.Select-placeholder {
+  color: white;
+}
+
+.Select-clear-zone {
+  color: #f96868;
+}
+
+.Select-arrow {
+  border-color: white transparent transparent;
+}
+
+.Select-menu-outer {
+  max-height: 150px;
+}
+
+.Select-menu {
+  max-height: 148px;
+}
+
+.Select-input {
+  margin-left: 0 !important;
+}

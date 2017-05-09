@@ -83,3 +83,12 @@
 .at {
   margin: 0 20px;
 }
+
+.noRepeat, .repeat {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.repeat a:hover, .noRepeat a:hover {
+  text-decoration: underline;
+}

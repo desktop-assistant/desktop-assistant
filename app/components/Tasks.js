@@ -11,7 +11,8 @@ type TaskType = {
   beginAtDate: string,
   beginAtTime: string,
   endAtDate: string,
-  endAtTime: string
+  endAtTime: string,
+  repeatOn?: string
 };
 
 export default class Tasks extends Component {
@@ -19,7 +20,11 @@ export default class Tasks extends Component {
     const newTask = task;
     if (task.freq === 'daily') {
       const now = moment();
-      newTask.beginAtDate = now.format('MM-DD-YYYY');
+      const today = now.format('dddd');
+
+      if (today.indexOf(newTask.repeatOn) > -1) {
+        newTask.beginAtDate = now.format('MM-DD-YYYY');
+      }
     }
 
     return newTask;
@@ -119,7 +124,8 @@ export default class Tasks extends Component {
             task = Tasks.getTaskWithFreq(task)
           }
           const beginDate = moment(`${task.beginAtDate}-${task.beginAtTime}`, 'MM-DD-YYYY-h:mm');
-          if (task && beginDate.isSame(moment(), 'day')) {
+          const now = moment()
+          if (task && beginDate.isSame(now, 'day')) {
             return (
               <div onClick={() => this.handleTaskClick(task._id)} key={task._id}>
                 <Task

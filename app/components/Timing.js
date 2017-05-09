@@ -9,6 +9,14 @@ import { exec } from 'child_process';
 import styles from './Timing.css';
 import Tasks from '../containers/TasksContainer';
 
+type TaskType = {
+  _id?: string,
+  beginAtDate?: string,
+  beginAtTime?: string,
+  endAtDate?: string,
+  endAtTime?: string
+};
+
 class Timing extends Component {
   constructor() {
     super();
@@ -24,7 +32,7 @@ class Timing extends Component {
 
   state: {
     date: Date,
-    currentTask: Object
+    currentTask: TaskType
   };
 
   componentDidMount() {
@@ -66,7 +74,6 @@ class Timing extends Component {
     const dt = moment();
     dt.hours(14);
     dt.minutes(0);
-    console.log('dt', dt);
     const startOfDay = moment(dt).startOf('day');
     // Difference in minutes
     const secs = dt.diff(startOfDay, 'seconds');
