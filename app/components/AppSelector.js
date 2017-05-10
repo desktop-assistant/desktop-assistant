@@ -5,6 +5,12 @@ import electron from 'electron';
 import styles from './AppSelector.css';
 
 export default class AppSelector extends Component {
+  props: {
+    input: Object,
+    meta: Object,
+    label: string
+  }
+
   handleClick() {
     const { dialog } = electron.remote;
     dialog.showOpenDialog({
@@ -19,7 +25,10 @@ export default class AppSelector extends Component {
   }
 
   render() {
-    const { input: { name, label, value, onChange }, meta: { touched, error, invalid, warning } } = this.props;
+    const {
+      input: { label },
+      meta: { touched, error, warning }
+    } = this.props;
     return (
       <div className={styles.container}>
         <label htmlFor={this.props.input.name} className="control-label">{this.props.label}</label>

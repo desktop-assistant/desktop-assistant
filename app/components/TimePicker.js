@@ -8,18 +8,19 @@ import styles from './TimePicker.css';
 const cx = classNames.bind(styles);
 
 export default class TimePicker extends Component {
-  static propTypes = {
-    input: React.PropTypes.string.isRequired
+  state: {
+    modalVisible: boolean
+  }
+
+  props: {
+    input: Object,
+    meta: Object
   }
 
   constructor() {
     super();
     this.state = { modalVisible: false };
   }
-
-  state: {
-    modalVisible: boolean
-  };
 
   onDayChange(hours: number, minutes: number) {
     this.props.input.onChange(`${hours}:${minutes}`);

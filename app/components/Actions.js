@@ -43,7 +43,7 @@ export default class Actions extends Component {
 
   render() {
     return (
-      <div>CouCou
+      <div>
         <div className={styles.topActions}>
           <div className={styles.expand}>
             <button onClick={this.expandWindow.bind(this)} className={styles.expandButton}>

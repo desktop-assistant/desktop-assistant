@@ -22,10 +22,25 @@ type TaskType = {
   beginAtDate: string,
   beginAtTime: string,
   endAtDate: string,
-  endAtTime: string
+  endAtTime: string,
+  name: string
 };
 
 export default class Task extends Component {
+  state: {
+    dragging: boolean,
+    rnd: Object
+  }
+
+  props: {
+    moveTask: () => void,
+    resizeTask: () => void,
+    reFetchTasks: () => void,
+    onDeleteClick: () => void,
+    selected: boolean,
+    task: TaskType
+  }
+
   static timeStringToFloat(time) {
     const hoursMinutes = time.split(/[.:h]/);
     const hours = parseInt(hoursMinutes[0], 10);
@@ -50,11 +65,6 @@ export default class Task extends Component {
       rnd: {}
     };
   }
-
-  state: {
-    dragging: boolean,
-    rnd: Object
-  };
 
   onDeleteClick() {
     this.props.onDeleteClick(this.props.task);
@@ -83,15 +93,6 @@ export default class Task extends Component {
   }
 
   rnd = {}
-
-  props: {
-    moveTask: () => void,
-    resizeTask: () => void,
-    reFetchTasks: () => void,
-    onDeleteClick: () => void,
-    selected: boolean,
-    task: TaskType
-  }
 
   render() {
     const taskClassName = cx({

@@ -5,6 +5,27 @@ const MODE_HOURS = true;
 const MODE_MINUTES = false;
 
 export default class TimePicker extends Component {
+  props: {
+    hours: number,
+    minutes: number
+  }
+
+  state: {
+    hours: number,
+    minutes: number,
+    mode?: string
+  }
+
+  props: {
+    hours: number,
+    minutes: number,
+    size: number,
+    radius: number,
+    militaryTime: boolean,
+    onChange: void,
+    onChangeMode: void
+  }
+
   constructor(props: Object) {
     super(props);
     const { hours, minutes } = props;
@@ -13,11 +34,6 @@ export default class TimePicker extends Component {
       hours,
       minutes
     };
-  }
-
-  props: {
-    hours: number,
-    minutes: number
   }
 
   getInitialState() {
@@ -35,14 +51,14 @@ export default class TimePicker extends Component {
     const { hours, minutes, mode } = this.state;
     const { size, radius, militaryTime } = this.props;
 
-    const onChange = (hours, minutes, fireEvent) => {
-      this.setState({ hours, minutes });
+    const onChange = (newHours, newMinutes, fireEvent) => {
+      this.setState({ hours: newHours, minutes: newMinutes });
       if (fireEvent && this.props.onChange) {
-        this.props.onChange({ hours, minutes });
+        this.props.onChange({ hours: newHours, minutes: newMinutes });
       }
     };
-    const onChangeMode = mode => {
-      this.setState({ mode });
+    const onChangeMode = newMode => {
+      this.setState({ mode: newMode });
       if (this.props.onChangeMode) {
         this.props.onChangeMode({ hours, minutes });
       }
@@ -67,6 +83,14 @@ TimePicker.defaultProps = {
 };
 
 class TimePickerInfo extends Component {
+  props: {
+    hours: number,
+    minutes: number,
+    size: number,
+    onChangeMode: void,
+    mode: string
+  }
+
   render() {
     const { hours, minutes, mode, size, onChangeMode } = this.props;
 
@@ -103,6 +127,17 @@ class TimePickerInfo extends Component {
 }
 
 class TimePickerClock extends Component {
+  props: {
+    hours: number,
+    minutes: number,
+    size: number,
+    radius: number,
+    onChange: void,
+    onChangeMode: void,
+    mode: string,
+    militaryTime: boolean
+  }
+
   constructor(props) {
     super(props);
     const { mode, hours, minutes, militaryTime } = props;
@@ -115,6 +150,10 @@ class TimePickerClock extends Component {
       positionsHours: this.calculatePositionsHours(),
       positionsMinutes: this.calculatePositionsMinutes()
     };
+  }
+
+  componentDidMount() {
+    this.componentDidUpdate({}, {});
   }
 
   componentWillReceiveProps(props) {
@@ -144,10 +183,6 @@ class TimePickerClock extends Component {
     }
   }
 
-  componentDidMount() {
-    this.componentDidUpdate({}, {});
-  }
-
   componentDidUpdate(props, state) {
     const { mode, size } = this.props;
     const { hours, minutes, even, positionsHours, positionsMinutes } = this.state;
@@ -158,67 +193,62 @@ class TimePickerClock extends Component {
       return;
     }
 
-    let hand1 = even ? this.refs.hand1 : this.refs.hand2;
-    let hand2 = even ? this.refs.hand2 : this.refs.hand1;
+    const hand1 = even ? this.hand1 : this.hand2;
+    const hand2 = even ? this.hand2 : this.hand1;
 
-    if (/^0\.13/.test(React.version)) {
-      hand1 = React.findDOMNode(hand1);
-      hand2 = React.findDOMNode(hand2);
+    if (hand1) {
+      hand1.setAttribute('x2', mode ? positionsHours[hours === 0 ? 23 : hours - 1][0] : positionsMinutes[minutes][0]);
+      hand1.setAttribute('y2', mode ? positionsHours[hours === 0 ? 23 : hours - 1][1] : positionsMinutes[minutes][1]);
     }
 
-    hand1.setAttribute('x2', mode ? positionsHours[hours === 0 ? 23 : hours - 1][0] : positionsMinutes[minutes][0]);
-    hand1.setAttribute('y2', mode ? positionsHours[hours === 0 ? 23 : hours - 1][1] : positionsMinutes[minutes][1]);
-
-    if (props.mode !== mode) {
+    if (props.mode !== mode && hand2) {
       hand2.setAttribute('x2', size / 2);
       hand2.setAttribute('y2', size / 2);
     }
 
-    const hand1Length = Math.hypot(
-      hand1.getAttribute('x1') - hand1.getAttribute('x2'),
-      hand1.getAttribute('y1') - hand1.getAttribute('y2')
-    );
+    let hand1Length = null;
+    if (hand1) {
+      hand1Length = Math.hypot(
+        Number(hand1.getAttribute('x1')) - Number(hand1.getAttribute('x2')),
+        Number(hand1.getAttribute('y1')) - Number(hand1.getAttribute('y2'))
+      );
+    }
 
-    const hand2Length = Math.hypot(
-      hand2.getAttribute('x1') - hand2.getAttribute('x2'),
-      hand2.getAttribute('y1') - hand2.getAttribute('y2')
-    );
+    let hand2Length = null;
+    if (hand2) {
+      hand2Length = Math.hypot(
+        Number(hand2.getAttribute('x1')) - Number(hand2.getAttribute('x2')),
+        Number(hand2.getAttribute('y1')) - Number(hand2.getAttribute('y2'))
+      );
+    }
 
-    hand1.style.strokeDasharray = hand1Length;
-    hand1.style.strokeDashoffset = hand1Length;
-    hand1.style.transitionProperty = 'none';
-    hand1.getBoundingClientRect();
-    hand1.style.strokeDashoffset = '0';
-    hand1.style.transitionProperty = 'stroke-dashoffset';
+    if (hand1) {
+      hand1.style.strokeDasharray = hand1Length;
+      hand1.style.strokeDashoffset = hand1Length;
+      hand1.style.transitionProperty = 'none';
+      hand1.getBoundingClientRect();
+      hand1.style.strokeDashoffset = '0';
+      hand1.style.transitionProperty = 'stroke-dashoffset';
+    }
 
-    hand2.style.strokeDasharray = hand2Length;
-    hand2.style.strokeDashoffset = '0';
-    hand2.style.transitionProperty = 'none';
-    hand1.getBoundingClientRect();
-    hand2.style.strokeDashoffset = hand2Length;
-    hand2.style.transitionProperty = 'stroke-dashoffset';
+    if (hand2) {
+      hand2.style.strokeDasharray = hand2Length;
+      hand2.style.strokeDashoffset = '0';
+      hand2.style.transitionProperty = 'none';
+      hand2.getBoundingClientRect();
+      hand2.style.strokeDashoffset = hand2Length;
+      hand2.style.transitionProperty = 'stroke-dashoffset';
+    }
   }
 
-  render() {
-    const { size } = this.props;
-    const { mode } = this.state;
-
-    return (
-      <svg width={size} height={size}>
-        <line ref="hand1" className="timepicker-hand" x1={size / 2} y1={size / 2} x2={size / 2} y2={size / 2} />
-        <line ref="hand2" className="timepicker-hand" x1={size / 2} y1={size / 2} x2={size / 2} y2={size / 2} />
-
-        <g className={mode ? 'timepicker-visible' : 'timepicker-invisible'}>{this.renderHoursBubbles()}</g>
-        <g className={mode ? 'timepicker-invisible' : 'timepicker-visible'}>{this.renderMinutesBubbles()}</g>
-      </svg>
-    );
-  }
+  hand1 = null
+  hand2 = null
 
   renderHoursBubbles() {
     const { hours } = this.state;
 
-    return this.state.positionsHours.map(([x, y], index) => {
-      index = (index + 1) % 24;
+    return this.state.positionsHours.map(([x, y], i) => {
+      const index = (i + 1) % 24;
 
       const props = {
         key: index,
@@ -333,10 +363,12 @@ class TimePickerClock extends Component {
     let index = 1;
     const positions = [];
 
-    for (; index <= (militaryTime ? 24 : 12); ++index) {
+    for (; index <= (militaryTime ? 24 : 12); index += 1) {
       positions.push([
-        (size / 2) + (radius * (militaryTime ? index > 12 ? 1 : 0.65 : 1) * Math.cos((index % 12 / 6 - 0.5) * Math.PI)),
-        (size / 2) + (radius * (militaryTime ? index > 12 ? 1 : 0.65 : 1) * Math.sin((index % 12 / 6 - 0.5) * Math.PI))
+        (size / 2) + (radius * (militaryTime ? index > 12 ? 1 : 0.65 : 1) *
+        Math.cos((((index % 12) / 6) - 0.5) * Math.PI)),
+        (size / 2) + (radius * (militaryTime ? index > 12 ? 1 : 0.65 : 1) *
+        Math.sin((((index % 12) / 6) - 0.5) * Math.PI))
       ]);
     }
 
@@ -349,7 +381,7 @@ class TimePickerClock extends Component {
     let index = 0;
     const positions = [];
 
-    for (; index < 60; ++index) {
+    for (; index < 60; index += 1) {
       positions.push([
         (size / 2) + (radius * Math.cos(((index / 30) - 0.5) * Math.PI)),
         (size / 2) + (radius * Math.sin(((index / 30) - 0.5) * Math.PI))
@@ -357,6 +389,21 @@ class TimePickerClock extends Component {
     }
 
     return positions;
+  }
+
+  render() {
+    const { size } = this.props;
+    const { mode } = this.state;
+
+    return (
+      <svg width={size} height={size}>
+        <line ref={(c) => { this.hand1 = c; }} className="timepicker-hand" x1={size / 2} y1={size / 2} x2={size / 2} y2={size / 2} />
+        <line ref={(c) => { this.hand2 = c; }} className="timepicker-hand" x1={size / 2} y1={size / 2} x2={size / 2} y2={size / 2} />
+
+        <g className={mode ? 'timepicker-visible' : 'timepicker-invisible'}>{this.renderHoursBubbles()}</g>
+        <g className={mode ? 'timepicker-invisible' : 'timepicker-visible'}>{this.renderMinutesBubbles()}</g>
+      </svg>
+    );
   }
 }
 

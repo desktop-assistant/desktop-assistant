@@ -30,6 +30,19 @@ export const DELETE_TASK_SUCCESS = 'DELETE_TASK_SUCCESS';
 export const DELETE_TASK_FAILURE = 'DELETE_TASK_FAILURE';
 export const RESET_DELETED_TASK = 'RESET_DELETED_TASK';
 
+type TaskType = {
+  _id?: string,
+  action?: string,
+  actionApp?: string,
+  actionLink?: string,
+  beginAtDate?: string,
+  beginAtTime?: string,
+  endAtDate?: string,
+  endAtTime?: string,
+  name?: string,
+  visible?: boolean
+};
+
 export function fetchTasks() {
   const filter = {
     selector: {}
@@ -42,21 +55,21 @@ export function fetchTasks() {
   };
 }
 
-export function fetchTasksSuccess(tasks) {
+export function fetchTasksSuccess(tasks: Array<TaskType>) {
   return {
     type: FETCH_TASKS_SUCCESS,
     payload: tasks
   };
 }
 
-export function fetchTasksFailure(error) {
+export function fetchTasksFailure(error: Object) {
   return {
     type: FETCH_TASKS_FAILURE,
     payload: error
   };
 }
 
-export function createTask(props) {
+export function createTask(props: Object) {
   const request = create(props, 'tasks');
 
   return {
@@ -65,7 +78,7 @@ export function createTask(props) {
   };
 }
 
-export function createTaskSuccess(newTask) {
+export function createTaskSuccess(newTask: TaskType) {
   return {
     type: CREATE_TASK_SUCCESS,
     payload: newTask
@@ -94,7 +107,7 @@ export function updateTask(props: Object) {
   };
 }
 
-export function updateTaskSuccess(updatedTask) {
+export function updateTaskSuccess(updatedTask: TaskType) {
   return {
     type: UPDATE_TASK_SUCCESS,
     payload: updatedTask
@@ -117,7 +130,7 @@ export function queryTask(filter: Object) {
   };
 }
 
-export function queryTaskSuccess(tasks) {
+export function queryTaskSuccess(tasks: Array<TaskType>) {
   return {
     type: CREATE_TASK_SUCCESS,
     payload: tasks
@@ -131,7 +144,7 @@ export function queryTaskFailure(error: Object) {
   };
 }
 
-export function deleteTask(task: Object) {
+export function deleteTask(task: TaskType) {
   const request = remove(task, 'tasks');
 
   return {
@@ -140,7 +153,7 @@ export function deleteTask(task: Object) {
   };
 }
 
-export function deleteTaskSuccess(deletedTask) {
+export function deleteTaskSuccess(deletedTask: TaskType) {
   return {
     type: DELETE_TASK_SUCCESS,
     payload: deletedTask

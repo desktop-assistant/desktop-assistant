@@ -9,20 +9,21 @@ import styles from './DatePicker.css';
 const cx = classNames.bind(styles);
 
 export default class DatePicker extends Component {
-  static propTypes = {
-    input: React.PropTypes.string.isRequired,
-    label: React.PropTypes.string.isRequired
+  state: {
+    modalVisible: boolean,
+    selectedDay: Date
+  };
+
+  props: {
+    input: Object,
+    meta: Object,
+    label: string
   }
 
   constructor() {
     super();
     this.state = { modalVisible: false, selectedDay: new Date() };
   }
-
-  state: {
-    modalVisible: boolean,
-    selectedDay: Date
-  };
 
   onDayChange() {
     this.setState({ modalVisible: false });

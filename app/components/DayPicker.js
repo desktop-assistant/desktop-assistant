@@ -14,6 +14,16 @@ const options = [
 const defaultRepeatDays = 'Sunday,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday';
 
 export default class DayPicker extends Component {
+  state: {
+    touched?: boolean
+  }
+
+  props: {
+    input: Object,
+    meta: Object,
+    label: string
+  }
+
   constructor() {
     super();
 
@@ -22,7 +32,10 @@ export default class DayPicker extends Component {
     };
   }
   render() {
-    const { input: { label, name, onChange, value }, meta: { touched, error, invalid, warning } } = this.props;
+    const {
+      input: { label, name, onChange, value },
+      meta: { touched, error, warning }
+    } = this.props;
     return (
       <div>
         <label className="control-label" htmlFor={name}>{this.props.label}</label>

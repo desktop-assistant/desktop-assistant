@@ -120,7 +120,8 @@ export default class Tasks extends Component {
     this.props.updateTasks(this.props.tasksList.tasks);
     return (
       <div className={styles.tasks}>
-        {tasks.map(task => {
+        {tasks.map(t => {
+          let task = t;
           if (task.freq) {
             task = Tasks.getTaskWithFreq(task);
           }

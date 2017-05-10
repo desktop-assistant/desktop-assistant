@@ -11,10 +11,15 @@ import Tasks from '../containers/TasksContainer';
 
 type TaskType = {
   _id?: string,
+  action?: string,
+  actionApp?: string,
+  actionLink?: string,
   beginAtDate?: string,
   beginAtTime?: string,
   endAtDate?: string,
-  endAtTime?: string
+  endAtTime?: string,
+  name?: string,
+  visible?: boolean
 };
 
 class Timing extends Component {
@@ -112,7 +117,7 @@ class Timing extends Component {
         shell.openExternal(this.state.currentTask.actionLink);
         break;
       case 'app':
-        exec(`open -n ${this.state.currentTask.actionApp}`);
+        exec(`open -n ${String(this.state.currentTask.actionApp)}`);
         break;
       default:
         console.error('no action specified');
