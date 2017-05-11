@@ -18,10 +18,6 @@
   font-size: 5rem;
 }
 
-.container a {
-  font-size: 1.4rem;
-}
-
 .leftTimeIndication {
   z-index: 5;
   position: fixed;

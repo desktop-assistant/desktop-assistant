@@ -1,0 +1,54 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Actions component should match exact snapshot 1`] = `
+<div>
+  <div>
+    <div
+      className="topActions"
+    >
+      <div
+        className="settings"
+      >
+        <a
+          className="settingsButton"
+          href="/settings"
+          onClick={[Function]}
+        >
+          <i
+            className="fa fa-cog"
+          />
+        </a>
+      </div>
+      <div
+        className="expand"
+      >
+        <button
+          className="expandButton"
+          onClick={[Function]}
+        >
+          <i
+            className="fa fa-angle-double-down"
+          />
+        </button>
+      </div>
+    </div>
+    <div
+      className="bottomActions"
+    >
+      <div
+        className="add"
+      >
+        <a
+          className="addTaskButton"
+          href="/add"
+          onClick={[Function]}
+        >
+          <i
+            className="fa fa-plus"
+          />
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+`;

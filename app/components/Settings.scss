@@ -1,0 +1,26 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  background-color: white;
+
+  section {
+    margin: 10px 40px;
+  }
+
+  p {
+    font-size: 12px;
+  }
+
+  h2 {
+    margin-bottom: 8px;
+  }
+}
+
+.backButton {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  font-size: 26px;
+  color: #ff0844;
+}

@@ -1,5 +1,9 @@
+import fs from 'fs';
 import PouchDB from 'pouchdb-browser';
+import replicationStream from 'pouchdb-replication-stream';
 
+PouchDB.plugin(replicationStream.plugin);
+PouchDB.adapter('writableStream', replicationStream.adapters.writableStream);
 PouchDB.plugin(require('pouchdb-find'));
 
 const databases = {
@@ -20,6 +24,23 @@ export function query(params, type) {
 
 export function remove(doc, type) {
   return databases[type].remove(doc);
+}
+
+export function destroyDB() {
+  databases.tasks.destroy().then(() => {
+    databases.tasks = new PouchDB('tasks_db');
+    return true;
+  }).catch(e => e);
+}
+
+export function exportDB(path) {
+  const ws = fs.createWriteStream(`${path}/my-desktop-assistant-export.txt`);
+  return databases.tasks.dump(ws).then(res => res);
+}
+
+export function importDB(path) {
+  const ws = fs.createReadStream(path);
+  return databases.tasks.load(ws).then(res => res);
 }
 
 export function syncWith(upstream) {

@@ -45,6 +45,11 @@ export default class Actions extends Component {
     return (
       <div>
         <div className={styles.topActions}>
+          <div className={styles.settings}>
+            <Link to="/settings" className={styles.settingsButton}>
+              <i className="fa fa-cog" />
+            </Link>
+          </div>
           <div className={styles.expand}>
             <button onClick={this.expandWindow.bind(this)} className={styles.expandButton}>
               <i className={`fa ${this.state.expanded ? 'fa-angle-double-up' : 'fa-angle-double-down'}`} />

@@ -1,8 +1,13 @@
 .topActions {
+  z-index: 1;
   position: fixed;
   top: 0;
   right: 0;
-  margin: 10px;
+  margin: 10px 5px;
+}
+
+.topActions > * {
+  margin: 5px;
 }
 
 .bottomActions {
@@ -28,7 +33,7 @@ a.syncButton {
   color: white;
 }
 
-.expand {
+.expand, .settings {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -39,12 +44,16 @@ a.syncButton {
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.3);
 }
 
-.expandButton {
+.expandButton, .settingsButton {
   font-size: 14px;
   color: white;
   border: none;
   background: none;
   padding: 0;
+}
+
+.settingsButton {
+font-size: 10px;
 }
 
 .add {

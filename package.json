@@ -195,6 +195,7 @@
     "lodash": "^4.17.4",
     "moment": "^2.18.1",
     "pouchdb-find": "^0.10.5",
+    "pouchdb-replication-stream": "^1.2.9",
     "react": "^15.5.4",
     "react-addons-shallow-compare": "^15.5.2",
     "react-day-picker": "^5.2.0",
