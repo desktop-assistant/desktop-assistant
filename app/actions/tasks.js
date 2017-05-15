@@ -70,7 +70,14 @@ export function fetchTasksFailure(error: Object) {
 }
 
 export function createTask(props: Object) {
-  const request = create(props, 'tasks');
+  const task = props;
+  if (!task._id) {
+    const decodedId = `${props.beginAtDate} ${props.beginAtTime} ${props.name}`;
+    task._id = window.btoa(decodedId);
+    console.log('task._id', decodedId, task._id);
+  }
+
+  const request = create(task, 'tasks');
 
   return {
     type: CREATE_TASK,

@@ -3,6 +3,8 @@
   flex-direction: column;
   position: relative;
   background-color: white;
+	box-sizing: border-box;
+  height: 100vh;
 
   section {
     margin: 10px 40px;
@@ -13,7 +15,8 @@
   }
 
   h2 {
-    margin-bottom: 8px;
+		margin-top: 8px;
+    margin-bottom: 6px;
   }
 }
 

@@ -1,0 +1,17 @@
+// @flow
+import { create } from '../store/pouchDBStore';
+
+// Set new config
+export const SET_CONFIG = 'SET_CONFIG';
+export const SET_CONFIG_SUCCESS = 'SET_CONFIG_SUCCESS';
+export const SET_CONFIG_FAILURE = 'SET_CONFIG_FAILURE';
+
+
+export function setConfig(props: Object) {
+  const request = create(props, 'config');
+
+  return {
+    type: SET_CONFIG,
+    payload: request
+  };
+}
