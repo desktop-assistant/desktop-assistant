@@ -11,7 +11,7 @@ const databases = {
 };
 
 export function create(doc, type) {
-  return databases[type].post(doc);
+  return databases[type].put(doc);
 }
 
 export function update(params, type) {

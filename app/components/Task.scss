@@ -26,6 +26,16 @@
 
 .taskInfos {
   flex: 1;
+
+  h3 {
+    display: inline-block;
+  }
+
+  .gCalendarLogo {
+    vertical-align: text-bottom;
+    height: 20px;
+    margin: 0 6px;
+  }
 }
 
 .taskDuration {

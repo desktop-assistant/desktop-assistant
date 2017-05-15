@@ -1,11 +1,14 @@
-// @flow
-import React, { Component } from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import Settings from '../components/Settings';
+import * as TasksActions from '../actions/tasks';
 
-export default class HomePage extends Component {
-  render() {
-    return (
-      <Settings />
-    );
-  }
+function mapStateToProps() {
+  return {};
 }
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(TasksActions, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Settings);

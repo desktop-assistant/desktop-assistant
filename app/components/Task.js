@@ -1,9 +1,11 @@
 // @flow
+import { shell } from 'electron';
 import React, { Component } from 'react';
 import Rnd from 'react-rnd';
 import classNames from 'classnames/bind';
 
-import styles from './Task.css';
+import styles from './Task.scss';
+import gCalendarLogo from '../assets/img/logo-google-calendar-32px.png';
 
 const cx = classNames.bind(styles);
 
@@ -25,6 +27,10 @@ type TaskType = {
   endAtTime: string,
   name: string
 };
+
+function openLink(link: string) {
+  shell.openExternal(link);
+}
 
 export default class Task extends Component {
   state: {
@@ -126,6 +132,11 @@ export default class Task extends Component {
         </button>
         <div className={styles.taskInfos}>
           <h3>{ task.name }</h3>
+          { task.source === 'google calendar' &&
+            <a href="" onClick={() => (openLink(task.sourceLink))}>
+              <img src={gCalendarLogo} className={styles.gCalendarLogo} alt="gcalendar-logo" />
+            </a>
+          }
         </div>
         <div className={styles.taskDuration}>
           <div className={styles.durationBegin}>{ task.beginAtTime }</div>
