@@ -2,9 +2,10 @@
 
 [![Build Status][travis-img]][travis-url]
 [![Appveyor Build Status][appveyor-img]][appveyor-url]
-[![Dependency Status][david_img]][david_ur]
-[![MIT Licence][oss_img]][oss_ur]
+[![Dependency Status][david_img]][david_url]
+[![MIT Licence][oss_img]][oss_url]
 
+Desktop Assistant is a desktop app to smooth your daily routine tasks
 
 [travis-img]: https://travis-ci.org/desktop-assistant/desktop-assistant.svg?branch=master
 [travis-url]: https://travis-ci.org/desktop-assistant/desktop-assistant
