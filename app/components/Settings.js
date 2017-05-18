@@ -198,29 +198,31 @@ export default class Settings extends Component {
 
   render() {
     return (
-      <div className={styles.container}>
-        <Link to="/" className={styles.backButton}>
-          <i className="fa fa-chevron-left" />
-        </Link>
-        <section>
-          <article>
-            <h2>Google Calendar Sync</h2>
-            <button onClick={this.gcalSync.bind(this)}>Synchronize</button>
-          </article>
-          <article>
-            <h2>Import / Export Database</h2>
-            <button onClick={Settings.export}>Export</button>
-            <button onClick={Settings.import}>Import</button>
-          </article>
-          <article>
-            <h2>Clear all data</h2>
-            <button onClick={Settings.clearData}>Clear Data</button>
-            {/* <p>
-              IMPORTANT : You will lose all your tasks and app settings.
-              This action is irreversible !
-            </p> */}
-          </article>
-        </section>
+      <div>
+        <div className={`${styles.container}`}>
+          <Link to="/" className={`${styles.backButton}`}>
+            <i className="fa fa-chevron-left" />
+          </Link>
+          <section>
+            <article>
+              <h2>Google Calendar Sync</h2>
+              <button onClick={this.gcalSync.bind(this)}>Synchronize</button>
+            </article>
+            <article>
+              <h2>Import / Export Database</h2>
+              <button onClick={Settings.export}>Export</button>
+              <button onClick={Settings.import}>Import</button>
+            </article>
+            <article>
+              <h2>Clear all data</h2>
+              <button onClick={Settings.clearData}>Clear Data</button>
+              {/* <p>
+                IMPORTANT : You will lose all your tasks and app settings.
+                This action is irreversible !
+              </p> */}
+            </article>
+          </section>
+        </div>
       </div>
     );
   }

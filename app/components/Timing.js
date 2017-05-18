@@ -81,9 +81,8 @@ class Timing extends Component {
     // Difference in minutes
     const secs = dt.diff(startOfDay, 'seconds');
     const pc = (secs / 86400).toFixed(3);
-    const scrollTo = (2880 * +pc) - 100;
-    window.scrollTo(0, scrollTo);
-
+    this.scrollTo = `-${(2880 * +pc) - 100}px`;
+    // window.scrollTo(0, scrollTo);
     const currentTask = this.getCurrentTask(dt);
 
     if (currentTask) {
@@ -126,7 +125,7 @@ class Timing extends Component {
 
   render() {
     return (
-      <div className={styles.timing}>
+      <div className={styles.timing} style={{ 'margin-top': this.scrollTo }}>
         {this.state.currentTask &&
           <button className={styles.showCurrentTask} onClick={this.show.bind(this)}>
             <i className={styles.showCurrentTaskIcon} aria-hidden="true" />

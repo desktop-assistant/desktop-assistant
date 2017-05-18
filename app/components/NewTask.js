@@ -93,106 +93,108 @@ let NewTaskForm = class NewTask extends Component {
     const { handleSubmit, pristine, submitting, newTask, actionValue, freqValue } = this.props;
 
     return (
-      <div className={styles.container}>
-        {NewTask.renderError(newTask)}
-        <Link to="/" className={styles.backButton}>
-          <i className="fa fa-chevron-left" />
-        </Link>
-        <h1>New Task</h1>
-        <form className={styles.form} onSubmit={handleSubmit(validateAndCreateTask)}>
-          <Field
-            name="name"
-            type="text"
-            component={renderField}
-            label="NAME" required
-          />
-          <div className={styles.inlineField}>
-            <div className={styles.beginIcon} />
+      <div>
+        <div className={styles.container}>
+          {NewTask.renderError(newTask)}
+          <Link to="/" className={styles.backButton}>
+            <i className="fa fa-chevron-left" />
+          </Link>
+          <h1>New Task</h1>
+          <form className={styles.form} onSubmit={handleSubmit(validateAndCreateTask)}>
             <Field
-              name="beginAtDate"
-              type="date"
-              component={DatePicker}
-              label="BEGIN" required
+              name="name"
+              type="text"
+              component={renderField}
+              label="NAME" required
             />
-            <div className={styles.at}>at</div>
-            <Field
-              name="beginAtTime"
-              type="time"
-              component={TimePicker} required
-            />
-          </div>
-          <div className={styles.inlineField}>
-            <div className={styles.endIcon} />
-            <Field
-              name="endAtDate"
-              type="date"
-              component={DatePicker}
-              label="END" required
-            />
-            <div className={styles.at}>at</div>
-            <Field
-              name="endAtTime"
-              type="time"
-              component={TimePicker} required
-            />
-          </div>
-          <div>
-            <label className="control-label" htmlFor="action">ACTION</label>
-            <div className="custom-select form-control">
-              <Field name="action" component="select">
-                <option>None</option>
-                <option value="link">Website link</option>
-                <option value="app">Desktop App</option>
-              </Field>
+            <div className={styles.inlineField}>
+              <div className={styles.beginIcon} />
+              <Field
+                name="beginAtDate"
+                type="date"
+                component={DatePicker}
+                label="BEGIN" required
+              />
+              <div className={styles.at}>at</div>
+              <Field
+                name="beginAtTime"
+                type="time"
+                component={TimePicker} required
+              />
             </div>
-          </div>
-          { actionValue === 'link' && <Field
-            name="actionLink"
-            type="text"
-            component={renderField}
-            label="LINK"
-          /> }
-          { actionValue === 'app' && <Field
-            name="actionApp"
-            type="text"
-            component={AppSelector}
-            label="APP"
-          /> }
-          {this.state.repeat ?
-            <div className={styles.noRepeat}>
-              <a onClick={() => (this.setState({ repeat: !this.state.repeat }))}>Stop repeat ?</a>
+            <div className={styles.inlineField}>
+              <div className={styles.endIcon} />
+              <Field
+                name="endAtDate"
+                type="date"
+                component={DatePicker}
+                label="END" required
+              />
+              <div className={styles.at}>at</div>
+              <Field
+                name="endAtTime"
+                type="time"
+                component={TimePicker} required
+              />
             </div>
-            :
-            <div className={styles.repeat}>
-              <a onClick={() => (this.setState({ repeat: !this.state.repeat }))}>Repeat ?</a>
-            </div>
-          }
-          { this.state.repeat &&
             <div>
-              <label className="control-label" htmlFor="action">FREQUENCY</label>
+              <label className="control-label" htmlFor="action">ACTION</label>
               <div className="custom-select form-control">
-                <Field name="freq" component="select">
+                <Field name="action" component="select">
                   <option>None</option>
-                  <option value="daily">Daily</option>
+                  <option value="link">Website link</option>
+                  <option value="app">Desktop App</option>
                 </Field>
               </div>
             </div>
-          }
-          { this.state.repeat && freqValue === 'daily' && <div>
-            <Field
-              name="repeatOn"
-              component={DayPicker}
-              label="REPEAT ON"
-            />
-          </div> }
-          <button
-            type="submit"
-            className="button button--primary button--sm button--block"
-            disabled={pristine || submitting}
-          >
-            Add
-          </button>
-        </form>
+            { actionValue === 'link' && <Field
+              name="actionLink"
+              type="text"
+              component={renderField}
+              label="LINK"
+            /> }
+            { actionValue === 'app' && <Field
+              name="actionApp"
+              type="text"
+              component={AppSelector}
+              label="APP"
+            /> }
+            {this.state.repeat ?
+              <div className={styles.noRepeat}>
+                <a onClick={() => (this.setState({ repeat: !this.state.repeat }))}>Stop repeat ?</a>
+              </div>
+              :
+              <div className={styles.repeat}>
+                <a onClick={() => (this.setState({ repeat: !this.state.repeat }))}>Repeat ?</a>
+              </div>
+            }
+            { this.state.repeat &&
+              <div>
+                <label className="control-label" htmlFor="action">FREQUENCY</label>
+                <div className="custom-select form-control">
+                  <Field name="freq" component="select">
+                    <option>None</option>
+                    <option value="daily">Daily</option>
+                  </Field>
+                </div>
+              </div>
+            }
+            { this.state.repeat && freqValue === 'daily' && <div>
+              <Field
+                name="repeatOn"
+                component={DayPicker}
+                label="REPEAT ON"
+              />
+            </div> }
+            <button
+              type="submit"
+              className="button button--primary button--sm button--block"
+              disabled={pristine || submitting}
+            >
+              Add
+            </button>
+          </form>
+        </div>
       </div>
     );
   }

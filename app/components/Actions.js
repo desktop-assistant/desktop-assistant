@@ -46,7 +46,7 @@ export default class Actions extends Component {
       <div>
         <div className={styles.topActions}>
           <div className={styles.settings}>
-            <Link to="/settings" className={styles.settingsButton}>
+            <Link to="/settings" className={`${styles.settingsButton}`}>
               <i className="fa fa-cog" />
             </Link>
           </div>

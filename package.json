@@ -208,6 +208,7 @@
     "react-router": "^4.1.1",
     "react-router-dom": "^4.1.1",
     "react-router-redux": "^5.0.0-alpha.6",
+    "react-router-transition": "^0.1.1",
     "react-select": "^0.9.1",
     "redux": "^3.6.0",
     "redux-form": "^6.5.0",

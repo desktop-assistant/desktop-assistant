@@ -1,6 +1,6 @@
 .topActions {
   z-index: 1;
-  position: fixed;
+  position: absolute;
   top: 0;
   right: 0;
   margin: 10px 5px;
@@ -11,7 +11,7 @@
 }
 
 .bottomActions {
-  position: fixed;
+  position: absolute;
   bottom: 0;
   right: 0;
   margin: 10px;
