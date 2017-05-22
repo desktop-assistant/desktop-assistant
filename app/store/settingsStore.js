@@ -4,6 +4,7 @@ import { remote } from 'electron';
 import axios from 'axios';
 import qs from 'qs';
 import moment from 'moment';
+import _ from 'lodash';
 import { create, query } from '../store/pouchDBStore';
 import { configureStore } from './configureStore';
 import { queryTask, createTask } from '../actions/tasks';
@@ -163,7 +164,8 @@ export async function syncGoogleCalendar(check?: boolean) {
   let accessToken;
   const gSyncConf = await query({ selector: { _id: 'google-calendar-sync' } }, 'settings');
 
-  if (check && !gSyncConf.synchronized) {
+  const isSynced = _.get(gSyncConf, 'docs[0].synchronized');
+  if (check && !isSynced) {
     return false;
   }
 

@@ -47,8 +47,8 @@ export function resetSettings() {
   };
 }
 
-export async function syncGCalendar() {
-  const request = await syncGoogleCalendar();
+export async function syncGCalendar(check?: boolean) {
+  const request = await syncGoogleCalendar(check);
   return {
     type: SYNC_GCALENDAR,
     payload: request

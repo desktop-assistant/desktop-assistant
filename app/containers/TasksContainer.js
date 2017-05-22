@@ -25,7 +25,7 @@ const mapDispatchToProps = dispatch => ({
       return true;
     }).catch(console.error);
   },
-  syncGCalendar: () => (dispatch(syncGCalendar()))
+  syncGCalendar: (check) => (dispatch(syncGCalendar(check)))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Tasks);
