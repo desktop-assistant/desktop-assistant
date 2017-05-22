@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import moment from 'moment';
 import { remote } from 'electron';
 
+import { query } from '../store/pouchDBStore';
 import Task from '../containers/TaskContainer';
 import styles from './Tasks.css';
 
@@ -24,6 +25,7 @@ export default class Tasks extends Component {
     updateTask: () => void,
     updateTasks: () => void,
     fetchTasks: () => void,
+    syncGCalendar: () => void,
     tasksList: {
       tasks: Array<TaskType>
     }
@@ -52,20 +54,33 @@ export default class Tasks extends Component {
   }
 
   componentWillMount() {
+    this.syncGCal();
     this.props.fetchTasks();
+  }
+
+  async syncGCal() {
+    const res = await query({ selector: { _id: 'sync' } }, 'settings');
+    if (res && res.docs && res.docs.length) {
+      if (res.docs[0].gcalSync) {
+        this.props.syncGCalendar();
+        setTimeout(() => {
+          this.props.fetchTasks();
+        }, 3000);
+      }
+    }
   }
 
   reFetchTasks() {
     this.props.fetchTasks();
   }
 
-  handleTaskClick(taskId: string) {
+  handleTaskClick(task: TaskType) {
     const win = remote.getCurrentWindow();
-    if (this.state.selectedTask === taskId) {
+    if (this.state.selectedTask === task._id) {
       this.setState({ selectedTask: '' });
       win.setMovable(true);
-    } else {
-      this.setState({ selectedTask: taskId });
+    } else if (task.source !== 'google calendar') {
+      this.setState({ selectedTask: task._id });
       win.setMovable(false);
     }
   }
@@ -129,7 +144,7 @@ export default class Tasks extends Component {
           const now = moment();
           if (task && beginDate.isSame(now, 'day')) {
             return (
-              <div onClick={() => this.handleTaskClick(task._id)} key={task._id}>
+              <div onClick={() => this.handleTaskClick(task)} key={task._id}>
                 <Task
                   task={task} reFetchTasks={this.reFetchTasks.bind(this)}
                   moveTask={this.moveTask.bind(this)}

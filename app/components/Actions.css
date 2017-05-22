@@ -1,5 +1,5 @@
 .topActions {
-  z-index: 1;
+  z-index: 2;
   position: absolute;
   top: 0;
   right: 0;
@@ -11,6 +11,7 @@
 }
 
 .bottomActions {
+  z-index: 2;
   position: absolute;
   bottom: 0;
   right: 0;

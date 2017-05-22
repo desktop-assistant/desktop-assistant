@@ -74,6 +74,7 @@ class Timing extends Component {
 
   tasksList = []
   timerID = 0
+  scrollTo = 0
 
   tick() {
     const dt = moment();
@@ -126,11 +127,13 @@ class Timing extends Component {
   render() {
     return (
       <div className={styles.timing} style={{ 'margin-top': this.scrollTo }}>
-        {this.state.currentTask &&
-          <button className={styles.showCurrentTask} onClick={this.show.bind(this)}>
-            <i className={styles.showCurrentTaskIcon} aria-hidden="true" />
-          </button>
-        }
+        <div className={styles.currentTaskContainer}>
+          {this.state.currentTask &&
+            <button className={styles.showCurrentTask} onClick={this.show.bind(this)}>
+              <i className={styles.showCurrentTaskIcon} aria-hidden="true" />
+            </button>
+          }
+        </div>
         {this.state.currentTask && this.state.currentTask.visible &&
           <div className={styles.currentTask}>
             <h1>{this.state.currentTask.name}</h1>

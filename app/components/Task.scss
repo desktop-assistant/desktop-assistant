@@ -1,13 +1,14 @@
 .task {
+	display: flex;
+	flex-direction: column;
   box-sizing: border-box;
   padding: 6px;
   overflow: hidden;
   background-color: #ececec;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
-  display: flex;
 }
 
-.task:hover {
+.task.selectable:hover {
   cursor: pointer;
 }
 
@@ -19,15 +20,15 @@
   background-color: #ffb97c;
 }
 
-.task:active {
+.task.selected:active {
   cursor: move;
   cursor: grab;
 }
 
-.taskInfos {
-  flex: 1;
+.taskTitle {
+	min-width: 300px;
 
-  h3 {
+	h3 {
     display: inline-block;
   }
 
@@ -38,13 +39,23 @@
   }
 }
 
-.taskDuration {
-  width: 68px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  margin: 2px 0;
+.taskContent {
+	display: flex;
+  flex: 1;
+
+	.taskInfos {
+	  flex: 1;
+	}
+
+	.taskDuration {
+	  width: 68px;
+	  display: flex;
+	  flex-direction: column;
+	  justify-content: center;
+	  align-items: center;
+    margin-top: -20px;
+	  padding-right: 18px;
+	}
 }
 
 .durationBegin, .durationEnd {

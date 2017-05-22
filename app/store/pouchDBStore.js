@@ -7,7 +7,8 @@ PouchDB.adapter('writableStream', replicationStream.adapters.writableStream);
 PouchDB.plugin(require('pouchdb-find'));
 
 const databases = {
-  tasks: new PouchDB('tasks_db')
+  tasks: new PouchDB('tasks_db'),
+  settings: new PouchDB('settings_db')
 };
 
 export function create(doc, type) {

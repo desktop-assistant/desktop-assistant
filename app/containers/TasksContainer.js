@@ -2,6 +2,7 @@
 import { connect } from 'react-redux';
 import { updateTask, updateTaskSuccess, updateTaskFailure, fetchTasks, fetchTasksSuccess, fetchTasksFailure } from '../actions/tasks';
 import Tasks from '../components/Tasks';
+import { syncGCalendar } from '../actions/settings';
 
 const mapStateToProps = state => ({
   tasksList: state.tasks.tasksList
@@ -23,7 +24,8 @@ const mapDispatchToProps = dispatch => ({
         : dispatch(updateTaskFailure(response.payload));
       return true;
     }).catch(console.error);
-  }
+  },
+  syncGCalendar: () => (dispatch(syncGCalendar()))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Tasks);

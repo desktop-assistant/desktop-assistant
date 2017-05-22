@@ -25,7 +25,8 @@ type TaskType = {
   beginAtTime: string,
   endAtDate: string,
   endAtTime: string,
-  name: string
+  name: string,
+  source?: string
 };
 
 function openLink(link: string) {
@@ -101,18 +102,19 @@ export default class Task extends Component {
   rnd = {}
 
   render() {
-    const taskClassName = cx({
-      task: true,
-      selected: this.props.selected
-    });
     const {
       task, selected
     } = this.props;
+    const TaskStyle = cx({
+      task: true,
+      selectable: task.source !== 'google calendar',
+      selected: this.props.selected
+    });
     return (
       <Rnd
         zIndex={0}
         ref={c => { this.rnd = c; }}
-        className={taskClassName}
+        className={TaskStyle}
         isResizable={selected ? { top: true, bottom: true } : {}}
         onDragStart={this.onDragStart.bind(this)}
         onDragStop={this.onDragStop.bind(this)}
@@ -127,10 +129,12 @@ export default class Task extends Component {
           opacity: this.state.dragging ? 0.5 : 1
         }}
       >
-        <button onClick={this.onDeleteClick.bind(this)} className={styles.deleteTask}>
-          <i className="fa fa-trash" aria-hidden="true" />
-        </button>
-        <div className={styles.taskInfos}>
+        { task.source !== 'google calendar' &&
+          <button onClick={this.onDeleteClick.bind(this)} className={styles.deleteTask}>
+            <i className="fa fa-trash" aria-hidden="true" />
+          </button>
+        }
+        <div className={styles.taskTitle}>
           <h3>{ task.name }</h3>
           { task.source === 'google calendar' &&
             <a href="" onClick={() => (openLink(task.sourceLink))}>
@@ -138,10 +142,14 @@ export default class Task extends Component {
             </a>
           }
         </div>
-        <div className={styles.taskDuration}>
-          <div className={styles.durationBegin}>{ task.beginAtTime }</div>
-          <div className={styles.line} />
-          <div className={styles.durationEnd}>{ task.endAtTime }</div>
+        <div className={styles.taskContent}>
+          <div className={styles.taskInfos}>
+          </div>
+          <div className={styles.taskDuration}>
+            <div className={styles.durationBegin}>{ task.beginAtTime }</div>
+            <div className={styles.line} />
+            <div className={styles.durationEnd}>{ task.endAtTime }</div>
+          </div>
         </div>
       </Rnd>
     );
