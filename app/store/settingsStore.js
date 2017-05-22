@@ -151,7 +151,7 @@ async function convertEvents(events: Array<Object>) {
           task._rev = result.payload.docs[0]._rev;
         }
       } catch (err) {
-        console.log('err', err);
+        console.error('err', err);
       }
 
       store.dispatch(createTask(task));
@@ -159,20 +159,31 @@ async function convertEvents(events: Array<Object>) {
   }
 }
 
-export async function syncGoogleCalendar() {
-  const googleProvider = await googleSignIn();
-  if (googleProvider.accessToken) {
-    const accessToken = googleProvider.accessToken;
-    const res = await query({ selector: { _id: 'google-calendar-sync' } }, 'settings');
+export async function syncGoogleCalendar(check?: boolean) {
+  let accessToken;
+  const gSyncConf = await query({ selector: { _id: 'google-calendar-sync' } }, 'settings');
+
+  if (check && !gSyncConf.synchronized) {
+    return false;
+  }
+
+  if (!gSyncConf.token) {
+    const googleProvider = await googleSignIn();
+    accessToken = googleProvider.accessToken;
+  } else {
+    accessToken = gSyncConf.token;
+  }
+
+  if (accessToken) {
     const syncConf = {
       _id: 'google-calendar-sync',
       token: accessToken,
-      sync: true,
+      synchronized: true,
       lastSync: new Date()
     };
 
-    if (res && res.docs && res.docs.length) {
-      syncConf._rev = res.docs[0]._rev;
+    if (gSyncConf && gSyncConf.docs && gSyncConf.docs.length) {
+      syncConf._rev = gSyncConf.docs[0]._rev;
     }
     create(syncConf, 'settings');
     const events = await getEvents(accessToken, 'primary');

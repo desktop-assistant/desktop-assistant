@@ -7,11 +7,9 @@ import {
   resetSettings
 } from '../actions/settings';
 
-const mapStateToProps = state => {
-  return {
-    settings: state.settings
-  };
-};
+const mapStateToProps = state => ({
+  settings: state.settings
+});
 
 const mapDispatchToProps = dispatch => ({
   fetchSettings: () => {

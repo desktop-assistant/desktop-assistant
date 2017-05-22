@@ -1,6 +1,6 @@
 // @flow
 import { syncGoogleCalendar } from '../store/settingsStore';
-import { query, remove } from '../store/pouchDBStore';
+import { query, destroyDB } from '../store/pouchDBStore';
 
 export const FETCH_SETTINGS = 'FETCH_SETTINGS';
 export const FETCH_SETTINGS_SUCCESS = 'FETCH_SETTINGS_SUCCESS';
@@ -39,15 +39,10 @@ export function fetchSettingsFailure(error: Object) {
 }
 
 export function resetSettings() {
-  const filter = {
-    selector: {
-      _id: 'google-calendar-sync'
-    }
-  };
-  const request = remove(filter, 'settings');
+  const request = destroyDB('settings');
 
   return {
-    type: FETCH_SETTINGS,
+    type: RESET_SETTINGS,
     payload: request
   };
 }

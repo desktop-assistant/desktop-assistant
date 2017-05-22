@@ -6,9 +6,14 @@ PouchDB.plugin(replicationStream.plugin);
 PouchDB.adapter('writableStream', replicationStream.adapters.writableStream);
 PouchDB.plugin(require('pouchdb-find'));
 
+const databasesName = {
+  tasks: 'tasks_db',
+  settings: 'settings_db'
+};
+
 const databases = {
-  tasks: new PouchDB('tasks_db'),
-  settings: new PouchDB('settings_db')
+  tasks: new PouchDB(databasesName.tasks),
+  settings: new PouchDB(databasesName.settings)
 };
 
 export function create(doc, type) {
@@ -27,9 +32,9 @@ export function remove(doc, type) {
   return databases[type].remove(doc);
 }
 
-export function destroyDB() {
-  databases.tasks.destroy().then(() => {
-    databases.tasks = new PouchDB('tasks_db');
+export function destroyDB(type) {
+  databases[type].destroy().then(() => {
+    databases[type] = new PouchDB(databasesName[type]);
     return true;
   }).catch(e => e);
 }

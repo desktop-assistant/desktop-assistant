@@ -59,15 +59,10 @@ export default class Tasks extends Component {
   }
 
   async syncGCal() {
-    const res = await query({ selector: { _id: 'sync' } }, 'settings');
-    if (res && res.docs && res.docs.length) {
-      if (res.docs[0].gcalSync) {
-        this.props.syncGCalendar();
-        setTimeout(() => {
-          this.props.fetchTasks();
-        }, 3000);
-      }
-    }
+    this.props.syncGCalendar(true);
+    setTimeout(() => {
+      this.props.fetchTasks();
+    }, 3000);
   }
 
   reFetchTasks() {
@@ -75,11 +70,12 @@ export default class Tasks extends Component {
   }
 
   handleTaskClick(task: TaskType) {
+    console.log('task', task);
     const win = remote.getCurrentWindow();
     if (this.state.selectedTask === task._id) {
       this.setState({ selectedTask: '' });
       win.setMovable(true);
-    } else if (task.source !== 'google calendar') {
+    } else if (!task.source) {
       this.setState({ selectedTask: task._id });
       win.setMovable(false);
     }

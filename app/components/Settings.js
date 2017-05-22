@@ -38,7 +38,7 @@ export default class Settings extends Component {
   }
 
   static clearData() {
-    destroyDB();
+    destroyDB('tasks');
   }
 
   componentWillMount() {
@@ -67,9 +67,9 @@ export default class Settings extends Component {
             <article>
               <h2>Google Calendar Sync</h2>
               {
-                settings.sync.sync
+                settings && settings.googleCalSync && settings.googleCalSync.synchronized
                   ? <div className={styles.synchronized}>
-                    Synchronized ! {moment(settings.sync.lastSync).fromNow()}
+                    synchronized ! {moment(settings.googleCalSync.lastSync).fromNow()}
                   </div>
                   : <button onClick={this.gcalSync.bind(this)}>Synchronize</button>
               }
@@ -82,7 +82,7 @@ export default class Settings extends Component {
             <article>
               <h2>Clear data / settings</h2>
               <button onClick={Settings.clearData}>Clear Data</button>
-                <button onClick={this.resetSettings.bind(this)}>Reset Settings</button>
+              <button onClick={this.resetSettings.bind(this)}>Reset Settings</button>
               {/* <p>
                 IMPORTANT : You will lose all your tasks and app settings.
                 This action is irreversible !
