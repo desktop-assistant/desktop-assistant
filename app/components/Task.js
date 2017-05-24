@@ -3,6 +3,7 @@ import { shell } from 'electron';
 import React, { Component } from 'react';
 import Rnd from 'react-rnd';
 import classNames from 'classnames/bind';
+import moment from 'moment';
 
 import styles from './Task.scss';
 import gCalendarLogo from '../assets/img/logo-google-calendar-32px.png';
@@ -48,19 +49,17 @@ export default class Task extends Component {
     task: TaskType
   }
 
-  static timeStringToFloat(time) {
-    const hoursMinutes = time.split(/[.:h]/);
-    const hours = parseInt(hoursMinutes[0], 10);
-    const minutes = parseInt(hoursMinutes[1], 10);
-    const floatValue = hours + (minutes / 60);
+  static timeStringToFloat(date: string) {
+    const mDate = moment(date);
+    const floatValue = mDate.hours() + (mDate.minutes() / 60);
     return floatValue;
   }
 
-  static getTaskHeight(beginTime, endTime) {
-    if (!beginTime || !beginTime.length || !endTime || !endTime.length) {
+  static getTaskHeight(beginDate, endDate) {
+    if (!beginDate || !beginDate.length || !endDate || !endDate.length) {
       return 0;
     }
-    const duration = Task.timeStringToFloat(endTime) - Task.timeStringToFloat(beginTime);
+    const duration = Task.timeStringToFloat(endDate) - Task.timeStringToFloat(beginDate);
     return duration * 120;
   }
 
@@ -122,11 +121,12 @@ export default class Task extends Component {
         moveAxis={selected ? 'y' : 'none'}
         initial={{
           x: 0,
-          y: task.beginAtTime ? Task.timeStringToFloat(task.beginAtTime) * 120 : 0,
-          height: Task.getTaskHeight(task.beginAtTime, task.endAtTime)
+          y: task.beginAt ? Task.timeStringToFloat(task.beginAt) * 120 : 0,
+          height: Task.getTaskHeight(task.beginAt, task.endAt)
         }}
         style={{
-          opacity: this.state.dragging ? 0.5 : 1
+          opacity: this.state.dragging ? 0.5 : 1,
+          minHeight: selected ? null : Task.getTaskHeight(task.beginAt, task.endAt)
         }}
       >
         { task.source !== 'google calendar' &&
@@ -145,15 +145,19 @@ export default class Task extends Component {
         <div className={styles.taskContent}>
           <div className={styles.taskInfos}>
             { task.location &&
-              <div classNmae={styles.taskLocation}>
+              <div className={styles.taskLocation}>
                 <i className="fa fa-location-arrow" aria-hidden="true"></i> { task.location }
               </div>
             }
           </div>
           <div className={styles.taskDuration}>
-            <div className={styles.durationBegin}>{ task.beginAtTime }</div>
+            <div className={styles.durationBegin}>
+              { moment(task.beginAt).format('HH:mm') }
+            </div>
             <div className={styles.line} />
-            <div className={styles.durationEnd}>{ task.endAtTime }</div>
+            <div className={styles.durationEnd}>
+              { moment(task.endAt).format('HH:mm') }
+            </div>
           </div>
         </div>
       </Rnd>

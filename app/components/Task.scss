@@ -8,7 +8,7 @@
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
 	overflow: hidden;
 
-	&:hover {
+	&:hover:not(.selected) {
 		height: auto !important;
 	}
 
@@ -47,7 +47,7 @@
 .taskContent {
 	display: flex;
   flex: 1;
-	min-height: 50px;
+	min-height: 40px;
 	font-size: 12px;
 
 	.taskInfos {
@@ -95,7 +95,7 @@
   color: #444444;
 }
 
-.task:hover .deleteTask {
+.task:hover .deleteTask,  .task.selected .deleteTask{
   display: block;
 }
 

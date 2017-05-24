@@ -9,11 +9,11 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  fetchTasks: () => {
-    dispatch(fetchTasks()).then((response) => {
+  fetchTasks: (type) => {
+    dispatch(fetchTasks(type)).then((response) => {
       !response.error
-        ? dispatch(fetchTasksSuccess(response.payload.docs))
-        : dispatch(fetchTasksFailure(response.payload.docs));
+        ? dispatch(fetchTasksSuccess(response.payload.rows))
+        : dispatch(fetchTasksFailure(response.payload.rows));
       return true;
     }).catch(console.error);
   },

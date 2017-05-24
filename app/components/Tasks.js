@@ -7,12 +7,9 @@ import Task from '../containers/TaskContainer';
 import styles from './Tasks.css';
 
 type TaskType = {
-  _id: string,
-  beginAtDate: string,
-  beginAtTime: string,
-  endAtDate: string,
-  endAtTime: string,
-  repeatOn?: string
+  id?: string,
+  doc?: Object,
+  key?: string
 };
 
 export default class Tasks extends Component {
@@ -30,26 +27,6 @@ export default class Tasks extends Component {
     }
   }
 
-  static getTaskWithFreq(task: TaskType) {
-    const newTask = task;
-    if (task.freq === 'weekly') {
-      const now = moment();
-      const today = now.format('dddd');
-
-      const repeatOn = newTask.repeatOn || 'Sunday,Tuesday,Monday,Wednesday,Thursday,Friday,Saturday';
-      if (repeatOn.indexOf(today) > -1) {
-        newTask.beginAtDate = now.format('MM-DD-YYYY');
-      }
-    }
-
-    if (task.freq === 'daily') {
-      const now = moment();
-      newTask.beginAtDate = now.format('MM-DD-YYYY');
-    }
-
-    return newTask;
-  }
-
   constructor() {
     super();
     this.state = {
@@ -59,72 +36,70 @@ export default class Tasks extends Component {
 
   componentWillMount() {
     this.syncGCal();
-    this.props.fetchTasks();
+    this.props.fetchTasks('today');
   }
 
   async syncGCal() {
     this.props.syncGCalendar(true);
     setTimeout(() => {
-      this.props.fetchTasks();
+      this.props.fetchTasks('today');
     }, 3000);
   }
 
   reFetchTasks() {
-    this.props.fetchTasks();
+    this.props.fetchTasks('today');
   }
 
   handleTaskClick(task: TaskType) {
     const win = remote.getCurrentWindow();
-    if (this.state.selectedTask === task._id) {
+    if (this.state.selectedTask === task.id) {
       this.setState({ selectedTask: '' });
       win.setMovable(true);
-    } else if (!task.source) {
-      this.setState({ selectedTask: task._id });
+    } else if (!task.doc.source) {
+      this.setState({ selectedTask: task.id });
       win.setMovable(false);
     }
   }
 
   moveTask(task: TaskType, newPosition: number) {
     const newTask = task;
-    const beginMinutes = newPosition * 0.5;
+    const msInADay = 24 * 60 * 60 * 1000;
+    const totalHeight = 120 * 24;
+    const milliseconds = newPosition * (msInADay / totalHeight);
+    const beginAt = moment(newTask.beginAt);
+    const beginAtMs = (beginAt.hours() * 60 * 60 * 1000) +
+                      (beginAt.minutes() * 60 * 1000) +
+                      (beginAt.seconds() * 1000) +
+                      beginAt.milliseconds();
 
-    const beginDate = moment(`${task.beginAtDate}-${task.beginAtTime}`, 'MM-DD-YYYY-HH:mm');
-    const endDate = moment(`${task.endAtDate}-${task.endAtTime}`, 'MM-DD-YYYY-HH:mm');
-    const duration = endDate.diff(beginDate, 'minutes');
+    const deltaMs = milliseconds - beginAtMs;
 
-    beginDate.hour(0).minutes(beginMinutes);
-    endDate.hour(0).minutes(beginMinutes + duration);
-
-    newTask.beginAtDate = beginDate.format('MM-DD-YYYY');
-    newTask.beginAtTime = beginDate.format('H:m');
-
-    newTask.endAtDate = endDate.format('MM-DD-YYYY');
-    newTask.endAtTime = endDate.format('H:m');
-
+    newTask.beginAt = moment(newTask.beginAt).add(deltaMs, 'milliseconds').toISOString();
+    newTask.endAt = moment(newTask.endAt).add(deltaMs, 'milliseconds').toISOString();
     this.props.updateTask(newTask);
-    this.props.fetchTasks();
+    this.props.fetchTasks('today');
   }
 
   resizeTask(task: TaskType, dir: string, delta: number) {
     const newTask = task;
-    const diffTime = delta * 0.5;
-    const beginDate = moment(`${task.beginAtDate}-${task.beginAtTime}`, 'MM-DD-YYYY-HH:mm');
-    const endDate = moment(`${task.endAtDate}-${task.endAtTime}`, 'MM-DD-YYYY-HH:mm');
+    const msInADay = 24 * 60 * 60 * 1000;
+    const totalHeight = 120 * 24;
+    const diffMs = delta * (msInADay / totalHeight);
 
     if (dir === 'top') {
-      beginDate.subtract(diffTime, 'minutes');
-      newTask.beginAtDate = beginDate.format('MM-DD-YYYY');
-      newTask.beginAtTime = beginDate.format('H:m');
+      const beginAt = moment(task.beginAt);
+      beginAt.subtract(diffMs, 'milliseconds');
+      newTask.beginAt = beginAt.toISOString();
     }
 
     if (dir === 'bottom') {
-      endDate.add(diffTime, 'minutes');
-      newTask.endAtDate = endDate.format('MM-DD-YYYY');
-      newTask.endAtTime = endDate.format('H:m');
+      const endAt = moment(task.endAt);
+      endAt.add(diffMs, 'milliseconds');
+      newTask.endAt = endAt.toISOString();
     }
 
     this.props.updateTask(newTask);
-    this.props.fetchTasks();
+    this.props.fetchTasks('today');
   }
 
   render() {
@@ -134,27 +109,16 @@ export default class Tasks extends Component {
     this.props.updateTasks(this.props.tasksList.tasks);
     return (
       <div className={styles.tasks}>
-        {tasks.map(t => {
-          let task = t;
-          if (task.freq) {
-            task = Tasks.getTaskWithFreq(task);
-          }
-          const beginDate = moment(`${task.beginAtDate}-${task.beginAtTime}`, 'MM-DD-YYYY-HH:mm');
-          const now = moment();
-          if (task && beginDate.isSame(now, 'day')) {
-            return (
-              <div onClick={() => this.handleTaskClick(task)} key={task._id} className={styles.task}>
-                <Task
-                  task={task} reFetchTasks={this.reFetchTasks.bind(this)}
-                  moveTask={this.moveTask.bind(this)}
-                  resizeTask={this.resizeTask.bind(this)}
-                  selected={this.state.selectedTask === task._id}
-                />
-              </div>
-            );
-          }
-          return '';
-        })}
+        {tasks.map(task => (
+          <div onClick={() => this.handleTaskClick(task)} key={task.id} className={styles.task}>
+            <Task
+              task={task.doc} reFetchTasks={this.reFetchTasks.bind(this)}
+              moveTask={this.moveTask.bind(this)}
+              resizeTask={this.resizeTask.bind(this)}
+              selected={this.state.selectedTask === task.id}
+            />
+          </div>
+        ))}
       </div>
     );
   }

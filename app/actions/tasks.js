@@ -1,5 +1,6 @@
 // @flow
-import { create, update, query, remove } from '../store/pouchDBStore';
+import moment from 'moment';
+import { create, update, query, complexQuery, remove } from '../store/pouchDBStore';
 
 // Task List
 export const FETCH_TASKS = 'FETCH_TASKS';
@@ -35,19 +36,55 @@ type TaskType = {
   action?: string,
   actionApp?: string,
   actionLink?: string,
-  beginAtDate?: string,
-  beginAtTime?: string,
-  endAtDate?: string,
-  endAtTime?: string,
+  beginAt?: string,
+  endAt?: string,
   name?: string,
   visible?: boolean
 };
 
-export function fetchTasks() {
-  const filter = {
-    selector: {}
-  };
-  const request = query(filter, 'tasks');
+export function fetchTasks(type) {
+  let request;
+  if (type === 'today') {
+    const start = new Date();
+    start.setHours(0, 0, 0, 0);
+    const end = new Date();
+    end.setHours(23, 59, 59, 999);
+    const options = {
+      startkey: start,
+      endkey: end,
+      include_docs: true
+    };
+    request = complexQuery((doc, emit) => {
+      const newDoc = doc;
+      if (doc.freq === 'weekly' && doc.repeatOn && doc.beginAt) {
+        const now = moment();
+        const today = now.format('dddd');
+
+        const repeatOn = doc.repeatOn || 'Sunday,Tuesday,Monday,Wednesday,Thursday,Friday,Saturday';
+        if (repeatOn.indexOf(today) > -1) {
+          const beginAt = moment(doc.beginAt);
+          const hours = beginAt.hours();
+          const minutes = beginAt.minutes();
+          newDoc.beginAt = now.hours(hours).minutes(minutes).toISOString();
+        }
+      }
+
+      if (doc.freq === 'daily' && doc.beginAt) {
+        const now = moment().seconds(0).milliseconds(0);
+        const beginAt = moment(doc.beginAt);
+        const hours = beginAt.hours();
+        const minutes = beginAt.minutes();
+        newDoc.beginAt = now.hours(hours).minutes(minutes).toISOString();
+      }
+
+      emit(newDoc.beginAt);
+    }, options, 'tasks');
+  } else {
+    const filter = {
+      selector: {}
+    };
+    request = query(filter, 'tasks');
+  }
 
   return {
     type: FETCH_TASKS,
@@ -55,7 +92,7 @@ export function fetchTasks() {
   };
 }
 
-export function fetchTasksSuccess(tasks: Array<TaskType>) {
+export function fetchTasksSuccess(tasks?: Object) {
   return {
     type: FETCH_TASKS_SUCCESS,
     payload: tasks
@@ -72,8 +109,18 @@ export function fetchTasksFailure(error: Object) {
 export function createTask(props: Object) {
   const task = props;
   if (!task._id) {
-    const decodedId = `${props.beginAtDate} ${props.beginAtTime} ${props.name}`;
+    const decodedId = `${props.beginAt} ${props.endAt} ${props.name}`;
     task._id = window.btoa(decodedId);
+  }
+
+  if (task.beginAtDate && task.beginAtTime) {
+    const momentTime = moment(`${task.beginAtDate}-${task.beginAtTime}`, 'MM-DD-YYYY-HH:mm');
+    task.beginAt = momentTime.toISOString();
+  }
+
+  if (task.endAtDate && task.endAtTime) {
+    const momentTime = moment(`${task.endAtDate}-${task.endAtTime}`, 'MM-DD-YYYY-HH:mm');
+    task.endAt = momentTime.toISOString();
   }
 
   const request = create(task, 'tasks');

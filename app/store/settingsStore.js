@@ -129,10 +129,8 @@ async function convertEvents(events: Array<Object>) {
       const end = moment(event.end.dateTime);
       const task = {
         name: event.summary,
-        beginAtDate: start.format('MM-DD-YYYY'),
-        beginAtTime: start.format('H:m'),
-        endAtDate: end.format('MM-DD-YYYY'),
-        endAtTime: end.format('H:m'),
+        beginAt: start.toISOString(),
+        endAt: end.toISOString(),
         source: 'google calendar',
         sourceLink: event.htmlLink,
         location: event.location,
@@ -157,7 +155,8 @@ async function convertEvents(events: Array<Object>) {
       try {
         const encodedId = window.btoa(`${event.id} google-calendar`);
         const result = await store.dispatch(queryTask({ selector: { _id: encodedId } }));
-        if (result && result.payload.docs.length && result.payload.docs[0]._rev) {
+
+        if (result && result.payload.docs && result.payload.docs.length && result.payload.docs[0]._rev) {
           task._rev = result.payload.docs[0]._rev;
         }
       } catch (err) {

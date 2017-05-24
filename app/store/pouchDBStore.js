@@ -28,6 +28,10 @@ export function query(params, type) {
   return databases[type].find(params);
 }
 
+export function complexQuery(map, options, type) {
+  return databases[type].query(map, options);
+}
+
 export function remove(doc, type) {
   return databases[type].remove(doc);
 }
