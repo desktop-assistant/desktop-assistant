@@ -36,6 +36,11 @@ a:hover {
 .react-draggable {
   left: 0;
   right: 0;
+
+	&:hover {
+	  z-index: 2 !important;
+	}
+
 }
 
 button:focus {

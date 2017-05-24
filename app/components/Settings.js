@@ -67,12 +67,12 @@ export default class Settings extends Component {
             <article>
               <h2>Google Calendar Sync</h2>
               {
-                settings && settings.googleCalSync && settings.googleCalSync.synchronized
-                  ? <div className={styles.synchronized}>
-                    synchronized ! {moment(settings.googleCalSync.lastSync).fromNow()}
+                settings && settings.googleCalSync && settings.googleCalSync.synchronized &&
+                  <div className={styles.synchronized}>
+                    Last sync : {moment(settings.googleCalSync.lastSync).fromNow()}
                   </div>
-                  : <button onClick={this.gcalSync.bind(this)}>Synchronize</button>
               }
+              <button onClick={this.gcalSync.bind(this)}>Synchronize</button>
             </article>
             <article>
               <h2>Import / Export Database</h2>

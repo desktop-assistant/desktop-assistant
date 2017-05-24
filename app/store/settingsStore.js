@@ -135,7 +135,8 @@ async function convertEvents(events: Array<Object>) {
         endAtTime: end.format('H:m'),
         source: 'google calendar',
         sourceLink: event.htmlLink,
-        dataSource: event
+        location: event.location,
+        dataSource: event,
       };
       if (event.hangoutLink) {
         const decodedId = `${event.id} google-calendar`;
@@ -143,6 +144,14 @@ async function convertEvents(events: Array<Object>) {
         task.action = 'link';
         task.actionLink = event.hangoutLink;
         task.actionLinkType = 'hangout';
+      }
+
+      if (event.recurrence && event.recurrence.length) {
+        const recurrence = event.recurrence[0];
+        const freq = getValueFromStr('FREQ', recurrence);
+        const repeatOn = getValueFromStr('BYDAY', recurrence);
+        task.freq = freq.toLowerCase();
+        task.repeatOn = formatRepeatOn(repeatOn);
       }
 
       try {
@@ -158,6 +167,31 @@ async function convertEvents(events: Array<Object>) {
       store.dispatch(createTask(task));
     }
   }
+}
+
+function getValueFromStr(key, str) {
+  return str.split(`${key}=`).pop().split(';').shift();
+}
+
+function formatRepeatOn(gCalReapeatOn) {
+  const resArray = [];
+  const conv = {
+    SU: 'Sunday',
+    MO: 'Monday',
+    TU: 'Tuesday',
+    WE: 'Wednesday',
+    TH: 'Thursday',
+    FR: 'Friday',
+    SA: 'Saturday'
+  };
+
+  const gDays = gCalReapeatOn.split(',');
+
+  for (const gDay of gDays) {
+    resArray.push(conv[gDay]);
+  }
+
+  return resArray.toString();
 }
 
 export async function syncGoogleCalendar(check?: boolean) {

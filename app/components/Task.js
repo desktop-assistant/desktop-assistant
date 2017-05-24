@@ -144,6 +144,11 @@ export default class Task extends Component {
         </div>
         <div className={styles.taskContent}>
           <div className={styles.taskInfos}>
+            { task.location &&
+              <div classNmae={styles.taskLocation}>
+                <i className="fa fa-location-arrow" aria-hidden="true"></i> { task.location }
+              </div>
+            }
           </div>
           <div className={styles.taskDuration}>
             <div className={styles.durationBegin}>{ task.beginAtTime }</div>

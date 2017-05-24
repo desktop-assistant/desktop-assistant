@@ -3,11 +3,12 @@
   position: absolute;
   top: 0;
   right: 0;
-  margin: 10px 5px;
 }
 
-.topActions > * {
-  margin: 5px;
+.topActions, .bottomActions {
+  & > * {
+    margin: 5px;
+  }
 }
 
 .bottomActions {
@@ -15,7 +16,6 @@
   position: absolute;
   bottom: 0;
   right: 0;
-  margin: 10px;
 }
 
 .sync {

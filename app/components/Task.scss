@@ -6,23 +6,28 @@
   overflow: hidden;
   background-color: #ececec;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
-}
+	overflow: hidden;
 
-.task.selectable:hover {
-  cursor: pointer;
-}
+	&:hover {
+		height: auto !important;
+	}
 
-.task.selected {
-  z-index: 1;
-  cursor: move;
-  cursor: grab;
-  transition: border 0.4s;
-  background-color: #ffb97c;
-}
+	&.selectable:hover {
+	  cursor: pointer;
+	}
 
-.task.selected:active {
-  cursor: move;
-  cursor: grab;
+	&.selected {
+	  z-index: 1;
+	  cursor: move;
+	  cursor: grab;
+	  transition: border 0.4s;
+	  background-color: #ffb97c;
+
+		&:active {
+		  cursor: move;
+		  cursor: grab;
+		}
+	}
 }
 
 .taskTitle {
@@ -42,9 +47,12 @@
 .taskContent {
 	display: flex;
   flex: 1;
+	min-height: 50px;
+	font-size: 12px;
 
 	.taskInfos {
 	  flex: 1;
+		padding: 10px;
 	}
 
 	.taskDuration {
@@ -53,7 +61,7 @@
 	  flex-direction: column;
 	  justify-content: center;
 	  align-items: center;
-    margin-top: -8px;
+    margin-top: -6px;
 	  padding-right: 18px;
 	}
 }

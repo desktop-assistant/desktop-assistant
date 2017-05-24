@@ -2,8 +2,7 @@
 import React, { Component } from 'react';
 import { remote, screen } from 'electron';
 import { Link } from 'react-router-dom';
-import styles from './Actions.css';
-// import { syncWith } from '../store/pouchDBStore';
+import styles from './Actions.scss';
 
 export default class Actions extends Component {
   state: {

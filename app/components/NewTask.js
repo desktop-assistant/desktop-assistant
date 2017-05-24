@@ -175,11 +175,12 @@ let NewTaskForm = class NewTask extends Component {
                   <Field name="freq" component="select">
                     <option>None</option>
                     <option value="daily">Daily</option>
+                    <option value="daily">Weekly</option>
                   </Field>
                 </div>
               </div>
             }
-            { this.state.repeat && freqValue === 'daily' && <div>
+            { this.state.repeat && freqValue === 'Weekly' && <div>
               <Field
                 name="repeatOn"
                 component={DayPicker}

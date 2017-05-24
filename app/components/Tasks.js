@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import moment from 'moment';
 import { remote } from 'electron';
 
-import { query } from '../store/pouchDBStore';
 import Task from '../containers/TaskContainer';
 import styles from './Tasks.css';
 
@@ -33,14 +32,19 @@ export default class Tasks extends Component {
 
   static getTaskWithFreq(task: TaskType) {
     const newTask = task;
-    if (task.freq === 'daily') {
+    if (task.freq === 'weekly') {
       const now = moment();
       const today = now.format('dddd');
 
-      const repeatOn = newTask.repeatOn || [];
+      const repeatOn = newTask.repeatOn || 'Sunday,Tuesday,Monday,Wednesday,Thursday,Friday,Saturday';
       if (repeatOn.indexOf(today) > -1) {
         newTask.beginAtDate = now.format('MM-DD-YYYY');
       }
+    }
+
+    if (task.freq === 'daily') {
+      const now = moment();
+      newTask.beginAtDate = now.format('MM-DD-YYYY');
     }
 
     return newTask;
@@ -70,7 +74,6 @@ export default class Tasks extends Component {
   }
 
   handleTaskClick(task: TaskType) {
-    console.log('task', task);
     const win = remote.getCurrentWindow();
     if (this.state.selectedTask === task._id) {
       this.setState({ selectedTask: '' });
@@ -140,7 +143,7 @@ export default class Tasks extends Component {
           const now = moment();
           if (task && beginDate.isSame(now, 'day')) {
             return (
-              <div onClick={() => this.handleTaskClick(task)} key={task._id}>
+              <div onClick={() => this.handleTaskClick(task)} key={task._id} className={styles.task}>
                 <Task
                   task={task} reFetchTasks={this.reFetchTasks.bind(this)}
                   moveTask={this.moveTask.bind(this)}
