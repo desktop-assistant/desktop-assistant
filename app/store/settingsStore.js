@@ -8,14 +8,15 @@ import _ from 'lodash';
 import { create, query } from '../store/pouchDBStore';
 import { configureStore } from './configureStore';
 import { queryTask, createTask } from '../actions/tasks';
+import { config } from '../config';
 
 const store = configureStore();
 
 const GOOGLE_AUTHORIZATION_URL = 'https://accounts.google.com/o/oauth2/v2/auth';
 const GOOGLE_TOKEN_URL = 'https://www.googleapis.com/oauth2/v4/token';
 const GOOGLE_PROFILE_URL = 'https://www.googleapis.com/userinfo/v2/me';
-const GOOGLE_CLIENT_ID = '336907596898-mmk307fbmj3uo3jkgj04bcnpdbqlg9ur.apps.googleusercontent.com';
-const GOOGLE_CLIENT_SECRET = 'naKusw2b1Y9cpOg8xaWmPejy';
+const GOOGLE_CLIENT_ID = config.googleClientId;
+const GOOGLE_CLIENT_SECRET = config.googleClientSecret;
 const GOOGLE_REDIRECT_URI = 'http://localhost:1212';
 const GOOGLE_GET_EVENT_LIST_URL = 'https://www.googleapis.com/calendar/v3/calendars/calendarId/events';
 
@@ -202,11 +203,13 @@ export async function syncGoogleCalendar(check?: boolean) {
     return false;
   }
 
-  if (!gSyncConf.token) {
+  const token = _.get(gSyncConf, 'docs[0].token');
+
+  if (!token) {
     const googleProvider = await googleSignIn();
     accessToken = googleProvider.accessToken;
   } else {
-    accessToken = gSyncConf.token;
+    accessToken = token;
   }
 
   if (accessToken) {
