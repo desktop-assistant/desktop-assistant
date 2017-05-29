@@ -8,27 +8,53 @@ import HomePage from './containers/HomePage';
 import NewTaskPage from './containers/NewTaskPage';
 import SettingsPage from './containers/SettingsPage';
 
+const presets = {
+  main: {
+    atEnter: { opacity: 0, translateX: -100 },
+    atLeave: { opacity: 1, translateX: 100 },
+    atActive: { opacity: 1, translateX: 0 },
+    mapStyles(styles) {
+      return {
+        opacity: styles.opacity,
+        transform: `translateX(${styles.translateX}%)`
+      };
+    }
+  },
+  nested: {
+    atEnter: { opacity: 0, translateX: 100 },
+    atLeave: { opacity: 1, translateX: -100 },
+    atActive: { opacity: 1, translateX: 0 },
+    mapStyles(styles) {
+      return {
+        opacity: styles.opacity,
+        transform: `translateX(${styles.translateX}%)`
+      };
+    }
+  }
+};
+
+const transition = {
+  default: presets.main,
+  '/settings': presets.nested,
+  '/add': presets.nested
+};
+
 export default () => (
   <App>
     <Route
-      render={({ location }) => {
-        return (
-          <RouteTransition
-            pathname={location.pathname}
-            atEnter={{ translateX: location.pathname === '/settings' ? 100 : -100 }}
-            atLeave={{ translateX: location.pathname === '/settings' ? -100 : 100 }}
-            atActive={{ translateX: 0 }}
-            mapStyles={styles => ({ transform: `translateX(${styles.translateX}%)` })}
-            runOnMount={false}
-          >
-            <Switch key={location.key} location={location}>
-              <Route path="/add" component={NewTaskPage} />
-              <Route path="/settings" component={SettingsPage} />
-              <Route path="/" component={HomePage} />
-            </Switch>
-          </RouteTransition>
-        );
-      }}
+      render={({ location }) => (
+        <RouteTransition
+          pathname={location.pathname}
+          {... transition[location.pathname] || transition.default}
+          runOnMount={false}
+        >
+          <Switch key={location.key} location={location}>
+            <Route path="/add" component={NewTaskPage} />
+            <Route path="/settings" component={SettingsPage} />
+            <Route path="/" component={HomePage} />
+          </Switch>
+        </RouteTransition>
+      )}
     />
   </App>
 );

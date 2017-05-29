@@ -1,9 +1,8 @@
 .container {
-  position: absolute;
   width: 100vw;
   height: 100vh;
   text-align: center;
-  overflow: auto;
+  overflow: hidden;
   flex: 1;
 }
 
@@ -12,7 +11,6 @@
   top: 0;
   height: 100vh;
   width: 100%;
-  /*background-image: linear-gradient(135deg, #667eea 0%, #764ba2 100%);*/
   background-image: linear-gradient(135deg, #7b8fe6 0%, #411679 100%);
 }
 
@@ -29,7 +27,7 @@
   height: 0;
   border-style: solid;
   border-width: 6px 0 6px 10px;
-  border-color: transparent transparent transparent #fd8e04;
+  border-color: transparent transparent transparent #ff0844;
   margin-top: -6px;
 }
 
@@ -42,6 +40,6 @@
   height: 0;
   border-style: solid;
   border-width: 6px 10px 6px 0;
-  border-color: transparent #fd8e04 transparent transparent;
+  border-color: transparent #ff0844 transparent transparent;
   margin-top: -6px;
 }

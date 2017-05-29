@@ -3,6 +3,7 @@
   left: 0;
   right: 0;
   height: 2880px; /* 120px x 24 */
+  background-image: linear-gradient(135deg, #7b8fe6 0%, #411679 100%);
 }
 
 .hour {
