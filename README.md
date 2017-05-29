@@ -15,3 +15,17 @@ Desktop Assistant is a desktop app to smooth your daily routine tasks
 [david_url]: https://david-dm.org/desktop-assistant/desktop-assistant
 [oss_img]: https://badges.frapsoft.com/os/mit/mit.svg?v=103
 [oss_url]:https://opensource.org/licenses/mit-license.php
+
+## Contribute
+
+- Clone this project
+- Create OAUTH Client ID in google API console (https://console.developers.google.com) with google calendar access
+- Create app/config.js file with this content :
+```
+export const config = {
+  googleClientId: 'xxx',
+  googleClientSecret: 'xxx'
+}
+```
+- `yarn` or `npm install`
+- Start the app in the dev environment `yarn dev` or `npm run dev`
