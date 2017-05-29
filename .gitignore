@@ -48,8 +48,5 @@ dll
 main.js
 main.js.map
 
-# App Config
-app/config.js
-
 .idea
 npm-debug.log.*
