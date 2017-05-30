@@ -175,7 +175,7 @@ let NewTaskForm = class NewTask extends Component {
                   <Field name="freq" component="select">
                     <option>None</option>
                     <option value="daily">Daily</option>
-                    <option value="daily">Weekly</option>
+                    <option value="weekly">Weekly</option>
                   </Field>
                 </div>
               </div>
