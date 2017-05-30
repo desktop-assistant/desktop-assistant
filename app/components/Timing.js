@@ -63,13 +63,32 @@ class Timing extends Component {
     clearInterval(this.timerID);
   }
 
+  displayCurrentTask() {
+    const dt = moment();
+    const currentTask = this.getCurrentTask(dt);
+
+    if (currentTask) {
+      const isVisible = !this.state.currentTask ||
+        (this.state.currentTask && this.state.currentTask._id !== currentTask._id);
+      this.setState({ currentTask });
+
+      if (isVisible) {
+        this.show();
+      }
+    } else {
+      this.setState({ currentTask });
+    }
+  }
+
   getCurrentTask(dt: typeMoment) {
-    return _.find(this.tasksList, task => {
-      const beginDate = moment(`${task.beginAtDate}-${task.beginAtTime}`, 'MM-DD-YYYY-HH:mm');
-      const endDate = moment(`${task.endAtDate}-${task.endAtTime}`, 'MM-DD-YYYY-HH:mm');
+    const currentTask = _.find(this.tasksList, task => {
+      const beginDate = moment(task.doc.beginAt);
+      const endDate = moment(task.doc.endAt);
 
       return dt.diff(beginDate) >= 0 && dt.diff(endDate) < 0;
     });
+
+    return currentTask ? currentTask.doc : undefined;
   }
 
   tasksList = []
@@ -84,19 +103,7 @@ class Timing extends Component {
     const pc = (secs / 86400).toFixed(3);
     this.scrollTo = `-${(2880 * +pc) - 100}px`;
     // window.scrollTo(0, scrollTo);
-    const currentTask = this.getCurrentTask(dt);
-
-    if (currentTask) {
-      const isVisible = !this.state.currentTask ||
-        (this.state.currentTask && this.state.currentTask._id !== currentTask._id);
-      this.setState({ currentTask });
-
-      if (isVisible) {
-        this.show();
-      }
-    } else {
-      this.setState({ currentTask });
-    }
+    this.displayCurrentTask();
   }
 
   show() {

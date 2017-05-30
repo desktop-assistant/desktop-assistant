@@ -11,7 +11,7 @@ import { queryTask, createTask } from '../actions/tasks';
 
 let config = {};
 if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
-  config = require('../config');
+  config = require('../config').config;
 }
 
 const store = configureStore();
@@ -20,7 +20,7 @@ const GOOGLE_AUTHORIZATION_URL = 'https://accounts.google.com/o/oauth2/v2/auth';
 const GOOGLE_TOKEN_URL = 'https://www.googleapis.com/oauth2/v4/token';
 const GOOGLE_PROFILE_URL = 'https://www.googleapis.com/userinfo/v2/me';
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID || _.get(config, 'googleClientId');
-const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET || _.get(config, 'googleClientSecret_');
+const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET || _.get(config, 'googleClientSecret');
 const GOOGLE_REDIRECT_URI = 'http://localhost:1212';
 const GOOGLE_GET_EVENT_LIST_URL = 'https://www.googleapis.com/calendar/v3/calendars/calendarId/events';
 
