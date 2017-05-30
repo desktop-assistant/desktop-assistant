@@ -8,6 +8,11 @@ export const FETCH_TASKS_SUCCESS = 'FETCH_TASKS_SUCCESS';
 export const FETCH_TASKS_FAILURE = 'FETCH_TASKS_FAILURE';
 export const RESET_TASKS = 'RESET_TASKS';
 
+// Get current task
+export const GET_CURRENT_TASK = 'GET_CURRENT_TASK';
+export const GET_CURRENT_TASK_SUCCESS = 'GET_CURRENT_TASK_SUCCESS';
+export const GET_CURRENT_TASK_FAILURE = 'GET_CURRENT_TASK_FAILURE';
+
 // Create new task
 export const CREATE_TASK = 'CREATE_TASK';
 export const CREATE_TASK_SUCCESS = 'CREATE_TASK_SUCCESS';
@@ -20,8 +25,8 @@ export const UPDATE_TASK_SUCCESS = 'UPDATE_TASK_SUCCESS';
 export const UPDATE_TASK_FAILURE = 'UPDATE_TASK_FAILURE';
 export const RESET_UPDATED_TASK = 'RESET_UPDATED_TASK';
 
-// Quey tasks
-export const QUERY_TASK = 'CREATE_TASK';
+// Query tasks
+export const QUERY_TASK = 'QUERY_TASK';
 export const QUERY_TASK_SUCCESS = 'QUERY_TASK_SUCCESS';
 export const QUERY_TASK_FAILURE = 'QUERY_TASK_FAILURE';
 
@@ -42,13 +47,9 @@ type TaskType = {
   visible?: boolean
 };
 
-export function fetchTasks(type) {
+export function fetchTasks(type: string, start?: Date, end?: Date) {
   let request;
-  if (type === 'today') {
-    const start = new Date();
-    start.setHours(0, 0, 0, 0);
-    const end = new Date();
-    end.setHours(23, 59, 59, 999);
+  if (type === 'complex') {
     const options = {
       startkey: start,
       endkey: end,
@@ -106,13 +107,65 @@ export function fetchTasksFailure(error: Object) {
   };
 }
 
+export function getCurrentTask() {
+  const options = {
+    include_docs: true
+  };
+
+  const request = complexQuery((doc, emit) => {
+    const newDoc = doc;
+    const mBeginAt = moment(newDoc.beginAt);
+    const mEndAt = moment(newDoc.endAt);
+
+    if (doc.freq === 'weekly' && doc.repeatOn && doc.beginAt) {
+      const now = moment();
+      const today = now.format('dddd');
+
+      const repeatOn = doc.repeatOn || 'Sunday,Tuesday,Monday,Wednesday,Thursday,Friday,Saturday';
+      if (repeatOn.indexOf(today) > -1) {
+        const hours = mBeginAt.hours();
+        const minutes = mBeginAt.minutes();
+        newDoc.beginAt = now.hours(hours).minutes(minutes).toISOString();
+      }
+    }
+
+    if (doc.freq === 'daily' && doc.beginAt) {
+      const now = moment().seconds(0).milliseconds(0);
+      const hours = mBeginAt.hours();
+      const minutes = mBeginAt.minutes();
+      newDoc.beginAt = now.hours(hours).minutes(minutes).toISOString();
+    }
+
+    const now = moment();
+
+    if (now.diff(mBeginAt) > 0 && mEndAt.diff(now) > 0) {
+      emit(newDoc);
+    }
+  }, options, 'tasks');
+
+
+  return {
+    type: GET_CURRENT_TASK,
+    payload: request
+  };
+}
+
+export function getCurrentTaskSuccess(tasks?: Object) {
+  return {
+    type: GET_CURRENT_TASK_SUCCESS,
+    payload: tasks
+  };
+}
+
+export function getCurrentTaskFailure(error: Object) {
+  return {
+    type: GET_CURRENT_TASK_FAILURE,
+    payload: error
+  };
+}
+
 export function createTask(props: Object) {
   const task = props;
-  if (!task._id) {
-    const decodedId = `${props.beginAt} ${props.endAt} ${props.name}`;
-    task._id = window.btoa(decodedId);
-  }
-
   if (task.beginAtDate && task.beginAtTime) {
     const momentTime = moment(`${task.beginAtDate}-${task.beginAtTime}`, 'MM-DD-YYYY-HH:mm');
     task.beginAt = momentTime.toISOString();
@@ -121,6 +174,11 @@ export function createTask(props: Object) {
   if (task.endAtDate && task.endAtTime) {
     const momentTime = moment(`${task.endAtDate}-${task.endAtTime}`, 'MM-DD-YYYY-HH:mm');
     task.endAt = momentTime.toISOString();
+  }
+
+  if (!task._id) {
+    const decodedId = `${task.beginAt} ${task.endAt} ${task.name}`;
+    task._id = window.btoa(decodedId);
   }
 
   const request = create(task, 'tasks');

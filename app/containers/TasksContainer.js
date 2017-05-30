@@ -9,8 +9,12 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  fetchTasks: (type) => {
-    dispatch(fetchTasks(type)).then((response) => {
+  fetchTasks: () => {
+    const start = new Date();
+    start.setHours(0, 0, 0, 0);
+    const end = new Date();
+    end.setHours(23, 59, 59, 999);
+    dispatch(fetchTasks('complex', start, end)).then((response) => {
       !response.error
         ? dispatch(fetchTasksSuccess(response.payload.rows))
         : dispatch(fetchTasksFailure(response.payload.rows));

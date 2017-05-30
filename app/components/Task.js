@@ -22,11 +22,9 @@ type DeltaType = {
 
 type TaskType = {
   _id: string,
-  beginAtDate: string,
-  beginAtTime: string,
-  endAtDate: string,
-  endAtTime: string,
-  name: string,
+  beginAt?: string,
+  endAt?: string,
+  name?: string,
   source?: string
 };
 

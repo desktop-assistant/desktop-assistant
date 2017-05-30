@@ -19,7 +19,6 @@ export default class Tasks extends Component {
 
   props: {
     updateTask: () => void,
-    updateTasks: () => void,
     fetchTasks: () => void,
     syncGCalendar: () => void,
     tasksList: {
@@ -36,18 +35,18 @@ export default class Tasks extends Component {
 
   componentWillMount() {
     this.syncGCal();
-    this.props.fetchTasks('today');
+    this.props.fetchTasks();
   }
 
   async syncGCal() {
     this.props.syncGCalendar(true);
     setTimeout(() => {
-      this.props.fetchTasks('today');
+      this.props.fetchTasks();
     }, 3000);
   }
 
   reFetchTasks() {
-    this.props.fetchTasks('today');
+    this.props.fetchTasks();
   }
 
   handleTaskClick(task: TaskType) {
@@ -77,7 +76,7 @@ export default class Tasks extends Component {
     newTask.beginAt = moment(newTask.beginAt).add(deltaMs, 'milliseconds').toISOString();
     newTask.endAt = moment(newTask.endAt).add(deltaMs, 'milliseconds').toISOString();
     this.props.updateTask(newTask);
-    this.props.fetchTasks('today');
+    this.props.fetchTasks();
   }
 
   resizeTask(task: TaskType, dir: string, delta: number) {
@@ -99,14 +98,13 @@ export default class Tasks extends Component {
     }
 
     this.props.updateTask(newTask);
-    this.props.fetchTasks('today');
+    this.props.fetchTasks();
   }
 
   render() {
     const {
       tasks
     } = this.props.tasksList;
-    this.props.updateTasks(this.props.tasksList.tasks);
     return (
       <div className={styles.tasks}>
         {tasks.map(task => (

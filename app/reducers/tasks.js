@@ -1,5 +1,6 @@
 import {
   FETCH_TASKS, FETCH_TASKS_SUCCESS, FETCH_TASKS_FAILURE,
+  GET_CURRENT_TASK, GET_CURRENT_TASK_SUCCESS, GET_CURRENT_TASK_FAILURE,
   CREATE_TASKS, CREATE_TASKS_SUCCESS, RESET_NEW_TASKS,
   UPDATE_TASK, UPDATE_TASK_SUCCESS, UPDATE_TASK_FAILURE, RESET_UPDATED_TASK,
   DELETE_TASK, DELETE_TASK_SUCCESS, DELETE_TASK_FAILURE, RESET_DELETED_TASK
@@ -8,8 +9,8 @@ import {
 const INITIAL_STATE = {
   tasksList: { tasks: [], error: null, loading: false },
   newTask: { task: null, error: null, loading: false },
-  activeTask: { task: null, error: null, loading: false },
   deletedTask: { task: null, error: null, loading: false },
+  currentTask: { task: null, error: null, loading: false }
 };
 
 export default function (state = INITIAL_STATE, action) {
@@ -23,6 +24,10 @@ export default function (state = INITIAL_STATE, action) {
       // 2nd one is network or server down errors
       error = action.payload || { message: action.payload.message };
       return { ...state, tasksList: { tasks: [], error, loading: false } };
+    case GET_CURRENT_TASK:
+      return { ...state, currentTask: { ...state.currentTask, loading: true } };
+    case GET_CURRENT_TASK_SUCCESS:
+      return { ...state, currentTask: { task: action.payload, error: null, loading: false } };
     case RESET_NEW_TASKS:
       return { ...state, newTask: { task: null, error: null, loading: false } };
     case CREATE_TASKS:

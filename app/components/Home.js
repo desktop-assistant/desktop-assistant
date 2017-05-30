@@ -1,7 +1,7 @@
 // @flow
 import React, { Component } from 'react';
 import styles from './Home.css';
-import Timing from '../components/Timing';
+import Timing from '../containers/TimingContainer';
 import Actions from '../components/Actions';
 
 

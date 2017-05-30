@@ -14,19 +14,26 @@ type TaskType = {
   action?: string,
   actionApp?: string,
   actionLink?: string,
-  beginAtDate?: string,
-  beginAtTime?: string,
-  endAtDate?: string,
-  endAtTime?: string,
+  endAt?: string,
+  beginAt?: string,
   name?: string,
-  visible?: boolean
+  visible?: boolean,
+  action?: string,
+  actionApp?: string,
+  actionLink?: string
 };
 
 class Timing extends Component {
   state: {
-    date: Date,
-    currentTask: TaskType
+    showTask: boolean
   };
+
+  props: {
+    getCurrentTask: () => void,
+    currentTask: {
+      task?: TaskType
+    }
+  }
 
   constructor() {
     super();
@@ -35,9 +42,13 @@ class Timing extends Component {
     win.setSize(300, 200, true);
 
     this.state = {
-      date: new Date(),
-      currentTask: {}
+      showTask: true
     };
+  }
+
+  componentWillMount() {
+    clearInterval(this.timerID);
+    this.props.getCurrentTask();
   }
 
   componentDidMount() {
@@ -59,39 +70,6 @@ class Timing extends Component {
     });
   }
 
-  componentWillUnmount() {
-    clearInterval(this.timerID);
-  }
-
-  displayCurrentTask() {
-    const dt = moment();
-    const currentTask = this.getCurrentTask(dt);
-
-    if (currentTask) {
-      const isVisible = !this.state.currentTask ||
-        (this.state.currentTask && this.state.currentTask._id !== currentTask._id);
-      this.setState({ currentTask });
-
-      if (isVisible) {
-        this.show();
-      }
-    } else {
-      this.setState({ currentTask });
-    }
-  }
-
-  getCurrentTask(dt: typeMoment) {
-    const currentTask = _.find(this.tasksList, task => {
-      const beginDate = moment(task.doc.beginAt);
-      const endDate = moment(task.doc.endAt);
-
-      return dt.diff(beginDate) >= 0 && dt.diff(endDate) < 0;
-    });
-
-    return currentTask ? currentTask.doc : undefined;
-  }
-
-  tasksList = []
   timerID = 0
   scrollTo = 0
 
@@ -103,47 +81,49 @@ class Timing extends Component {
     const pc = (secs / 86400).toFixed(3);
     this.scrollTo = `-${(2880 * +pc) - 100}px`;
     // window.scrollTo(0, scrollTo);
-    this.displayCurrentTask();
+    this.props.getCurrentTask();
   }
 
   show() {
-    const currentTask = this.state.currentTask;
-    currentTask.visible = true;
-    this.setState({ currentTask });
+    this.setState({ showTask: true });
   }
 
   dismiss() {
-    const currentTask = this.state.currentTask;
-    currentTask.visible = false;
-    this.setState({ currentTask });
+    this.setState({ showTask: false });
   }
 
   fireAction() {
-    switch (this.state.currentTask.action) {
-      case 'link':
-        shell.openExternal(this.state.currentTask.actionLink);
-        break;
-      case 'app':
-        exec(`open -n ${String(this.state.currentTask.actionApp)}`);
-        break;
-      default:
-        console.error('no action specified');
+    const task = this.props.currentTask.task;
+    if (task) {
+      switch (task.action) {
+        case 'link':
+          shell.openExternal(task.actionLink);
+          break;
+        case 'app':
+          exec(`open -n ${String(task.actionApp)}`);
+          break;
+        default:
+          console.error('no action specified');
+      }
     }
   }
 
   render() {
+    const {
+      task
+    } = this.props.currentTask;
     return (
       <div className={styles.timing} style={{ 'margin-top': this.scrollTo }}>
         <div className={styles.currentTaskContainer}>
-          {this.state.currentTask &&
+          {task &&
             <button className={styles.showCurrentTask} onClick={this.show.bind(this)}>
               <i className={styles.showCurrentTaskIcon} aria-hidden="true" />
             </button>
           }
         </div>
-        {this.state.currentTask && this.state.currentTask.visible &&
+        {task && this.state.showTask &&
           <div className={styles.currentTask}>
-            <h1>{this.state.currentTask.name}</h1>
+            <h1>{task.name}</h1>
             <button className={styles.actionButton} onClick={this.fireAction.bind(this)}>
               <i className="fa fa-bolt" aria-hidden="true" />
             </button>
@@ -153,7 +133,7 @@ class Timing extends Component {
         {Array(24).fill(1).map((el, i) =>
           <div className={styles.hour} title={`${i}:00`} />
         )}
-        <Tasks updateTasks={tasks => (this.tasksList = tasks)} />
+        <Tasks />
       </div>
     );
   }
