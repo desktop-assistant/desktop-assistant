@@ -3,7 +3,7 @@ import { parse } from 'url';
 import { remote } from 'electron';
 import axios from 'axios';
 import qs from 'qs';
-import moment from 'moment';
+import moment from 'moment-timezone';
 import _ from 'lodash';
 import { create, query } from '../store/pouchDBStore';
 import { configureStore } from './configureStore';
@@ -130,8 +130,8 @@ async function getEvents(accessToken, calendarId) {
 async function convertEvents(events: Array<Object>) {
   for (const event of events) {
     if (event.start && event.end) {
-      const start = moment(event.start.dateTime);
-      const end = moment(event.end.dateTime);
+      const start = moment.tz(event.start.dateTime, event.start.timeZone);
+      const end = moment.tz(event.end.dateTime, event.end.timeZone);
       const task = {
         name: event.summary,
         beginAt: start.toISOString(),
@@ -152,9 +152,22 @@ async function convertEvents(events: Array<Object>) {
       if (event.recurrence && event.recurrence.length) {
         const recurrence = event.recurrence[0];
         const freq = getValueFromStr('FREQ', recurrence);
-        const repeatOn = getValueFromStr('BYDAY', recurrence);
         task.freq = freq.toLowerCase();
-        task.repeatOn = formatRepeatOn(repeatOn);
+
+        const repeatOn = getValueFromStr('BYDAY', recurrence);
+        if (repeatOn) {
+          task.repeatOn = formatRepeatOn(repeatOn);
+        }
+
+        const repeatUntil = getValueFromStr('UNTIL', recurrence);
+        if (repeatUntil) {
+          task.repeatUntil = moment(repeatUntil).toISOString();
+        }
+
+        const repeatInterval = getValueFromStr('INTERVAL', recurrence);
+        if (repeatInterval) {
+          task.repeatInterval = repeatInterval;
+        }
       }
 
       try {
@@ -174,7 +187,13 @@ async function convertEvents(events: Array<Object>) {
 }
 
 function getValueFromStr(key, str) {
-  return str.split(`${key}=`).pop().split(';').shift();
+  let res;
+
+  if (str.indexOf(key) > -1) {
+    res = str.split(`${key}=`).pop().split(';').shift();
+  }
+
+  return res;
 }
 
 function formatRepeatOn(gCalReapeatOn) {

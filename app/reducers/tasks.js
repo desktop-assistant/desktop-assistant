@@ -1,6 +1,6 @@
 import {
   FETCH_TASKS, FETCH_TASKS_SUCCESS, FETCH_TASKS_FAILURE,
-  GET_CURRENT_TASK, GET_CURRENT_TASK_SUCCESS, GET_CURRENT_TASK_FAILURE,
+  GET_CURRENT_TASK, GET_CURRENT_TASK_SUCCESS,
   CREATE_TASKS, CREATE_TASKS_SUCCESS, RESET_NEW_TASKS,
   UPDATE_TASK, UPDATE_TASK_SUCCESS, UPDATE_TASK_FAILURE, RESET_UPDATED_TASK,
   DELETE_TASK, DELETE_TASK_SUCCESS, DELETE_TASK_FAILURE, RESET_DELETED_TASK
@@ -47,7 +47,7 @@ export default function (state = INITIAL_STATE, action) {
       return { ...state, updatedTask: { task: null, error: null, loading: false } };
     case DELETE_TASK:
       return { ...state, deletedTask: { ...state.deletedTask, loading: true } };
-    case DELETE_TASK_SUCCESS:
+    case DELETE_TASK_SUCCESS: {
       const refreshedState = state;
       refreshedState.tasksList.tasks = state.tasksList.tasks.filter(task =>
         task._id !== action.payload.id
@@ -55,6 +55,7 @@ export default function (state = INITIAL_STATE, action) {
       return { ...refreshedState,
         deletedTask: { task: action.payload, error: null, loading: false }
       };
+    }
     case DELETE_TASK_FAILURE:
       error = action.payload || { message: action.payload };
       return { ...state, deletedTask: { task: null, error, loading: false } };

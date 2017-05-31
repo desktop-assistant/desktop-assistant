@@ -1,5 +1,6 @@
 // @flow
 import moment from 'moment';
+import 'moment-recur';
 import { create, update, query, complexQuery, remove } from '../store/pouchDBStore';
 
 // Task List
@@ -57,25 +58,37 @@ export function fetchTasks(type: string, start?: Date, end?: Date) {
     };
     request = complexQuery((doc, emit) => {
       const newDoc = doc;
-      if (doc.freq === 'weekly' && doc.repeatOn && doc.beginAt) {
-        const now = moment();
-        const today = now.format('dddd');
+      const now = moment(start);
+      let finished = false;
 
-        const repeatOn = doc.repeatOn || 'Sunday,Tuesday,Monday,Wednesday,Thursday,Friday,Saturday';
-        if (repeatOn.indexOf(today) > -1) {
+      if (doc.repeatUntil && now.diff(doc.repeatUntil, 'days') > 0) {
+        finished = true;
+      }
+
+      if (doc.freq && doc.beginAt && !finished) {
+        if (doc.freq === 'weekly' && doc.repeatOn) {
+          const today = now.format('dddd');
+
+          let interval;
+          if (doc.repeatInterval) {
+            interval = moment(doc.beginAt).recur().every(doc.repeatInterval, 'weeks');
+          }
+
+          const repeatOn = doc.repeatOn || 'Sunday,Tuesday,Monday,Wednesday,Thursday,Friday,Saturday';
+          if (repeatOn.indexOf(today) > -1 && (!interval || interval.matches(now))) {
+            const beginAt = moment(doc.beginAt);
+            const hours = beginAt.hours();
+            const minutes = beginAt.minutes();
+            newDoc.beginAt = now.hours(hours).minutes(minutes).format();
+          }
+        }
+
+        if (doc.freq === 'daily') {
           const beginAt = moment(doc.beginAt);
           const hours = beginAt.hours();
           const minutes = beginAt.minutes();
-          newDoc.beginAt = now.hours(hours).minutes(minutes).toISOString();
+          newDoc.beginAt = now.hours(hours).minutes(minutes).format();
         }
-      }
-
-      if (doc.freq === 'daily' && doc.beginAt) {
-        const now = moment().seconds(0).milliseconds(0);
-        const beginAt = moment(doc.beginAt);
-        const hours = beginAt.hours();
-        const minutes = beginAt.minutes();
-        newDoc.beginAt = now.hours(hours).minutes(minutes).toISOString();
       }
 
       emit(newDoc.beginAt);

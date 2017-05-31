@@ -7,6 +7,10 @@ import styles from './TimePicker.css';
 
 const cx = classNames.bind(styles);
 
+function twoDigits(n) {
+  return n > 9 ? `${n}` : `0${n}`;
+}
+
 export default class TimePicker extends Component {
   state: {
     modalVisible: boolean
@@ -23,7 +27,7 @@ export default class TimePicker extends Component {
   }
 
   onDayChange(hours: number, minutes: number) {
-    this.props.input.onChange(`${hours}:${minutes}`);
+    this.props.input.onChange(`${twoDigits(hours)}:${twoDigits(minutes)}`);
     this.setState({ modalVisible: false });
   }
 

@@ -1,7 +1,7 @@
 {
   "name": "desktop-assistant",
   "productName": "Desktop Assistant",
-  "version": "0.5.6",
+  "version": "0.5.7",
   "description": "",
   "main": "main.js",
   "scripts": {
@@ -195,6 +195,8 @@
     "history": "^4.6.1",
     "lodash": "^4.17.4",
     "moment": "^2.18.1",
+    "moment-recur": "^1.0.5",
+    "moment-timezone": "^0.5.13",
     "pouchdb-find": "^0.10.5",
     "pouchdb-replication-stream": "^1.2.9",
     "qs": "^6.4.0",

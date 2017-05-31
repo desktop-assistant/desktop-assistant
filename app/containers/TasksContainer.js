@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-expressions */
 import { connect } from 'react-redux';
+import moment from 'moment';
 import { updateTask, updateTaskSuccess, updateTaskFailure, fetchTasks, fetchTasksSuccess, fetchTasksFailure } from '../actions/tasks';
 import Tasks from '../components/Tasks';
 import { syncGCalendar } from '../actions/settings';
@@ -9,10 +10,11 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  fetchTasks: () => {
-    const start = new Date();
+  fetchTasks: currentDay => {
+    const mCurrentDay = currentDay || moment();
+    const start = mCurrentDay.toDate();
     start.setHours(0, 0, 0, 0);
-    const end = new Date();
+    const end = mCurrentDay.toDate();
     end.setHours(23, 59, 59, 999);
     dispatch(fetchTasks('complex', start, end)).then((response) => {
       !response.error

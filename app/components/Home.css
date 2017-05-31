@@ -17,29 +17,3 @@
 .container h2 {
   font-size: 5rem;
 }
-
-.leftTimeIndication {
-  z-index: 5;
-  position: fixed;
-  top: 100px;
-  left: 0;
-  width: 0;
-  height: 0;
-  border-style: solid;
-  border-width: 6px 0 6px 10px;
-  border-color: transparent transparent transparent #ff0844;
-  margin-top: -6px;
-}
-
-.rightTimeIndication {
-  z-index: 5;
-  position: fixed;
-  top: 100px;
-  right: 0;
-  width: 0;
-  height: 0;
-  border-style: solid;
-  border-width: 6px 10px 6px 0;
-  border-color: transparent #ff0844 transparent transparent;
-  margin-top: -6px;
-}

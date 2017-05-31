@@ -25,7 +25,8 @@ type TaskType = {
 
 class Timing extends Component {
   state: {
-    showTask: boolean
+    showTask: boolean,
+    currentDay: typeMoment
   };
 
   props: {
@@ -42,7 +43,8 @@ class Timing extends Component {
     win.setSize(300, 200, true);
 
     this.state = {
-      showTask: true
+      showTask: true,
+      currentDay: moment()
     };
   }
 
@@ -113,7 +115,13 @@ class Timing extends Component {
       task
     } = this.props.currentTask;
     return (
-      <div className={styles.timing} style={{ 'margin-top': this.scrollTo }}>
+      <div className={styles.container} style={{ 'margin-top': this.scrollTo }}>
+        { !moment().diff(this.state.currentDay, 'days') &&
+          <div>
+            <div className={styles.leftTimeIndication} />
+            <div className={styles.rightTimeIndication} />
+          </div>
+        }
         <div className={styles.currentTaskContainer}>
           {task &&
             <button className={styles.showCurrentTask} onClick={this.show.bind(this)}>
@@ -133,7 +141,7 @@ class Timing extends Component {
         {Array(24).fill(1).map((el, i) =>
           <div className={styles.hour} title={`${i}:00`} />
         )}
-        <Tasks />
+        <Tasks currentDay={this.state.currentDay} />
       </div>
     );
   }

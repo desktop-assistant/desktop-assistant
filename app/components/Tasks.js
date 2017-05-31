@@ -18,6 +18,7 @@ export default class Tasks extends Component {
   };
 
   props: {
+    currentDay: string,
     updateTask: () => void,
     fetchTasks: () => void,
     syncGCalendar: () => void,
@@ -35,18 +36,18 @@ export default class Tasks extends Component {
 
   componentWillMount() {
     this.syncGCal();
-    this.props.fetchTasks();
+    this.props.fetchTasks(this.props.currentDay);
   }
 
   async syncGCal() {
     this.props.syncGCalendar(true);
     setTimeout(() => {
-      this.props.fetchTasks();
+      this.props.fetchTasks(this.props.currentDay);
     }, 3000);
   }
 
   reFetchTasks() {
-    this.props.fetchTasks();
+    this.props.fetchTasks(this.props.currentDay);
   }
 
   handleTaskClick(task: TaskType) {
@@ -76,7 +77,7 @@ export default class Tasks extends Component {
     newTask.beginAt = moment(newTask.beginAt).add(deltaMs, 'milliseconds').toISOString();
     newTask.endAt = moment(newTask.endAt).add(deltaMs, 'milliseconds').toISOString();
     this.props.updateTask(newTask);
-    this.props.fetchTasks();
+    this.props.fetchTasks(this.props.currentDay);
   }
 
   resizeTask(task: TaskType, dir: string, delta: number) {
@@ -98,7 +99,7 @@ export default class Tasks extends Component {
     }
 
     this.props.updateTask(newTask);
-    this.props.fetchTasks();
+    this.props.fetchTasks(this.props.currentDay);
   }
 
   render() {

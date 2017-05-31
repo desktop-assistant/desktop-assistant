@@ -10,7 +10,7 @@
  *
  * @flow
  */
-import { app, BrowserWindow } from 'electron';
+import { app, screen, BrowserWindow } from 'electron';
 import MenuBuilder from './menu';
 
 let mainWindow = null;
@@ -58,11 +58,15 @@ app.on('ready', async () => {
     await installExtensions();
   }
 
+  const mainScreen = screen.getPrimaryDisplay();
+
   mainWindow = new BrowserWindow({
     width: 300,
     height: 200,
-    // transparent: true,
+    x: mainScreen.workArea.width - 300 - 20,
+    y: 40,
     alwaysOnTop: true,
+    // transparent: true,
     minimizable: false,
     maximizable: false,
     resizable: false,
@@ -70,6 +74,8 @@ app.on('ready', async () => {
     frame: false,
     backgroundColor: '#ececec'
   });
+
+  // mainWindow.setAlwaysOnTop(true, 'modal-panel', 10);
 
   mainWindow.loadURL(`file://${__dirname}/app.html`);
 
