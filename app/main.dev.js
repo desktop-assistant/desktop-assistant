@@ -10,8 +10,13 @@
  *
  * @flow
  */
-import { app, screen, BrowserWindow } from 'electron';
+import { app, dialog, screen, BrowserWindow, ipcMain } from 'electron';
+import { autoUpdater } from 'electron-updater';
 import MenuBuilder from './menu';
+
+autoUpdater.autoDownload = false;
+autoUpdater.logger = require('electron-log');
+autoUpdater.logger.transports.file.level = 'info';
 
 let mainWindow = null;
 
@@ -40,6 +45,44 @@ const installExtensions = async () => {
     .catch(console.log);
 };
 
+function sendStatusToWindow(status, text, details) {
+  mainWindow.webContents.send('message', status, text, details);
+}
+
+function createDefaultWindow() {
+  const mainScreen = screen.getPrimaryDisplay();
+
+  mainWindow = new BrowserWindow({
+    width: 300,
+    height: 200,
+    x: mainScreen.workArea.width - 300 - 20,
+    y: 40,
+    alwaysOnTop: true,
+    // transparent: true,
+    minimizable: false,
+    maximizable: false,
+    resizable: false,
+    fullscreenable: false,
+    frame: false,
+    backgroundColor: '#ececec'
+  });
+
+  console.log('app.getVersion', app.getVersion());
+
+  mainWindow.loadURL(`file://${__dirname}/app.html#v${app.getVersion()}`);
+
+  mainWindow.webContents.on('did-finish-load', () => {
+    if (!mainWindow) {
+      throw new Error('"mainWindow" is not defined');
+    }
+    mainWindow.show();
+    mainWindow.focus();
+  });
+
+  mainWindow.on('closed', () => {
+    mainWindow = null;
+  });
+}
 
 /**
  * Add event listeners...
@@ -58,39 +101,52 @@ app.on('ready', async () => {
     await installExtensions();
   }
 
-  const mainScreen = screen.getPrimaryDisplay();
-
-  mainWindow = new BrowserWindow({
-    width: 300,
-    height: 200,
-    x: mainScreen.workArea.width - 300 - 20,
-    y: 40,
-    alwaysOnTop: true,
-    // transparent: true,
-    minimizable: false,
-    maximizable: false,
-    resizable: false,
-    fullscreenable: false,
-    frame: false,
-    backgroundColor: '#ececec'
-  });
-
-  // mainWindow.setAlwaysOnTop(true, 'modal-panel', 10);
-
-  mainWindow.loadURL(`file://${__dirname}/app.html`);
-
-  mainWindow.webContents.on('did-finish-load', () => {
-    if (!mainWindow) {
-      throw new Error('"mainWindow" is not defined');
-    }
-    mainWindow.show();
-    mainWindow.focus();
-  });
-
-  mainWindow.on('closed', () => {
-    mainWindow = null;
-  });
+  createDefaultWindow();
 
   const menuBuilder = new MenuBuilder(mainWindow);
   menuBuilder.buildMenu();
+});
+
+autoUpdater.on('checking-for-update', () => {
+  sendStatusToWindow('close', 'Checking for update...');
+});
+
+autoUpdater.on('update-available', () => {
+  dialog.showMessageBox({
+    type: 'info',
+    title: 'Found Update',
+    message: 'Found update, do you want update now?',
+    buttons: ['Sure', 'No']
+  }, (buttonIndex) => {
+    if (buttonIndex === 0) {
+      sendStatusToWindow('progress', 'Downloading update...');
+      autoUpdater.downloadUpdate();
+    }
+  });
+});
+
+autoUpdater.on('update-not-available', () => {
+  sendStatusToWindow('close', 'Update not available.');
+});
+
+// autoUpdater.on('error', (ev, err) => {
+//   sendStatusToWindow('error', 'Error in auto-update', JSON.stringify(err));
+// });
+
+autoUpdater.on('download-progress', progressObj => {
+  let logMessage = 'Download speed: ' + progressObj.bytesPerSecond;
+  logMessage = logMessage + ' - Downloaded ' + progressObj.percent + '%';
+  logMessage = logMessage + ' (' + progressObj.transferred + '/' + progressObj.total + ')';
+  sendStatusToWindow('progress', logMessage);
+});
+
+autoUpdater.on('update-downloaded', () => {
+  sendStatusToWindow('info', 'Update downloaded; will install in 5 seconds');
+  setTimeout(() => {
+    autoUpdater.quitAndInstall();
+  }, 5000);
+});
+
+ipcMain.on('ready', () => {
+  autoUpdater.checkForUpdates();
 });

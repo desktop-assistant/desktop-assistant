@@ -74,18 +74,22 @@ function signInWithPopup() {
 }
 
 async function fetchAccessTokens(code: string) {
-  const response = await axios.post(GOOGLE_TOKEN_URL, qs.stringify({
-    code,
-    client_id: GOOGLE_CLIENT_ID,
-    client_secret: GOOGLE_CLIENT_SECRET,
-    redirect_uri: GOOGLE_REDIRECT_URI,
-    grant_type: 'authorization_code',
-  }), {
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
-    },
-  });
-  return response.data;
+  try {
+    const response = await axios.post(GOOGLE_TOKEN_URL, qs.stringify({
+      code,
+      client_id: GOOGLE_CLIENT_ID,
+      client_secret: GOOGLE_CLIENT_SECRET,
+      redirect_uri: GOOGLE_REDIRECT_URI,
+      grant_type: 'authorization_code',
+    }), {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.log('error', error);
+  }
 }
 
 async function fetchGoogleProfile(accessToken: string) {

@@ -32,6 +32,11 @@
   },
   "browserslist": "electron 1.6",
   "build": {
+    "publish": [{
+      "provider": "github",
+      "owner": "desktop-assistant",
+      "repo": "desktop-assistant"
+    }],
     "productName": "Desktop Assistant",
     "appId": "org.matthieuh.DesktopAssistant",
     "dmg": {
@@ -66,6 +71,16 @@
         "AppImage"
       ]
     },
+    "mac": {
+      "category": "your.app.category.type",
+      "target": [
+        "zip",
+        "dmg"
+      ]
+    },
+    "nsis": {
+      "perMachine": true
+    },
     "directories": {
       "buildResources": "resources",
       "output": "release"
@@ -78,7 +93,7 @@
   "author": {
     "name": "Matthieu Hostache",
     "email": "matthieu.hostache@gmail.com",
-    "url": "https://github.com/matthieuh"
+    "url": "https://github.com/desktop-assistant"
   },
   "license": "MIT",
   "bugs": {
@@ -188,6 +203,8 @@
     "axios": "^0.15.3",
     "classnames": "^2.2.5",
     "electron-debug": "^1.1.0",
+    "electron-log": "^2.2.6",
+    "electron-updater": "^1.16.0",
     "fixmyjs": "^1.0.3",
     "font-awesome": "^4.7.0",
     "global": "^4.3.1",
