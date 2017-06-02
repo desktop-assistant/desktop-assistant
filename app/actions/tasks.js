@@ -129,29 +129,41 @@ export function getCurrentTask() {
     const newDoc = doc;
     const mBeginAt = moment(newDoc.beginAt);
     const mEndAt = moment(newDoc.endAt);
+    const beginHours = mBeginAt.hours();
+    const beginMinutes = mBeginAt.minutes();
+    const endHours = mEndAt.hours();
+    const endMinutes = mEndAt.minutes();
 
-    if (doc.freq === 'weekly' && doc.repeatOn && doc.beginAt) {
-      const now = moment();
-      const today = now.format('dddd');
+    const now = moment();
+    let finished = false;
 
-      const repeatOn = doc.repeatOn || 'Sunday,Tuesday,Monday,Wednesday,Thursday,Friday,Saturday';
-      if (repeatOn.indexOf(today) > -1) {
-        const hours = mBeginAt.hours();
-        const minutes = mBeginAt.minutes();
-        newDoc.beginAt = now.hours(hours).minutes(minutes).toISOString();
+    if (doc.repeatUntil && now.diff(doc.repeatUntil, 'days') > 0) {
+      finished = true;
+    }
+
+    if (doc.freq && doc.beginAt && !finished) {
+      if (doc.freq === 'weekly' && doc.repeatOn) {
+        const today = now.format('dddd');
+
+        let interval;
+        if (doc.repeatInterval) {
+          interval = moment(doc.beginAt).recur().every(doc.repeatInterval, 'weeks');
+        }
+
+        const repeatOn = doc.repeatOn || 'Sunday,Tuesday,Monday,Wednesday,Thursday,Friday,Saturday';
+        if (repeatOn.indexOf(today) > -1 && (!interval || interval.matches(now))) {
+          newDoc.beginAt = now.clone().hours(beginHours).minutes(beginMinutes).format();
+          newDoc.endAt = now.clone().hours(endHours).minutes(endMinutes).format();
+        }
+      }
+
+      if (doc.freq === 'daily') {
+        newDoc.beginAt = now.clone().hours(beginHours).minutes(beginMinutes).format();
+        newDoc.endAt = now.clone().hours(endHours).minutes(endMinutes).format();
       }
     }
 
-    if (doc.freq === 'daily' && doc.beginAt) {
-      const now = moment().seconds(0).milliseconds(0);
-      const hours = mBeginAt.hours();
-      const minutes = mBeginAt.minutes();
-      newDoc.beginAt = now.hours(hours).minutes(minutes).toISOString();
-    }
-
-    const now = moment();
-
-    if (now.diff(mBeginAt) > 0 && mEndAt.diff(now) > 0) {
+    if (now.diff(moment(newDoc.beginAt)) > 0 && moment(newDoc.endAt).diff(now) > 0) {
       emit(newDoc);
     }
   }, options, 'tasks');

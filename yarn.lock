@@ -98,7 +98,7 @@ ajv-keywords@^1.0.0, ajv-keywords@^1.1.1:
 
 ajv-keywords@^2.0.0:
   version "2.1.0"
-  resolved "https://nexus.wingz.me/repository/npm/ajv-keywords/-/ajv-keywords-2.1.0.tgz#a296e17f7bfae7c1ce4f7e0de53d29cb32162df0"
+  resolved "https://registry.yarnpkg.com/ajv-keywords/-/ajv-keywords-2.1.0.tgz#a296e17f7bfae7c1ce4f7e0de53d29cb32162df0"
 
 ajv@^4.11.2, ajv@^4.7.0, ajv@^4.9.1:
   version "4.11.8"
@@ -109,7 +109,7 @@ ajv@^4.11.2, ajv@^4.7.0, ajv@^4.9.1:
 
 ajv@^5.1.3:
   version "5.1.5"
-  resolved "https://nexus.wingz.me/repository/npm/ajv/-/ajv-5.1.5.tgz#8734931b601f00d4feef7c65738d77d1b65d1f68"
+  resolved "https://registry.yarnpkg.com/ajv/-/ajv-5.1.5.tgz#8734931b601f00d4feef7c65738d77d1b65d1f68"
   dependencies:
     co "^4.6.0"
     json-stable-stringify "^1.0.1"
@@ -1429,7 +1429,7 @@ base62@^1.1.0:
 
 base64-js@1.2.0, base64-js@^1.0.2:
   version "1.2.0"
-  resolved "https://nexus.wingz.me/repository/npm/base64-js/-/base64-js-1.2.0.tgz#a39992d723584811982be5e290bb6a53d86700f1"
+  resolved "https://registry.yarnpkg.com/base64-js/-/base64-js-1.2.0.tgz#a39992d723584811982be5e290bb6a53d86700f1"
 
 base64url@2.0.0, base64url@^2.0.0:
   version "2.0.0"
@@ -2211,7 +2211,7 @@ cross-spawn@^3.0.0, cross-spawn@^3.0.1:
 
 cross-spawn@^4.0.0:
   version "4.0.2"
-  resolved "https://nexus.wingz.me/repository/npm/cross-spawn/-/cross-spawn-4.0.2.tgz#7b9247621c23adfdd3856004a823cbe397424d41"
+  resolved "https://registry.yarnpkg.com/cross-spawn/-/cross-spawn-4.0.2.tgz#7b9247621c23adfdd3856004a823cbe397424d41"
   dependencies:
     lru-cache "^4.0.1"
     which "^1.2.9"
@@ -2473,7 +2473,7 @@ debug@2.6.4:
 
 debug@2.6.8, debug@^2.1.0, debug@^2.1.1, debug@^2.1.3, debug@^2.2.0, debug@^2.6.0, debug@^2.6.1, debug@^2.6.3, debug@^2.6.6, debug@^2.6.8:
   version "2.6.8"
-  resolved "https://nexus.wingz.me/repository/npm/debug/-/debug-2.6.8.tgz#e731531ca2ede27d188222427da17821d68ff4fc"
+  resolved "https://registry.yarnpkg.com/debug/-/debug-2.6.8.tgz#e731531ca2ede27d188222427da17821d68ff4fc"
   dependencies:
     ms "2.0.0"
 
@@ -2743,18 +2743,18 @@ ejs@^2.5.6, ejs@~2.5.6:
 
 electron-builder-core@17.2.0:
   version "17.2.0"
-  resolved "https://nexus.wingz.me/repository/npm/electron-builder-core/-/electron-builder-core-17.2.0.tgz#e235d11aae64bffbad36b601ac58173f9377f619"
+  resolved "https://registry.yarnpkg.com/electron-builder-core/-/electron-builder-core-17.2.0.tgz#e235d11aae64bffbad36b601ac58173f9377f619"
 
 electron-builder-http@17.9.0, electron-builder-http@~17.9.0:
   version "17.9.0"
-  resolved "https://nexus.wingz.me/repository/npm/electron-builder-http/-/electron-builder-http-17.9.0.tgz#e760947b86c5dea1fb9a0ceff845cc21e7f881cc"
+  resolved "https://registry.yarnpkg.com/electron-builder-http/-/electron-builder-http-17.9.0.tgz#e760947b86c5dea1fb9a0ceff845cc21e7f881cc"
   dependencies:
     debug "2.6.8"
     fs-extra-p "^4.3.0"
 
 electron-builder-util@17.9.0, electron-builder-util@~17.9.0:
   version "17.9.0"
-  resolved "https://nexus.wingz.me/repository/npm/electron-builder-util/-/electron-builder-util-17.9.0.tgz#fee1e406bba100afdd0611661e39f1abde2b53f7"
+  resolved "https://registry.yarnpkg.com/electron-builder-util/-/electron-builder-util-17.9.0.tgz#fee1e406bba100afdd0611661e39f1abde2b53f7"
   dependencies:
     "7zip-bin" "^2.0.4"
     bluebird-lst "^1.0.2"
@@ -2771,7 +2771,7 @@ electron-builder-util@17.9.0, electron-builder-util@~17.9.0:
 
 electron-builder@^17.1.1:
   version "17.10.0"
-  resolved "https://nexus.wingz.me/repository/npm/electron-builder/-/electron-builder-17.10.0.tgz#5b733577f75850bd303b4835b062f915338b4ad2"
+  resolved "https://registry.yarnpkg.com/electron-builder/-/electron-builder-17.10.0.tgz#5b733577f75850bd303b4835b062f915338b4ad2"
   dependencies:
     "7zip-bin" "^2.0.4"
     ajv "^5.1.3"
@@ -2828,7 +2828,7 @@ electron-devtools-installer@^2.2.0:
 
 electron-download-tf@4.3.1:
   version "4.3.1"
-  resolved "https://nexus.wingz.me/repository/npm/electron-download-tf/-/electron-download-tf-4.3.1.tgz#7930f24a08e3669eaad38a5f7f288a10461caf72"
+  resolved "https://registry.yarnpkg.com/electron-download-tf/-/electron-download-tf-4.3.1.tgz#7930f24a08e3669eaad38a5f7f288a10461caf72"
   dependencies:
     debug "^2.6.6"
     env-paths "^1.0.0"
@@ -2864,11 +2864,11 @@ electron-localshortcut@^0.6.0:
 
 electron-log@^2.2.6:
   version "2.2.6"
-  resolved "https://nexus.wingz.me/repository/npm/electron-log/-/electron-log-2.2.6.tgz#ccfa3e09b39f321468c90a642701380a34079f1a"
+  resolved "https://registry.yarnpkg.com/electron-log/-/electron-log-2.2.6.tgz#ccfa3e09b39f321468c90a642701380a34079f1a"
 
 electron-osx-sign@0.4.4:
   version "0.4.4"
-  resolved "https://nexus.wingz.me/repository/npm/electron-osx-sign/-/electron-osx-sign-0.4.4.tgz#afdf38450ccaebe6dabeca71fb0fad6294a8c57c"
+  resolved "https://registry.yarnpkg.com/electron-osx-sign/-/electron-osx-sign-0.4.4.tgz#afdf38450ccaebe6dabeca71fb0fad6294a8c57c"
   dependencies:
     bluebird "^3.4.7"
     compare-version "^0.1.2"
@@ -2880,7 +2880,7 @@ electron-osx-sign@0.4.4:
 
 electron-publish@17.9.0:
   version "17.9.0"
-  resolved "https://nexus.wingz.me/repository/npm/electron-publish/-/electron-publish-17.9.0.tgz#5826ce22a06ff95e9d1cd6f4ee367703810a24bb"
+  resolved "https://registry.yarnpkg.com/electron-publish/-/electron-publish-17.9.0.tgz#5826ce22a06ff95e9d1cd6f4ee367703810a24bb"
   dependencies:
     bluebird-lst "^1.0.2"
     chalk "^1.1.3"
@@ -2895,7 +2895,7 @@ electron-to-chromium@^1.2.3, electron-to-chromium@^1.2.7:
 
 electron-updater@^1.16.0:
   version "1.16.0"
-  resolved "https://nexus.wingz.me/repository/npm/electron-updater/-/electron-updater-1.16.0.tgz#e81e6a428d16d244e474a884302b5fcfad927230"
+  resolved "https://registry.yarnpkg.com/electron-updater/-/electron-updater-1.16.0.tgz#e81e6a428d16d244e474a884302b5fcfad927230"
   dependencies:
     bluebird-lst "^1.0.2"
     debug "^2.6.8"
@@ -3405,7 +3405,7 @@ execa@^0.4.0:
 
 execa@^0.5.0:
   version "0.5.1"
-  resolved "https://nexus.wingz.me/repository/npm/execa/-/execa-0.5.1.tgz#de3fb85cb8d6e91c85bcbceb164581785cb57b36"
+  resolved "https://registry.yarnpkg.com/execa/-/execa-0.5.1.tgz#de3fb85cb8d6e91c85bcbceb164581785cb57b36"
   dependencies:
     cross-spawn "^4.0.0"
     get-stream "^2.2.0"
@@ -3798,7 +3798,7 @@ fresh@0.5.0:
 
 fs-extra-p@^4.3.0:
   version "4.3.0"
-  resolved "https://nexus.wingz.me/repository/npm/fs-extra-p/-/fs-extra-p-4.3.0.tgz#2e148a544287df0258931cabc583063b4eed2303"
+  resolved "https://registry.yarnpkg.com/fs-extra-p/-/fs-extra-p-4.3.0.tgz#2e148a544287df0258931cabc583063b4eed2303"
   dependencies:
     bluebird-lst "^1.0.2"
     fs-extra "^3.0.1"
@@ -3832,7 +3832,7 @@ fs-extra@^2.0.0:
 
 fs-extra@^3.0.1:
   version "3.0.1"
-  resolved "https://nexus.wingz.me/repository/npm/fs-extra/-/fs-extra-3.0.1.tgz#3794f378c58b342ea7dbbb23095109c4b3b62291"
+  resolved "https://registry.yarnpkg.com/fs-extra/-/fs-extra-3.0.1.tgz#3794f378c58b342ea7dbbb23095109c4b3b62291"
   dependencies:
     graceful-fs "^4.1.2"
     jsonfile "^3.0.0"
@@ -3938,7 +3938,7 @@ get-stdin@^5.0.0:
 
 get-stream@^2.2.0:
   version "2.3.1"
-  resolved "https://nexus.wingz.me/repository/npm/get-stream/-/get-stream-2.3.1.tgz#5f38f93f346009666ee0150a054167f91bdd95de"
+  resolved "https://registry.yarnpkg.com/get-stream/-/get-stream-2.3.1.tgz#5f38f93f346009666ee0150a054167f91bdd95de"
   dependencies:
     object-assign "^4.0.1"
     pinkie-promise "^2.0.0"
@@ -5105,7 +5105,7 @@ js-tokens@^3.0.0:
 
 js-yaml@^3.4.3, js-yaml@^3.5.1, js-yaml@^3.7.0, js-yaml@^3.8.4:
   version "3.8.4"
-  resolved "https://nexus.wingz.me/repository/npm/js-yaml/-/js-yaml-3.8.4.tgz#520b4564f86573ba96662af85a8cafa7b4b5a6f6"
+  resolved "https://registry.yarnpkg.com/js-yaml/-/js-yaml-3.8.4.tgz#520b4564f86573ba96662af85a8cafa7b4b5a6f6"
   dependencies:
     argparse "^1.0.7"
     esprima "^3.1.1"
@@ -5230,7 +5230,7 @@ jsonfile@^2.1.0:
 
 jsonfile@^3.0.0:
   version "3.0.0"
-  resolved "https://nexus.wingz.me/repository/npm/jsonfile/-/jsonfile-3.0.0.tgz#92e7c7444e5ffd5fa32e6a9ae8b85034df8347d0"
+  resolved "https://registry.yarnpkg.com/jsonfile/-/jsonfile-3.0.0.tgz#92e7c7444e5ffd5fa32e6a9ae8b85034df8347d0"
   optionalDependencies:
     graceful-fs "^4.1.6"
 
@@ -5392,7 +5392,7 @@ load-json-file@^1.0.0:
 
 load-json-file@^2.0.0:
   version "2.0.0"
-  resolved "https://nexus.wingz.me/repository/npm/load-json-file/-/load-json-file-2.0.0.tgz#7947e42149af80d696cbf797bcaabcfe1fe29ca8"
+  resolved "https://registry.yarnpkg.com/load-json-file/-/load-json-file-2.0.0.tgz#7947e42149af80d696cbf797bcaabcfe1fe29ca8"
   dependencies:
     graceful-fs "^4.1.2"
     parse-json "^2.2.0"
@@ -5757,7 +5757,7 @@ media-typer@0.3.0:
 
 mem@^1.1.0:
   version "1.1.0"
-  resolved "https://nexus.wingz.me/repository/npm/mem/-/mem-1.1.0.tgz#5edd52b485ca1d900fe64895505399a0dfa45f76"
+  resolved "https://registry.yarnpkg.com/mem/-/mem-1.1.0.tgz#5edd52b485ca1d900fe64895505399a0dfa45f76"
   dependencies:
     mimic-fn "^1.0.0"
 
@@ -5840,7 +5840,7 @@ mime@1.3.4, mime@1.3.x:
 
 mime@^1.2.11, mime@^1.3.4, mime@^1.3.6:
   version "1.3.6"
-  resolved "https://nexus.wingz.me/repository/npm/mime/-/mime-1.3.6.tgz#591d84d3653a6b0b4a3b9df8de5aa8108e72e5e0"
+  resolved "https://registry.yarnpkg.com/mime/-/mime-1.3.6.tgz#591d84d3653a6b0b4a3b9df8de5aa8108e72e5e0"
 
 mimic-fn@^1.0.0:
   version "1.1.0"
@@ -5862,7 +5862,7 @@ minimalistic-crypto-utils@^1.0.0, minimalistic-crypto-utils@^1.0.1:
 
 "minimatch@2 || 3", minimatch@^3.0.0, minimatch@^3.0.4, minimatch@~3.0.2:
   version "3.0.4"
-  resolved "https://nexus.wingz.me/repository/npm/minimatch/-/minimatch-3.0.4.tgz#5166e286457f03306064be5497e8dbb0c3d32083"
+  resolved "https://registry.yarnpkg.com/minimatch/-/minimatch-3.0.4.tgz#5166e286457f03306064be5497e8dbb0c3d32083"
   dependencies:
     brace-expansion "^1.1.7"
 
@@ -5920,11 +5920,11 @@ mksnapshot@^0.3.0:
 
 moment-recur@^1.0.5:
   version "1.0.5"
-  resolved "https://nexus.wingz.me/repository/npm/moment-recur/-/moment-recur-1.0.5.tgz#2d7d0e3f2d717b4b1f27f6272aa863c669371c61"
+  resolved "https://registry.yarnpkg.com/moment-recur/-/moment-recur-1.0.5.tgz#2d7d0e3f2d717b4b1f27f6272aa863c669371c61"
 
 moment-timezone@^0.5.13:
   version "0.5.13"
-  resolved "https://nexus.wingz.me/repository/npm/moment-timezone/-/moment-timezone-0.5.13.tgz#99ce5c7d827262eb0f1f702044177f60745d7b90"
+  resolved "https://registry.yarnpkg.com/moment-timezone/-/moment-timezone-0.5.13.tgz#99ce5c7d827262eb0f1f702044177f60745d7b90"
   dependencies:
     moment ">= 2.9.0"
 
@@ -5946,7 +5946,7 @@ ms@0.7.3:
 
 ms@2.0.0:
   version "2.0.0"
-  resolved "https://nexus.wingz.me/repository/npm/ms/-/ms-2.0.0.tgz#5608aeadfc00be6c2901df5f9861788de0d597c8"
+  resolved "https://registry.yarnpkg.com/ms/-/ms-2.0.0.tgz#5608aeadfc00be6c2901df5f9861788de0d597c8"
 
 multimatch@^2.0.0:
   version "2.1.0"
@@ -6216,7 +6216,7 @@ npm-run-path@^1.0.0:
 
 npm-run-path@^2.0.0:
   version "2.0.2"
-  resolved "https://nexus.wingz.me/repository/npm/npm-run-path/-/npm-run-path-2.0.2.tgz#35a9232dfa35d7067b4cb2ddf2357b1871536c5f"
+  resolved "https://registry.yarnpkg.com/npm-run-path/-/npm-run-path-2.0.2.tgz#35a9232dfa35d7067b4cb2ddf2357b1871536c5f"
   dependencies:
     path-key "^2.0.0"
 
@@ -6409,7 +6409,7 @@ os-locale@^1.4.0:
 
 os-locale@^2.0.0:
   version "2.0.0"
-  resolved "https://nexus.wingz.me/repository/npm/os-locale/-/os-locale-2.0.0.tgz#15918ded510522b81ee7ae5a309d54f639fc39a4"
+  resolved "https://registry.yarnpkg.com/os-locale/-/os-locale-2.0.0.tgz#15918ded510522b81ee7ae5a309d54f639fc39a4"
   dependencies:
     execa "^0.5.0"
     lcid "^1.0.0"
@@ -6432,7 +6432,7 @@ osenv@0, osenv@^0.1.4:
 
 p-finally@^1.0.0:
   version "1.0.0"
-  resolved "https://nexus.wingz.me/repository/npm/p-finally/-/p-finally-1.0.0.tgz#3fbcfb15b899a44123b34b6dcc18b724336a2cae"
+  resolved "https://registry.yarnpkg.com/p-finally/-/p-finally-1.0.0.tgz#3fbcfb15b899a44123b34b6dcc18b724336a2cae"
 
 p-limit@^1.1.0:
   version "1.1.0"
@@ -6530,7 +6530,7 @@ path-key@^1.0.0:
 
 path-key@^2.0.0:
   version "2.0.1"
-  resolved "https://nexus.wingz.me/repository/npm/path-key/-/path-key-2.0.1.tgz#411cadb574c5a140d3a4b1910d40d80cc9f40b40"
+  resolved "https://registry.yarnpkg.com/path-key/-/path-key-2.0.1.tgz#411cadb574c5a140d3a4b1910d40d80cc9f40b40"
 
 path-parse@^1.0.5:
   version "1.0.5"
@@ -6556,7 +6556,7 @@ path-type@^1.0.0:
 
 path-type@^2.0.0:
   version "2.0.0"
-  resolved "https://nexus.wingz.me/repository/npm/path-type/-/path-type-2.0.0.tgz#f012ccb8415b7096fc2daa1054c3d72389594c73"
+  resolved "https://registry.yarnpkg.com/path-type/-/path-type-2.0.0.tgz#f012ccb8415b7096fc2daa1054c3d72389594c73"
   dependencies:
     pify "^2.0.0"
 
@@ -6613,7 +6613,7 @@ pkg-up@^1.0.0:
 
 plist@^2.0.1, plist@^2.1.0:
   version "2.1.0"
-  resolved "https://nexus.wingz.me/repository/npm/plist/-/plist-2.1.0.tgz#57ccdb7a0821df21831217a3cad54e3e146a1025"
+  resolved "https://registry.yarnpkg.com/plist/-/plist-2.1.0.tgz#57ccdb7a0821df21831217a3cad54e3e146a1025"
   dependencies:
     base64-js "1.2.0"
     xmlbuilder "8.2.2"
@@ -7355,7 +7355,7 @@ read-pkg-up@^1.0.1:
 
 read-pkg-up@^2.0.0:
   version "2.0.0"
-  resolved "https://nexus.wingz.me/repository/npm/read-pkg-up/-/read-pkg-up-2.0.0.tgz#6b72a8048984e0c41e79510fd5e9fa99b3b549be"
+  resolved "https://registry.yarnpkg.com/read-pkg-up/-/read-pkg-up-2.0.0.tgz#6b72a8048984e0c41e79510fd5e9fa99b3b549be"
   dependencies:
     find-up "^2.0.0"
     read-pkg "^2.0.0"
@@ -7370,7 +7370,7 @@ read-pkg@^1.0.0:
 
 read-pkg@^2.0.0:
   version "2.0.0"
-  resolved "https://nexus.wingz.me/repository/npm/read-pkg/-/read-pkg-2.0.0.tgz#8ef1c0623c6a6db0dc6713c4bfac46332b2368f8"
+  resolved "https://registry.yarnpkg.com/read-pkg/-/read-pkg-2.0.0.tgz#8ef1c0623c6a6db0dc6713c4bfac46332b2368f8"
   dependencies:
     load-json-file "^2.0.0"
     normalize-package-data "^2.3.2"
@@ -8767,7 +8767,7 @@ unique-string@^1.0.0:
 
 universalify@^0.1.0:
   version "0.1.0"
-  resolved "https://nexus.wingz.me/repository/npm/universalify/-/universalify-0.1.0.tgz#9eb1c4651debcc670cc94f1a75762332bb967778"
+  resolved "https://registry.yarnpkg.com/universalify/-/universalify-0.1.0.tgz#9eb1c4651debcc670cc94f1a75762332bb967778"
 
 unpipe@~1.0.0:
   version "1.0.0"
@@ -9150,7 +9150,7 @@ which-module@^1.0.0:
 
 which-module@^2.0.0:
   version "2.0.0"
-  resolved "https://nexus.wingz.me/repository/npm/which-module/-/which-module-2.0.0.tgz#d9ef07dce77b9902b8a3a8fa4b31c3e3f7e6e87a"
+  resolved "https://registry.yarnpkg.com/which-module/-/which-module-2.0.0.tgz#d9ef07dce77b9902b8a3a8fa4b31c3e3f7e6e87a"
 
 which@1, which@^1.1.1, which@^1.2.11, which@^1.2.12, which@^1.2.8, which@^1.2.9:
   version "1.2.14"
@@ -9232,7 +9232,7 @@ xdg-basedir@^3.0.0:
 
 xelement@^1.0.14:
   version "1.0.14"
-  resolved "https://nexus.wingz.me/repository/npm/xelement/-/xelement-1.0.14.tgz#46eb00ea6f5e4db9c18d6f05bcd08dc9ebeff8c0"
+  resolved "https://registry.yarnpkg.com/xelement/-/xelement-1.0.14.tgz#46eb00ea6f5e4db9c18d6f05bcd08dc9ebeff8c0"
   dependencies:
     sax "^1.2.1"
 
@@ -9285,7 +9285,7 @@ yargs-parser@^4.2.0:
 
 yargs-parser@^7.0.0:
   version "7.0.0"
-  resolved "https://nexus.wingz.me/repository/npm/yargs-parser/-/yargs-parser-7.0.0.tgz#8d0ac42f16ea55debd332caf4c4038b3e3f5dfd9"
+  resolved "https://registry.yarnpkg.com/yargs-parser/-/yargs-parser-7.0.0.tgz#8d0ac42f16ea55debd332caf4c4038b3e3f5dfd9"
   dependencies:
     camelcase "^4.1.0"
 
@@ -9344,7 +9344,7 @@ yargs@^6.0.0, yargs@^6.3.0, yargs@^6.6.0:
 
 yargs@^8.0.1:
   version "8.0.1"
-  resolved "https://nexus.wingz.me/repository/npm/yargs/-/yargs-8.0.1.tgz#420ef75e840c1457a80adcca9bc6fa3849de51aa"
+  resolved "https://registry.yarnpkg.com/yargs/-/yargs-8.0.1.tgz#420ef75e840c1457a80adcca9bc6fa3849de51aa"
   dependencies:
     camelcase "^4.1.0"
     cliui "^3.2.0"
