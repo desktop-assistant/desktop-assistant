@@ -88,18 +88,22 @@ async function fetchAccessTokens(code: string) {
     });
     return response.data;
   } catch (error) {
-    console.log('error', error);
+    console.error(error);
   }
 }
 
 async function fetchGoogleProfile(accessToken: string) {
-  const response = await axios.get(GOOGLE_PROFILE_URL, {
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${accessToken}`,
-    },
-  });
-  return response.data;
+  try {
+    const response = await axios.get(GOOGLE_PROFILE_URL, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
 }
 
 async function googleSignIn() {
@@ -118,17 +122,21 @@ async function googleSignIn() {
 }
 
 async function getEvents(accessToken, calendarId) {
-  const url = GOOGLE_GET_EVENT_LIST_URL.replace('calendarId', calendarId);
-  const response = await axios.get(url, {
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${accessToken}`,
-    },
-    params: {
-      timeMin: moment().hour(0).format()
-    }
-  });
-  return response.data.items;
+  try {
+    const url = GOOGLE_GET_EVENT_LIST_URL.replace('calendarId', calendarId);
+    const response = await axios.get(url, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
+      params: {
+        timeMin: moment().hour(0).format()
+      }
+    });
+    return response;
+  } catch (error) {
+    console.error(error);
+  }
 }
 
 async function convertEvents(events: Array<Object>) {
@@ -221,18 +229,18 @@ function formatRepeatOn(gCalReapeatOn) {
   return resArray.toString();
 }
 
-export async function syncGoogleCalendar(check?: boolean) {
+export async function syncGoogleCalendar(options?: { check?: boolean, refreshToken?: boolean }) {
   let accessToken;
   const gSyncConf = await query({ selector: { _id: 'google-calendar-sync' } }, 'settings');
 
   const isSynced = _.get(gSyncConf, 'docs[0].synchronized');
-  if (check && !isSynced) {
+  if (options && options.check && !isSynced) {
     return false;
   }
 
   const token = _.get(gSyncConf, 'docs[0].token');
 
-  if (!token) {
+  if (_.get(options, 'refreshToken') || !token) {
     const googleProvider = await googleSignIn();
     accessToken = googleProvider.accessToken;
   } else {
@@ -251,8 +259,14 @@ export async function syncGoogleCalendar(check?: boolean) {
       syncConf._rev = gSyncConf.docs[0]._rev;
     }
     create(syncConf, 'settings');
-    const events = await getEvents(accessToken, 'primary');
+    const eventsResponse = await getEvents(accessToken, 'primary');
+    if (_.get(eventsResponse, 'code') === 401) {
+      syncGoogleCalendar({ refreshToken: true });
+    }
 
-    convertEvents(events);
+    const events = _.get(eventsResponse, 'data.items');
+    if (events) {
+      convertEvents(events);
+    }
   }
 }

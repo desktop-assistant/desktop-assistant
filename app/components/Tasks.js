@@ -40,7 +40,7 @@ export default class Tasks extends Component {
   }
 
   async syncGCal() {
-    this.props.syncGCalendar(true);
+    this.props.syncGCalendar({ check: true });
     setTimeout(() => {
       this.props.fetchTasks(this.props.currentDay);
     }, 3000);

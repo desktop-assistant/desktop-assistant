@@ -1,7 +1,7 @@
 {
   "name": "desktop-assistant",
   "productName": "Desktop Assistant",
-  "version": "0.6.1",
+  "version": "0.6.2",
   "description": "Desktop Assistant is a desktop app to smooth your daily routine tasks",
   "main": "./main.prod.js",
   "author": {
