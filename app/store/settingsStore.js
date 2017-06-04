@@ -122,21 +122,17 @@ async function googleSignIn() {
 }
 
 async function getEvents(accessToken, calendarId) {
-  try {
-    const url = GOOGLE_GET_EVENT_LIST_URL.replace('calendarId', calendarId);
-    const response = await axios.get(url, {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${accessToken}`,
-      },
-      params: {
-        timeMin: moment().hour(0).format()
-      }
-    });
-    return response;
-  } catch (error) {
-    console.error(error);
-  }
+  const url = GOOGLE_GET_EVENT_LIST_URL.replace('calendarId', calendarId);
+  const response = await axios.get(url, {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    },
+    params: {
+      timeMin: moment().hour(0).format()
+    }
+  });
+  return response.data.items;
 }
 
 async function convertEvents(events: Array<Object>) {
@@ -259,14 +255,13 @@ export async function syncGoogleCalendar(options?: { check?: boolean, refreshTok
       syncConf._rev = gSyncConf.docs[0]._rev;
     }
     create(syncConf, 'settings');
-    const eventsResponse = await getEvents(accessToken, 'primary');
-    if (_.get(eventsResponse, 'code') === 401) {
-      syncGoogleCalendar({ refreshToken: true });
-    }
 
-    const events = _.get(eventsResponse, 'data.items');
-    if (events) {
+    let events;
+    try {
+      events = await getEvents(accessToken, 'primary');
       convertEvents(events);
+    } catch (e) {
+      syncGoogleCalendar({ refreshToken: true });
     }
   }
 }
