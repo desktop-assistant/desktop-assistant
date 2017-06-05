@@ -1,0 +1,15 @@
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 4px;
+  position: relative;
+
+	.form-group {
+	  flex: 1;
+	}
+}
+
+.at {
+  margin: 0 20px;
+}

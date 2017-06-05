@@ -19,10 +19,6 @@ export default class Actions extends Component {
   previousPosition = []
   previousSize = []
 
-  // syncDB() {
-  //   syncWith('http://localhost:5984/');
-  // }
-
   expandWindow() {
     const mainScreen = screen.getPrimaryDisplay();
     const win = remote.getCurrentWindow();

@@ -1,17 +1,28 @@
 import { connect } from 'react-redux';
 import NewTask from '../components/NewTask';
-import { resetNewTask } from '../actions/tasks';
+import {
+  resetNewTask,
+  getTask, getTaskSuccess, getTaskFailure
+} from '../actions/tasks';
 
-const mapDispatchToProps = (dispatch) => ({
+const mapStateToProps = state => ({
+  task: state.tasks.task
+});
+
+const mapDispatchToProps = dispatch => ({
+  getTask: (id) => {
+    const query = { selector: { _id: id } };
+    dispatch(getTask(query)).then(response => {
+      response.payload && response.payload.docs && response.payload.docs.length
+        ? dispatch(getTaskSuccess(response.payload.docs[0]))
+        : dispatch(getTaskFailure({}));
+
+      return true;
+    }).catch(console.error);
+  },
   resetMe: () => {
     dispatch(resetNewTask());
   }
 });
-
-function mapStateToProps() {
-  return {
-    // newTask: state.tasks.newTask
-  };
-}
 
 export default connect(mapStateToProps, mapDispatchToProps)(NewTask);

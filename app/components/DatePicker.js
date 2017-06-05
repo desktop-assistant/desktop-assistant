@@ -25,8 +25,22 @@ export default class DatePicker extends Component {
     this.state = { modalVisible: false, selectedDay: new Date() };
   }
 
-  onDayChange() {
-    this.setState({ modalVisible: false });
+  onDayChange(day) {
+    const value = moment(day);
+    this.setState({
+      modalVisible: false,
+      selectedDay: day,
+      displayValue: value.format('MM-DD-YYYY')
+    });
+    this.props.input.onChange(value.format());
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps && nextProps.value) {
+      this.setState({
+        displayValue: moment(nextProps.value).format('MM-DD-YYYY')
+      });
+    }
   }
 
   handleClick() {
@@ -50,6 +64,7 @@ export default class DatePicker extends Component {
           <div>
             <input
               {...this.props.input}
+              value={this.state.displayValue}
               className="form-control"
               placeholder="Select a date"
               onClick={this.handleClick.bind(this)}
@@ -61,7 +76,7 @@ export default class DatePicker extends Component {
               <button className={styles.close} onClick={this.closeModal.bind(this)} />
               <DayPicker
                 selectedDays={this.state.selectedDay}
-                onDayClick={day => { this.state.selectedDay = day; this.onDayChange(); onChange(moment(day).format('MM-DD-YYYY')); }}
+                onDayClick={day => { this.onDayChange(day); }}
               />
             </div>
           </div>

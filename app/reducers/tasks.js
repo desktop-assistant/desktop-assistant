@@ -1,6 +1,7 @@
 import {
   FETCH_TASKS, FETCH_TASKS_SUCCESS, FETCH_TASKS_FAILURE,
   GET_CURRENT_TASK, GET_CURRENT_TASK_SUCCESS,
+  GET_TASK, GET_TASK_SUCCESS, GET_TASK_FAILURE,
   CREATE_TASKS, CREATE_TASKS_SUCCESS, RESET_NEW_TASKS,
   UPDATE_TASK, UPDATE_TASK_SUCCESS, UPDATE_TASK_FAILURE, RESET_UPDATED_TASK,
   DELETE_TASK, DELETE_TASK_SUCCESS, DELETE_TASK_FAILURE, RESET_DELETED_TASK
@@ -28,6 +29,13 @@ export default function (state = INITIAL_STATE, action) {
       return { ...state, currentTask: { ...state.currentTask, loading: true } };
     case GET_CURRENT_TASK_SUCCESS:
       return { ...state, currentTask: { task: action.payload, error: null, loading: false } };
+    case GET_TASK:
+      return { ...state, task: { tasks: {}, error: null, loading: true } };
+    case GET_TASK_SUCCESS:
+      return { ...state, task: { task: action.payload, error: null, loading: false } };
+    case GET_TASK_FAILURE:
+      error = action.payload || { message: action.payload.message };
+      return { ...state, task: { task: {}, error, loading: false } };
     case RESET_NEW_TASKS:
       return { ...state, newTask: { task: null, error: null, loading: false } };
     case CREATE_TASKS:

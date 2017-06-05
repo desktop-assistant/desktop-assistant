@@ -49,7 +49,7 @@ export default () => (
           runOnMount={false}
         >
           <Switch key={location.key} location={location}>
-            <Route path="/add" component={NewTaskPage} />
+            <Route path="/add/:id?" component={NewTaskPage} />
             <Route path="/settings" component={SettingsPage} />
             <Route path="/" component={HomePage} />
           </Switch>

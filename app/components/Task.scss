@@ -95,16 +95,27 @@
   color: #444444;
 }
 
-.task:hover .deleteTask,  .task.selected .deleteTask{
+.task:hover .taskActions,  .task.selected .taskActions {
   display: block;
 }
 
-.deleteTask {
-  display: none;
-  position: absolute;
+.taskActions {
+	display: none;
+	position: absolute;
   top: 10px;
   right: 10px;
   border: none;
   background: none;
   padding: 0;
+}
+
+.deleteTask {
+	border: none;
+  background: none;
+  padding: 0;
+}
+
+.editTask {
+	margin-right: 6px;
+	font-size: 11px !important;
 }

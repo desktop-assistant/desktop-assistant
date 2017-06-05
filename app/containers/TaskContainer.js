@@ -12,7 +12,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
     dispatch(deleteTask(ownProps.task)).then(response => {
       !response.error
         ? dispatch(deleteTaskSuccess(response.payload))
-        : dispatch(deleteTaskFailure(response.payload));
+        : dispatch(deleteTaskFailure(response.error));
 
       return true;
     }).catch(console.error);

@@ -14,6 +14,11 @@ export const GET_CURRENT_TASK = 'GET_CURRENT_TASK';
 export const GET_CURRENT_TASK_SUCCESS = 'GET_CURRENT_TASK_SUCCESS';
 export const GET_CURRENT_TASK_FAILURE = 'GET_CURRENT_TASK_FAILURE';
 
+// Get task
+export const GET_TASK = 'GET_TASK';
+export const GET_TASK_SUCCESS = 'GET_TASK_SUCCESS';
+export const GET_TASK_FAILURE = 'GET_TASK_FAILURE';
+
 // Create new task
 export const CREATE_TASK = 'CREATE_TASK';
 export const CREATE_TASK_SUCCESS = 'CREATE_TASK_SUCCESS';
@@ -191,15 +196,6 @@ export function getCurrentTaskFailure(error: Object) {
 
 export function createTask(props: Object) {
   const task = props;
-  if (task.beginAtDate && task.beginAtTime) {
-    const momentTime = moment(`${task.beginAtDate}-${task.beginAtTime}`, 'MM-DD-YYYY-HH:mm');
-    task.beginAt = momentTime.toISOString();
-  }
-
-  if (task.endAtDate && task.endAtTime) {
-    const momentTime = moment(`${task.endAtDate}-${task.endAtTime}`, 'MM-DD-YYYY-HH:mm');
-    task.endAt = momentTime.toISOString();
-  }
 
   if (!task._id) {
     const decodedId = `${task.beginAt} ${task.endAt} ${task.name}`;
@@ -254,6 +250,29 @@ export function updateTaskFailure(response: Object) {
   return {
     type: UPDATE_TASK_FAILURE,
     payload: response
+  };
+}
+
+export function getTask(filter: Object) {
+  const request = query(filter, 'tasks');
+
+  return {
+    type: GET_TASK,
+    payload: request
+  };
+}
+
+export function getTaskSuccess(task: TaskType) {
+  return {
+    type: GET_TASK_SUCCESS,
+    payload: task
+  };
+}
+
+export function getTaskFailure(error: Object) {
+  return {
+    type: GET_TASK_FAILURE,
+    payload: error
   };
 }
 

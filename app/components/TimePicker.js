@@ -1,8 +1,9 @@
 // @flow
 import React, { Component } from 'react';
 import classNames from 'classnames/bind';
-import ClockPicker from './ClockPicker';
+import moment from 'moment';
 
+import ClockPicker from './ClockPicker';
 import styles from './TimePicker.css';
 
 const cx = classNames.bind(styles);
@@ -27,8 +28,22 @@ export default class TimePicker extends Component {
   }
 
   onDayChange(hours: number, minutes: number) {
-    this.props.input.onChange(`${twoDigits(hours)}:${twoDigits(minutes)}`);
-    this.setState({ modalVisible: false });
+    const value = moment(this.props.input.value).hours(hours).minutes(minutes);
+    this.setState({
+      modalVisible: false,
+      displayValue: `${twoDigits(hours)}:${twoDigits(minutes)}`
+    });
+    this.props.input.onChange(value.format());
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps && nextProps.value) {
+      const hours = moment(nextProps.value).hours();
+      const minutes = moment(nextProps.value).minutes();
+      this.setState({
+        displayValue: `${twoDigits(hours)}:${twoDigits(minutes)}`
+      });
+    }
   }
 
   handleClick() {
@@ -50,6 +65,7 @@ export default class TimePicker extends Component {
       <div className={styles.container}>
         <input
           {...this.props.input}
+          value={this.state.displayValue}
           className="form-control"
           placeholder="Select a time"
           onClick={this.handleClick.bind(this)}

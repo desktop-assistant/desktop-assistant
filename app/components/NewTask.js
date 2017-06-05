@@ -5,15 +5,19 @@ import { connect } from 'react-redux';
 import { reduxForm, formValueSelector, Field, SubmissionError } from 'redux-form';
 import { Link } from 'react-router-dom';
 import { push } from 'react-router-redux';
+import _ from 'lodash';
+import moment from 'moment';
 
 import styles from './NewTask.css';
 import renderField from './renderField';
 import DatePicker from './DatePicker';
 import TimePicker from './TimePicker';
+import DateTimePicker from './DateTimePicker';
 import AppSelector from './AppSelector';
 import DayPicker from './DayPicker';
 
 import { createTask, createTaskSuccess, createTaskFailure } from '../actions/tasks';
+import { loadTask } from '../reducers/taskForm';
 
 // Client side validation
 const validate = values => {
@@ -22,17 +26,11 @@ const validate = values => {
   if (!values.name || values.name.trim() === '') {
     errors.name = 'Enter a task name';
   }
-  if (!values.beginAtDate) {
-    errors.beginAtDate = 'Enter a begin date';
+  if (!values.beginAt) {
+    errors.beginAt = 'Enter a begin date';
   }
-  if (!values.endAtDate) {
-    errors.endAtDate = 'Enter a end date';
-  }
-  if (!values.beginAtTime) {
-    errors.beginAtTime = 'Enter a begin time';
-  }
-  if (!values.endAtTime) {
-    errors.endAtTime = 'Enter a end time';
+  if (!values.endAt) {
+    errors.endAt = 'Enter a end date';
   }
 
   return errors;
@@ -57,6 +55,7 @@ type TaskType = {};
 
 let NewTaskForm = class NewTask extends Component {
   props: {
+    getTask: () => void,
     handleSubmit: () => void,
     pristine: boolean,
     submitting: boolean,
@@ -81,11 +80,21 @@ let NewTaskForm = class NewTask extends Component {
     const win = remote.getCurrentWindow();
     win.setSize(350, 700);
     this.state = {
+      mode: 'add',
       repeat: false
     };
   }
 
+  componentWillMount() {
+    const idParam = _.get(this.props, 'match.params.id');
+    if (idParam) {
+      this.setState({ mode: 'edit' });
+      this.props.getTask(idParam);
+    }
+  }
+
   state: {
+    mode: string,
     repeat: boolean
   };
 
@@ -99,7 +108,7 @@ let NewTaskForm = class NewTask extends Component {
           <Link to="/" className={styles.backButton}>
             <i className="fa fa-chevron-left" />
           </Link>
-          <h1>New Task</h1>
+          <h1>{ this.state.mode === 'edit' ? 'Edit Task' : 'New Task' }</h1>
           <form className={styles.form} onSubmit={handleSubmit(validateAndCreateTask)}>
             <Field
               name="name"
@@ -110,31 +119,21 @@ let NewTaskForm = class NewTask extends Component {
             <div className={styles.inlineField}>
               <div className={styles.beginIcon} />
               <Field
-                name="beginAtDate"
+                name="beginAt"
                 type="date"
-                component={DatePicker}
-                label="BEGIN" required
-              />
-              <div className={styles.at}>at</div>
-              <Field
-                name="beginAtTime"
-                type="time"
-                component={TimePicker} required
+                component={DateTimePicker}
+                label="BEGIN"
+                required
               />
             </div>
             <div className={styles.inlineField}>
               <div className={styles.endIcon} />
               <Field
-                name="endAtDate"
+                name="endAt"
                 type="date"
-                component={DatePicker}
-                label="END" required
-              />
-              <div className={styles.at}>at</div>
-              <Field
-                name="endAtTime"
-                type="time"
-                component={TimePicker} required
+                component={DateTimePicker}
+                label="END"
+                required
               />
             </div>
             <div>
@@ -168,7 +167,7 @@ let NewTaskForm = class NewTask extends Component {
                 <a onClick={() => (this.setState({ repeat: !this.state.repeat }))}>Repeat ?</a>
               </div>
             }
-            { this.state.repeat &&
+            { (this.state.repeat || freqValue) &&
               <div>
                 <label className="control-label" htmlFor="action">FREQUENCY</label>
                 <div className="custom-select form-control">
@@ -180,7 +179,7 @@ let NewTaskForm = class NewTask extends Component {
                 </div>
               </div>
             }
-            { this.state.repeat && freqValue === 'weekly' && <div>
+            { (this.state.repeat || freqValue) && freqValue === 'weekly' && <div>
               <Field
                 name="repeatOn"
                 component={DayPicker}
@@ -192,7 +191,7 @@ let NewTaskForm = class NewTask extends Component {
               className="button button--primary button--sm button--block"
               disabled={pristine || submitting}
             >
-              Add
+              { this.state.mode === 'edit' ? 'Save' : 'Add' }
             </button>
           </form>
         </div>
@@ -213,7 +212,9 @@ export default connect(
   state => {
     const actionValue = selector(state, 'action');
     const freqValue = selector(state, 'freq');
+    const initialValues = _.get(state, 'tasks.task.task');
 
-    return { actionValue, freqValue };
-  }
+    return { actionValue, freqValue, initialValues };
+  },
+  { load: loadTask }
 )(NewTaskForm);

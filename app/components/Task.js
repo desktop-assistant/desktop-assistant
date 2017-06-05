@@ -1,6 +1,7 @@
 // @flow
 import { shell } from 'electron';
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import Rnd from 'react-rnd';
 import classNames from 'classnames/bind';
 import moment from 'moment';
@@ -128,9 +129,14 @@ export default class Task extends Component {
         }}
       >
         { task.source !== 'google calendar' &&
-          <button onClick={this.onDeleteClick.bind(this)} className={styles.deleteTask}>
-            <i className="fa fa-trash" aria-hidden="true" />
-          </button>
+          <div className={styles.taskActions}>
+            <Link to={`add/${task._id}`} className={styles.editTask}>
+              <i className="fa fa-pencil-square-o" aria-hidden="true" />
+            </Link>
+            <button onClick={this.onDeleteClick.bind(this)} className={styles.deleteTask}>
+              <i className="fa fa-trash" aria-hidden="true" />
+            </button>
+          </div>
         }
         <div className={styles.taskTitle}>
           <h3>{ task.name }</h3>
